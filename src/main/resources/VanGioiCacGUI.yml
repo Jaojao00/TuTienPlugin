@@ -1,0 +1,310 @@
+# ═══════════════════════════════════════════════════════════════
+# VẠN GIỚI CÁC - CỬA HÀNG TU TIÊN (DATA-DRIVEN)
+# ═══════════════════════════════════════════════════════════════
+# Chia thành các Phân Khu (Category), mỗi phân khu chứa danh sách vật phẩm
+# CanhGioiMin: Cảnh giới tối thiểu để MUA (không phải để VÀO xem)
+# Price: Giá tiền Vault
+# Material: Vật phẩm Minecraft thật
+
+MainTitle: "§0§l⛩ Vạn Giới Các - Thương Hội ⛩"
+
+PhanKhu:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  #  NGUYÊN LIỆU LUYỆN ĐAN
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NguyenLieu:
+    Title: "§0VGC: §2§lNguyên Liệu Luyện Đan"
+    Icon: CHEST
+    IconName: "§2§l[Nguyên Liệu Luyện Đan]"
+    IconLore:
+      - "§7Các loại thảo dược, khoáng vật"
+      - "§7cần thiết để luyện chế đan dược."
+      - "§7Cảnh giới yêu cầu: §aPhàm Nhân+"
+      - ""
+      - "§e▶ Nhấp để vào xem hàng!"
+    Slot: 10
+    Items:
+      wheat:
+        Material: WHEAT
+        Name: "§a§lLúa Mì Linh Điền"
+        Price: 500                   # 500$ / 8 cái
+        Amount: 8
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Lúa mạch trồng trên linh điền"
+          - "§7dùng để luyện Tích Cốc Đan."
+      brown_mushroom:
+        Material: BROWN_MUSHROOM
+        Name: "§a§lLinh Chi Nâu"
+        Price: 800                   # 800$ / 4 cái
+        Amount: 4
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Nấm linh chi hấp thụ linh khí"
+          - "§7nguyên liệu cơ bản trong luyện đan."
+      sugar:
+        Material: SUGAR
+        Name: "§a§lĐường Linh"
+        Price: 300                   # 300$ / 4 cái
+        Amount: 4
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Chất tạo ngọt chiết xuất từ linh mía."
+      spider_eye:
+        Material: SPIDER_EYE
+        Name: "§a§lNhện Nhỡn Thảo"
+        Price: 1200                  # 1.2K / 4 cái
+        Amount: 4
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Mắt nhện chứa độc tố đặc biệt"
+          - "§7dùng để chế Bổ Huyết Đan."
+      sweet_berries:
+        Material: SWEET_BERRIES
+        Name: "§a§lHuyết Quả"
+        Price: 600                   # 600$ / 8 cái
+        Amount: 8
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Quả mọng đỏ như máu, bổ huyết."
+      lapis_lazuli:
+        Material: LAPIS_LAZULI
+        Name: "§9§lLưu Ly Thạch"
+        Price: 1500                  # 1.5K / 4 cái
+        Amount: 4
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Khoáng vật xanh có tác dụng an thần."
+      glow_berries:
+        Material: GLOW_BERRIES
+        Name: "§e§lHuỳnh Quang Quả"
+        Price: 3000                  # 3K / 8 cái
+        Amount: 8
+        CanhGioiMin: LUYEN_KHI
+        Lore:
+          - "§7Quả phát sáng chứa linh khí."
+      amethyst_shard:
+        Material: AMETHYST_SHARD
+        Name: "§d§lTử Tinh Thạch"
+        Price: 5000                  # 5K / 4 cái
+        Amount: 4
+        CanhGioiMin: LUYEN_KHI
+        Lore:
+          - "§7Mảnh pha lê tím ngưng tụ linh khí."
+      glowstone_dust:
+        Material: GLOWSTONE_DUST
+        Name: "§e§lBột Huỳnh Quang"
+        Price: 2500                  # 2.5K / 8 cái
+        Amount: 8
+        CanhGioiMin: LUYEN_KHI
+        Lore:
+          - "§7Bột phát sáng từ Địa Ngục."
+      blaze_powder:
+        Material: BLAZE_POWDER
+        Name: "§6§lBột Lửa Hỏa Diễm"
+        Price: 8000                  # 8K / 4 cái
+        Amount: 4
+        CanhGioiMin: LUYEN_KHI
+        Lore:
+          - "§7Bột lửa từ Blaze, chất xúc tác."
+      nether_wart:
+        Material: NETHER_WART
+        Name: "§c§lĐịa Ngục Thảo"
+        Price: 4000                  # 4K / 8 cái
+        Amount: 8
+        CanhGioiMin: LUYEN_KHI
+        Lore:
+          - "§7Thảo dược quý từ Địa Ngục."
+      ghast_tear:
+        Material: GHAST_TEAR
+        Name: "§f§lNước Mắt U Linh"
+        Price: 25000                 # 25K / 2 cái
+        Amount: 2
+        CanhGioiMin: TRUC_CO
+        Lore:
+          - "§7Nước mắt linh thể, cực kỳ quý hiếm."
+      phantom_membrane:
+        Material: PHANTOM_MEMBRANE
+        Name: "§b§lMàng Cánh Phantom"
+        Price: 15000                 # 15K / 4 cái
+        Amount: 4
+        CanhGioiMin: TRUC_CO
+        Lore:
+          - "§7Màng cánh Phantom chứa lực u minh."
+      blaze_rod:
+        Material: BLAZE_ROD
+        Name: "§6§lQue Lửa Hỏa Diễm"
+        Price: 12000                 # 12K / 4 cái
+        Amount: 4
+        CanhGioiMin: TRUC_CO
+        Lore:
+          - "§7Cây trượng lửa, nguyên liệu cao cấp."
+      dragon_breath:
+        Material: DRAGON_BREATH
+        Name: "§5§lHơi Thở Rồng"
+        Price: 80000                 # 80K / 4 cái
+        Amount: 4
+        CanhGioiMin: NGUYEN_ANH
+        Lore:
+          - "§7Hơi thở rồng, nguyên liệu thượng phẩm."
+      ender_eye:
+        Material: ENDER_EYE
+        Name: "§5§lMắt Hư Không"
+        Price: 50000                 # 50K / 4 cái
+        Amount: 4
+        CanhGioiMin: NGUYEN_ANH
+        Lore:
+          - "§7Mắt Ender chứa lực không gian."
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  #  NHẤT - TAM PHẨM ĐAN DƯỢC
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  DanDuocThap:
+    Title: "§0VGC: §a§lNhất - Tam Phẩm Đan"
+    Icon: IRON_SWORD
+    IconName: "§a§l[Nhất - Tam Phẩm Đan]"
+    IconLore:
+      - "§7Đan dược dành cho Phàm Nhân - Trúc Cơ"
+      - "§7Cảnh giới yêu cầu: §aPhàm Nhân+"
+      - ""
+      - "§e▶ Nhấp để vào xem hàng!"
+    Slot: 12
+    Items:
+      tich_coc_dan:
+        Material: DRIED_KELP
+        Name: "§b§lTích Cốc Đan"
+        Price: 5000                  # 5K
+        Amount: 1
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Nhịn đói 1 tháng."
+          - "§7DMG: §c+0.1 §8| §7HP: §a+0.0 §8| §7TV: §e+5"
+      hoi_xuan_dan:
+        Material: GLISTERING_MELON_SLICE
+        Name: "§b§lHồi Xuân Đan"
+        Price: 8000                  # 8K
+        Amount: 1
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Chữa vết thương ngoài da."
+          - "§7DMG: §c+0.0 §8| §7HP: §a+0.5 §8| §7TV: §e+3"
+      bo_huyet_dan:
+        Material: RED_DYE
+        Name: "§b§lBổ Huyết Đan"
+        Price: 10000                 # 10K
+        Amount: 1
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Hồi phục khí huyết."
+          - "§7DMG: §c+0.0 §8| §7HP: §a+1.0 §8| §7TV: §e+5"
+      tu_khi_dan:
+        Material: GLOWSTONE_DUST
+        Name: "§e§lTụ Khí Đan"
+        Price: 50000                 # 50K - Đan đột phá
+        Amount: 1
+        CanhGioiMin: PHAM_NHAN
+        Lore:
+          - "§7Đan đột phá Luyện Khí."
+          - "§7DMG: §c+0.3 §8| §7HP: §a+1.0 §8| §7TV: §e+20"
+      truc_co_dan:
+        Material: GOLD_NUGGET
+        Name: "§6§lTrúc Cơ Đan"
+        Price: 150000                # 150K - Đan đột phá
+        Amount: 1
+        CanhGioiMin: LUYEN_KHI
+        Lore:
+          - "§7Đan đột phá Trúc Cơ."
+          - "§7DMG: §c+0.4 §8| §7HP: §a+1.5 §8| §7TV: §e+30"
+      tay_tuy_dan:
+        Material: FERMENTED_SPIDER_EYE
+        Name: "§b§lTẩy Tủy Đan"
+        Price: 80000                 # 80K
+        Amount: 1
+        CanhGioiMin: TRUC_CO
+        Lore:
+          - "§7Tẩy tủy hoán cốt."
+          - "§7DMG: §c+0.2 §8| §7HP: §a+0.8 §8| §7TV: §e+15"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  #  TỨ - LỤC PHẨM ĐAN DƯỢC
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  DanDuocTrung:
+    Title: "§0VGC: §e§lTứ - Lục Phẩm Đan"
+    Icon: GOLDEN_CHESTPLATE
+    IconName: "§e§l[Tứ - Lục Phẩm Đan]"
+    IconLore:
+      - "§7Đan dược dành cho Kim Đan - Hóa Thần"
+      - "§7Cảnh giới yêu cầu: §eKim Đan+"
+      - ""
+      - "§e▶ Nhấp để vào xem hàng!"
+    Slot: 14
+    Items:
+      kim_than_dan:
+        Material: GOLD_INGOT
+        Name: "§e§lKim Thân Đan"
+        Price: 500000                # 500K
+        Amount: 1
+        CanhGioiMin: KIM_DAN
+        Lore:
+          - "§7Da thịt cứng như kim loại."
+          - "§7DMG: §c+0.3 §8| §7HP: §a+2.0 §8| §7TV: §e+25"
+      dinh_linh_dan:
+        Material: GHAST_TEAR
+        Name: "§f§lĐịnh Linh Đan"
+        Price: 1500000               # 1.5 triệu
+        Amount: 1
+        CanhGioiMin: KIM_DAN
+        Lore:
+          - "§7Ngưng kết Nguyên Anh."
+          - "§7DMG: §c+0.5 §8| §7HP: §a+2.5 §8| §7TV: §e+40"
+      thanh_hu_dan:
+        Material: ENDER_EYE
+        Name: "§d§lThanh Hư Đan"
+        Price: 5000000               # 5 triệu
+        Amount: 1
+        CanhGioiMin: NGUYEN_ANH
+        Lore:
+          - "§7Giảm tâm ma khi đột phá."
+          - "§7DMG: §c+0.6 §8| §7HP: §a+3.0 §8| §7TV: §e+50"
+      uan_than_dan:
+        Material: NETHER_STAR
+        Name: "§d§lUẩn Thần Đan"
+        Price: 15000000              # 15 triệu
+        Amount: 1
+        CanhGioiMin: NGUYEN_ANH
+        Lore:
+          - "§7Nuôi dưỡng thần thức mạnh mẽ."
+          - "§7DMG: §c+0.8 §8| §7HP: §a+4.0 §8| §7TV: §e+60"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  #  THẤT PHẨM+ ĐAN DƯỢC (HIẾM)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  DanDuocCao:
+    Title: "§0VGC: §c§lThất Phẩm+ Thần Đan"
+    Icon: DIAMOND_HELMET
+    IconName: "§c§l[Thất Phẩm+ Thần Đan]"
+    IconLore:
+      - "§7Đan dược cấp Huyền Thoại"
+      - "§7Cảnh giới yêu cầu: §cHóa Thần+"
+      - ""
+      - "§e▶ Nhấp để vào xem hàng!"
+    Slot: 16
+    Items:
+      do_kiep_dan:
+        Material: TOTEM_OF_UNDYING
+        Name: "§c§lĐộ Kiếp Đan"
+        Price: 50000000              # 50 triệu
+        Amount: 1
+        CanhGioiMin: HOA_THAN
+        Lore:
+          - "§7Sống sót qua Cửu Đạo Thiên Kiếp."
+          - "§7DMG: §c+1.0 §8| §7HP: §a+5.0 §8| §7TV: §e+100"
+      nghich_thien_dan:
+        Material: DRAGON_HEAD
+        Name: "§4§lNghịch Thiên Đan"
+        Price: 500000000             # 500 triệu
+        Amount: 1
+        CanhGioiMin: LUYEN_HU
+        Lore:
+          - "§7Cải tử hoàn sinh, nghịch thiên cải mệnh."
+          - "§7DMG: §c+2.0 §8| §7HP: §a+10.0 §8| §7TV: §e+200"

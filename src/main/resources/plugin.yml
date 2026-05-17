@@ -1,0 +1,21 @@
+# Đây là file bắt buộc phải có để server Minecraft nhận diện mã của bạn là một Plugin.
+name: TuTienPlugin
+version: 1.0
+main: tutien.core.TuTienPlugin
+api-version: '1.20'
+author: Tài Dev Nguyễn
+description: Plugin hệ thống Tu Tiên cốt lõi với 7 Đại Đạo, Tông Môn và Kỹ Năng.
+
+# Yêu cầu tải PAPI trước để Bảng điểm hoạt động
+softdepend: [PlaceholderAPI, Vault, WorldGuard]
+
+commands:
+  tutien:
+    description: Hệ thống lệnh Tu Tiên toàn tập
+    # Đã xóa dòng cấm quyền (permission: tutien.admin) ở đây để người chơi có thể dùng menu.
+    # Quyền admin giờ chỉ áp dụng riêng cho các lệnh nhạy cảm như addtuvi trong code Java.
+    usage: "§cSử dụng: /tutien để xem danh sách lệnh đại đạo."
+    aliases: [tt, tuvi]
+  tiende:
+    description: Thi triển Cấm Thuật Tiên Đế
+    usage: "§cSử dụng: /tiende để xem danh sách cấm thuật."

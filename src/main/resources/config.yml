@@ -1,0 +1,18 @@
+# ==========================================
+# CẤU HÌNH GIAO DIỆN HỆ THỐNG TU TIÊN
+# ==========================================
+Menu:
+  MainMenu:
+    Title: "§8§lHệ Thống Tu Tiên"
+    Items:
+      ThongTin:
+        Slot: 10
+      DoiThuong:
+        Slot: 12
+      CuaHang:
+        Slot: 14
+      NguKiem:
+        Slot: 16
+
+Messages:
+  DoiThuong: "§b[Hệ Thống] Giao diện đổi thưởng đang được thiết kế!"

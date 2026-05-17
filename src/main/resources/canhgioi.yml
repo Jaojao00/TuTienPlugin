@@ -1,0 +1,124 @@
+# ==========================================
+# CẤU HÌNH CHỈ SỐ CẢNH GIỚI TU TIÊN
+# ==========================================
+# Đạo hữu có thể tùy chỉnh tên hiển thị, Máu, Linh Lực, Sát Thương ở đây.
+# Sau khi chỉnh sửa, hãy khởi động lại server để cập nhật.
+
+PHAM_NHAN:
+  TenHienThi: "Phàm Nhân"
+  TuViYeuCau: 0
+  MaxMau: 20.0
+  MaxLinhLuc: 50
+  BaseDamage: 1.0
+
+LUYEN_KHI:
+  TenHienThi: "Luyện Khí"
+  TuViYeuCau: 100
+  MaxMau: 24.0
+  MaxLinhLuc: 150
+  BaseDamage: 2.0
+
+TRUC_CO:
+  TenHienThi: "Trúc Cơ"
+  TuViYeuCau: 500
+  MaxMau: 30.0
+  MaxLinhLuc: 400
+  BaseDamage: 4.0
+
+KIM_DAN:
+  TenHienThi: "Kim Đan"
+  TuViYeuCau: 2000
+  MaxMau: 40.0
+  MaxLinhLuc: 1000
+  BaseDamage: 7.0
+
+NGUYEN_ANH:
+  TenHienThi: "Nguyên Anh"
+  TuViYeuCau: 5000
+  MaxMau: 60.0
+  MaxLinhLuc: 2500
+  BaseDamage: 12.0
+
+HOA_THAN:
+  TenHienThi: "Hóa Thần"
+  TuViYeuCau: 12000
+  MaxMau: 100.0
+  MaxLinhLuc: 6000
+  BaseDamage: 20.0
+
+LUYEN_HU:
+  TenHienThi: "Luyện Hư"
+  TuViYeuCau: 30000
+  MaxMau: 150.0
+  MaxLinhLuc: 15000
+  BaseDamage: 35.0
+
+HOP_THE:
+  TenHienThi: "Hợp Thể"
+  TuViYeuCau: 70000
+  MaxMau: 250.0
+  MaxLinhLuc: 35000
+  BaseDamage: 60.0
+
+DAI_THUA:
+  TenHienThi: "Đại Thừa"
+  TuViYeuCau: 150000
+  MaxMau: 400.0
+  MaxLinhLuc: 80000
+  BaseDamage: 100.0
+
+DO_KIEP:
+  TenHienThi: "Độ Kiếp"
+  TuViYeuCau: 300000
+  MaxMau: 600.0
+  MaxLinhLuc: 150000
+  BaseDamage: 150.0
+
+CHAN_TIEN:
+  TenHienThi: "Chân Tiên"
+  TuViYeuCau: 600000
+  MaxMau: 1000.0
+  MaxLinhLuc: 300000
+  BaseDamage: 250.0
+
+DIA_TIEN:
+  TenHienThi: "Địa Tiên"
+  TuViYeuCau: 1200000
+  MaxMau: 1500.0
+  MaxLinhLuc: 600000
+  BaseDamage: 400.0
+
+THIEN_TIEN:
+  TenHienThi: "Thiên Tiên"
+  TuViYeuCau: 2500000
+  MaxMau: 2500.0
+  MaxLinhLuc: 1200000
+  BaseDamage: 700.0
+
+HUYEN_TIEN:
+  TenHienThi: "Huyền Tiên"
+  TuViYeuCau: 5000000
+  MaxMau: 4000.0
+  MaxLinhLuc: 2500000
+  BaseDamage: 1200.0
+
+TIEN_QUAN:
+  TenHienThi: "Tiên Quân"
+  TuViYeuCau: 10000000
+  MaxMau: 7000.0
+  MaxLinhLuc: 6000000
+  BaseDamage: 2000.0
+
+TIEN_VUONG:
+  TenHienThi: "Tiên Vương"
+  TuViYeuCau: 25000000
+  MaxMau: 12000.0
+  MaxLinhLuc: 15000000
+  BaseDamage: 4000.0
+
+TIEN_DE:
+  TenHienThi: "Tiên Đế"
+  TuViYeuCau: 50000000
+  MaxMau: 20000.0
+  MaxLinhLuc: 50000000
+  BaseDamage: 8000.0
