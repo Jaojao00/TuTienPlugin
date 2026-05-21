@@ -3,7 +3,7 @@
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.20.6-brightgreen?style=flat-square&logo=minecraft)
 ![Java](https://img.shields.io/badge/Java-21-orange?style=flat-square&logo=openjdk)
 ![Spigot](https://img.shields.io/badge/API-Spigot-yellow?style=flat-square)
-![Version](https://img.shields.io/badge/Version-2.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/Version-2.0-blue?style=flat-square) 
 
 > Plugin Minecraft RPG mô phỏng thế giới tu tiên — 17 cảnh giới, 7 đại đạo, luyện đan, đột phá lôi kiếp, tông môn bang hội, chế tác trang bị, phụ bản linh thú, gacha triệu hồi, và cửa hàng Vạn Giới Các.
 
