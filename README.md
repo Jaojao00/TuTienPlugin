@@ -1,30 +1,29 @@
-# ⛩ TuTienPlugin — Hệ Thống Tu Tiên Minecraft
+# ⛩ TuTienPlugin — Hệ Thống Tu Tiên Minecraft (Bản Hoàn Thiện SPRINT 1→4)
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.20.6-brightgreen?style=flat-square&logo=minecraft)
 ![Java](https://img.shields.io/badge/Java-21-orange?style=flat-square&logo=openjdk)
 ![Spigot](https://img.shields.io/badge/API-Spigot-yellow?style=flat-square)
-![License](https://img.shields.io/badge/License-Private-red?style=flat-square)
+![Version](https://img.shields.io/badge/Version-2.0-blue?style=flat-square)
 
-> Plugin Minecraft RPG mô phỏng thế giới tu tiên — 17 cảnh giới, 7 đại đạo, luyện đan, đột phá lôi kiếp, tông môn bang hội, và cửa hàng Vạn Giới Các.
+> Plugin Minecraft RPG mô phỏng thế giới tu tiên — 17 cảnh giới, 7 đại đạo, luyện đan, đột phá lôi kiếp, tông môn bang hội, chế tác trang bị, phụ bản linh thú, gacha triệu hồi, và cửa hàng Vạn Giới Các.
 
 ---
 
 ## 📋 Mục Lục
 
 - [Tổng Quan](#-tổng-quan)
+- [Cập Nhật (Sprint 1-4)](#-cập-nhật-sprint-1-4)
 - [Yêu Cầu](#-yêu-cầu)
-- [Cài Đặt](#-cài-đặt)
 - [Hệ Thống Cảnh Giới](#-hệ-thống-cảnh-giới)
-- [Linh Căn](#-linh-căn-talent-system)
-- [7 Đại Đạo](#%EF%B8%8F-7-đại-đạo-class-system)
-- [Luyện Đan](#-luyện-đan)
-- [Vạn Giới Các](#-vạn-giới-các-cửa-hàng)
+- [Linh Căn & 7 Đại Đạo](#-linh-căn--7-đại-đạo)
+- [Luyện Đan & Chế Tác](#-luyện-đan--chế-tác-trang-bị)
+- [Nhiệm Vụ Hàng Ngày](#-nhiệm-vụ-hàng-ngày)
+- [Phụ Bản & Gacha Linh Thú](#-phụ-bản--gacha-linh-thú)
 - [Đột Phá & Lôi Kiếp](#-đột-phá--lôi-kiếp)
-- [Tông Môn](#-tông-môn-bang-hội)
-- [Ngự Kiếm Phi Hành](#%EF%B8%8F-ngự-kiếm-phi-hành)
+- [Tông Môn](#-tông-môn)
+- [Ngự Kiếm Phi Hành](#-ngự-kiếm-phi-hành)
 - [Cấm Thuật Tiên Đế](#-cấm-thuật-tiên-đế)
-- [Lệnh](#-danh-sách-lệnh)
-- [PlaceholderAPI](#-placeholderapi)
+- [Lệnh & Placeholder](#-lệnh--placeholderapi)
 - [Cấu Hình](#%EF%B8%8F-cấu-hình)
 - [Tác Giả](#-tác-giả)
 
@@ -32,19 +31,16 @@
 
 ## 🌟 Tổng Quan
 
-**TuTienPlugin** biến server Minecraft của bạn thành một thế giới tu tiên hoàn chỉnh. Người chơi sẽ bắt đầu từ **Phàm Nhân**, tu luyện qua 17 cảnh giới, chọn con đường tu luyện riêng, luyện đan dược, vượt qua lôi kiếp, và cuối cùng đạt đến đỉnh cao — **Tiên Đế**.
+**TuTienPlugin** biến server Minecraft của bạn thành một thế giới tu tiên hoàn chỉnh. Người chơi sẽ bắt đầu từ **Phàm Nhân**, tu luyện qua 17 cảnh giới, chọn con đường tu luyện riêng, luyện đan dược, rèn linh khí, săn boss phụ bản, quay gacha linh thú, vượt qua lôi kiếp, và cuối cùng đạt đến đỉnh cao — **Tiên Đế**.
 
-### Tính năng chính:
-- 🏔️ **17 Cảnh Giới** — Từ Phàm Nhân đến Tiên Đế
-- 🌿 **6 Linh Căn** — Thiên phú random ảnh hưởng tốc độ tu luyện
-- ⚔️ **7 Đại Đạo** — Hệ thống class chuyên biệt (Kiếm Tu, Thể Tu, Ma Tu...)
-- 🧪 **18 Đan Dược** — Luyện từ nguyên liệu Minecraft thật, cấu hình hoàn toàn bằng YML
-- 🏪 **Vạn Giới Các** — Cửa hàng 4 phân khu với giá Vault Economy
-- ⚡ **Cửu Đạo Thiên Kiếp** — Vượt 9 cú sét để đột phá cảnh giới
-- 🏯 **Tông Môn** — Hệ thống bang hội với kết giới tự động
-- 📦 **Túi Đồ Hư Không** — Kho đồ ảo riêng biệt
-- 🗡️ **Ngự Kiếm Phi Hành** — Bay bằng kiếm từ Kim Đan trở lên
-- 👑 **Cấm Thuật Tiên Đế** — 5 kỹ năng ultimate cho cảnh giới tối cao
+---
+
+## 🚀 Cập Nhật (Sprint 1-4)
+
+- **Sprint 1 (Bug Fix & System)**: Hoàn thiện data-driven (StatsManager), Async Save/Load, mở rộng đủ 17 loại đan dược cho Đột Phá, thêm cooldown Đột Phá 30s.
+- **Sprint 2 (Mechanics)**: Ngự kiếm phi hành tiêu hao Linh Lực, Tọa thiền Song Tu (gần đạo lữ +15% tu vi), Shop đổi điểm Bế Quan lấy đan dược và vật phẩm quý.
+- **Sprint 3 (Crafting & Quests)**: Lò Rèn Linh Khí 8 phẩm cấp (Phàm → Linh Khí) với tỷ lệ chế tác, Hệ thống 5 Nhiệm Vụ Hàng Ngày (reset mỗi 00:00).
+- **Sprint 4 (Dungeons & Gacha)**: Linh Thú Viên (3 phân khu: Thí Luyện, Huyền Ảnh, Thiên Nguyên Boss), Gacha triệu hồi Linh Thú bằng Đạo Niệm (6 độ hiếm, Pity 90, Quay x10).
 
 ---
 
@@ -57,314 +53,149 @@
 | Spigot / Paper | 1.20.6 | ✅ |
 | Vault | 1.7+ | ⚠️ Khuyến nghị |
 | PlaceholderAPI | 2.11+ | ⚠️ Khuyến nghị |
-| WorldGuard | 7.0.9+ | ⚠️ Tuỳ chọn |
-| WorldEdit | 7.3+ | ⚠️ Tuỳ chọn |
-
----
-
-## 🚀 Cài Đặt
-
-1. **Build plugin:**
-   ```bash
-   mvn clean package
-   ```
-2. **Copy file JAR** từ `target/TuTienPlugin-1.0.jar` vào thư mục `plugins/` của server.
-3. **Khởi động server** — Plugin sẽ tự tạo các file cấu hình.
-4. **(Tuỳ chọn)** Cài Vault + plugin kinh tế (EssentialsX, CMI) để sử dụng hệ thống tiền tệ.
-5. **(Tuỳ chọn)** Cài WorldGuard để giới hạn khu vực luyện đan.
 
 ---
 
 ## 🏔️ Hệ Thống Cảnh Giới
 
-Mỗi đại cảnh giới chia thành **10 tiểu cảnh giới** (Nhất Trọng → Thập Trọng → Viên Mãn).
-
-| # | Cảnh Giới | Tu Vi Cần | Max HP | Base DMG |
-|---|-----------|----------|--------|----------|
-| 0 | Phàm Nhân | 0 | 20 | 1.0 |
-| 1 | Luyện Khí | 100 | 24 | 2.0 |
-| 2 | Trúc Cơ | 500 | 30 | 4.0 |
-| 3 | Kim Đan | 2,000 | 40 | 7.0 |
-| 4 | Nguyên Anh | 5,000 | 60 | 12.0 |
-| 5 | Hóa Thần | 12,000 | 100 | 20.0 |
-| 6 | Luyện Hư | 30,000 | 150 | 35.0 |
-| 7 | Hợp Thể | 70,000 | 250 | 60.0 |
-| 8 | Đại Thừa | 150,000 | 400 | 100.0 |
-| 9 | Độ Kiếp | 300,000 | 600 | 150.0 |
-| 10 | Chân Tiên | 600,000 | 1,000 | 250.0 |
-| 11 | Địa Tiên | 1,200,000 | 1,500 | 400.0 |
-| 12 | Thiên Tiên | 2,500,000 | 2,500 | 700.0 |
-| 13 | Huyền Tiên | 5,000,000 | 4,000 | 1,200.0 |
-| 14 | Tiên Quân | 10,000,000 | 7,000 | 2,000.0 |
-| 15 | Tiên Vương | 25,000,000 | 12,000 | 4,000.0 |
-| 16 | Tiên Đế | 50,000,000 | 20,000 | 8,000.0 |
-
-> Chỉ số có thể tuỳ chỉnh trong `canhgioi.yml`.
+Mỗi đại cảnh giới chia thành **10 tiểu cảnh giới** (Nhất Trọng → Thập Trọng → Viên Mãn). 
+Có tổng cộng **17 Cảnh Giới** từ Phàm Nhân (0) đến Tiên Đế (16). 
+Chỉ số tu vi cần thiết, HP, DMG sẽ Scale theo từng cảnh giới (cấu hình trong `canhgioi.yml`).
 
 ---
 
-## 🌿 Linh Căn (Talent System)
+## 🌿 Linh Căn & 7 Đại Đạo
 
-Mỗi người chơi vào server lần đầu sẽ được **random Linh Căn**, quyết định tốc độ tu luyện AFK:
-
-| Linh Căn | Hệ số | Tỷ lệ |
-|----------|-------|-------|
-| 🔴 Phế Linh Căn | x1 | 30% |
-| ⚪ Tạp Linh Căn | x2 | 30% |
-| 🟢 Chân Linh Căn | x3 | 25% |
-| 🟣 Địa Linh Căn | x5 | 12% |
-| 🟡 Thiên Linh Căn | x10 | 2.5% |
-| 🔥 Hỗn Độn Linh Căn | x20 | 0.5% |
-
----
-
-## ⚔️ 7 Đại Đạo (Class System)
-
-Chọn 1 trong 7 con đường tu luyện chuyên biệt:
-
-| Đại Đạo | Buff |
-|---------|------|
-| 🗡️ **Kiếm Tu** | +20% DMG Kiếm, -50% Linh lực bay |
-| 🛡️ **Thể Tu** | +40% HP tối đa, +10% giảm sát thương |
-| 🔮 **Pháp Tu** | +30% Linh lực, +15% DMG phép |
-| 👹 **Ma Tu** | +30% DMG nhưng -20% phòng thủ |
-| 🐉 **Yêu Tu** | +15% tốc độ, hồi phục tự nhiên |
-| 🧪 **Đan Đạo** | +25% tỷ lệ luyện đan thành công |
-| 💑 **Song Tu** | +15% tốc độ nhận Tu Vi cùng đạo lữ |
+- **6 Linh Căn**: Random khi vào game, từ Phế Linh Căn (x1) đến Hỗn Độn Linh Căn (x20 tốc độ tu luyện).
+- **7 Đại Đạo**:
+  - 🗡️ **Kiếm Tu**: +20% DMG Kiếm, -50% Linh lực bay
+  - 🛡️ **Thể Tu**: +40% HP, +10% giảm sát thương
+  - 🔮 **Pháp Tu**: +30% Linh lực (thay đổi trần linh lực thực tế)
+  - 👹 **Ma Tu**: +30% DMG, -20% phòng thủ
+  - 🐉 **Yêu Tu**: +15% tốc độ, x2 hồi phục tự nhiên
+  - 🧪 **Đan Đạo**: +25% tỷ lệ luyện đan
+  - 💑 **Song Tu**: +15% tu vi khi gần đạo lữ
 
 ---
 
-## 🧪 Luyện Đan
+## 🧪 Luyện Đan & ⚒️ Chế Tác Trang Bị
 
-### Tổng quan
-- **18 công thức** đan dược cấu hình trong `danduoc.yml`
-- Sử dụng **nguyên liệu Minecraft thật** (Lúa Mì, Thỏi Vàng, Nước Mắt Ghast...)
-- Tên nguyên liệu hiển thị **bằng tiếng Việt** trong GUI
-- Hỗ trợ **shift-click luyện x10** cùng lúc
+### Bát Quái Đan Lò (Luyện Đan)
+- Luyện đan dược từ nguyên liệu thật (Lúa mì, Táo vàng, v.v.).
+- Nâng cấp lò luyện bằng tiền Vault (lên đến cấp 6, tăng tỷ lệ thành công).
+- Kết nối tự động làm nhiệm vụ hàng ngày.
 
-### Ví dụ công thức
-
-| Đan Dược | Nguyên Liệu | Tỷ Lệ |
-|----------|------------|--------|
-| Tích Cốc Đan | Lúa Mì x16, Nấm Nâu x8, Đường x4 | 75% |
-| Trúc Cơ Đan | Thỏi Vàng x16, Que Lửa x8, Nước Mắt Ghast x4, Mụn Địa Ngục x16 | 45% |
-| Nghịch Thiên Đan | Trứng Rồng x1, Ngôi Sao Địa Ngục x4, Vật Tổ Bất Tử x4, Táo Vàng Phù Phép x4, Hơi Thở Rồng x32 | 10% |
-
-### Nâng cấp Đan Lò (Vault)
-
-| Cấp | Giá | Kinh Nghiệm | Bonus |
-|-----|-----|-------------|-------|
-| 1→2 | 500K | 3,000 lần | +5% |
-| 2→3 | 2M | 8,000 lần | +10% |
-| 3→4 | 8M | 20,000 lần | +15% |
-| 4→5 | 25M | 60,000 lần | +20% |
-| 5→6 | 100M | 150,000 lần | +25% |
-
-### Khu vực luyện đan (WorldGuard)
-
-Tích hợp WorldGuard để giới hạn khu vực luyện đan:
-
-```yaml
-# danduoc.yml
-KhuVucLuyenDan:
-  BatBuoc: true          # true = phải đứng trong region
-  TenRegion: "dan-lo"    # Tên region WorldGuard
-```
-
-```bash
-# Tạo khu vực trên server:
-//pos1              # Chọn điểm 1
-//pos2              # Chọn điểm 2
-/rg define dan-lo   # Tạo region
-```
+### Lò Rèn Linh Khí (Chế Tác)
+- Chế tác 6 loại trang bị (Kiếm, Giáp, Mũ, Quần, Giày, Phụ Kiện).
+- 8 phẩm cấp: Phàm → Hạ → Trung → Thượng → Chí Bảo → Linh Bảo → Chân Bảo → Linh Khí.
+- Nâng cấp lò rèn bằng Khoáng Thạch, tăng % ra phẩm cấp xịn.
 
 ---
 
-## 🏪 Vạn Giới Các (Cửa Hàng)
+## 📜 Nhiệm Vụ Hàng Ngày
 
-Cửa hàng chia thành **4 phân khu**, cấu hình hoàn toàn trong `VanGioiCacGUI.yml`:
+5 Nhiệm vụ reset vào lúc 00:00 (UTC) mỗi ngày:
+1. **Tu Luyện Cơ Bản**: Tọa thiền 30 phút.
+2. **Thợ Luyện Đan**: Luyện 20 viên đan.
+3. **Rèn Trang Bị**: Chế tác 5 món trang bị.
+4. **Tu Bổ Tông Môn**: Đặt 30 khối trong tông môn.
+5. **Hàng Ngày Giết Quái**: Giết 50 quái vật.
 
-| Phân Khu | Nội Dung | Cảnh Giới |
-|----------|---------|----------|
-| 🌿 Nguyên Liệu | 16 loại thảo dược, khoáng vật | Phàm Nhân+ |
-| ⚔️ Nhất-Tam Phẩm | 6 đan dược cấp thấp | Phàm Nhân+ |
-| 🛡️ Tứ-Lục Phẩm | 4 đan dược cấp trung | Kim Đan+ |
-| 💎 Thất Phẩm+ | 2 thần đan huyền thoại | Hóa Thần+ |
+*Phần thưởng: Điểm Bế Quan & Tu Vi.*
 
-- Thanh toán bằng **Vault Economy**
-- Giới hạn mua theo **cảnh giới**
-- Hiển thị **số dư** trong GUI
+---
+
+## 🐉 Phụ Bản & Gacha Linh Thú
+
+### Linh Thú Viên (Phụ Bản)
+3 Phân khu cày cuốc chuyên biệt:
+- **Thí Luyện Chi Địa** (Luyện Khí+): Farm tài nguyên nguyên liệu.
+- **Huyền Ảnh Mê Cung** (Kim Đan+): Farm Đạo Niệm & Tu Vi.
+- **Thiên Nguyên Đỉnh** (Hóa Thần+): Khiêu chiến Boss Khỉ Khổng Lồ (Scale HP/DMG theo người chơi).
+
+### Vạn Thú Các (Gacha)
+- Dùng **Đạo Niệm** (từ phụ bản) để triệu hồi thú cưỡi / pet.
+- 6 Độ hiếm: N (60%) → R (25%) → SR (10%) → SSR (4%) → UR (0.9%) → EX (0.1%).
+- **Pity System**: Đảm bảo ra SSR+ ở lần roll thứ 90. Roll x10 đảm bảo ít nhất 1 thẻ R+. Broadcast server khi ra thú xịn.
 
 ---
 
 ## ⚡ Đột Phá & Lôi Kiếp
-
-- **Phàm Nhân → Trúc Cơ**: Đột phá an toàn (cần Tu Vi + Đan dược)
-- **Kim Đan trở lên**: Kích hoạt **Cửu Đạo Thiên Kiếp** — 9 cú sét liên tiếp
-  - Sát thương tăng dần: 3% → 25% HP tối đa
-  - **Thất bại** = mất 10% Tu Vi + thông báo toàn server
-  - **Thành công** = thăng cấp + hồi đầy HP/Mana + thông báo toàn server
+- **Cửu Đạo Thiên Kiếp** cho người chơi từ Kim Đan trở lên.
+- Phải có đủ Tu Vi + Đan Dược Đột Phá tương ứng (từ Tụ Khí Đan đến Tiên Đế Đan).
+- Cửu Thiên Lôi Kiếp giáng xuống 9 lần sét, gây sát thương theo % Max HP. Thành công sẽ thăng cấp, thất bại mất 10% Tu Vi hiện tại.
 
 ---
 
-## 🏯 Tông Môn (Bang Hội)
-
-- Yêu cầu lập: Cảnh giới **Hóa Thần** trở lên
-- Tự động tạo **kết giới** (hàng rào gỗ) 50×50 block
-- Hệ thống: **Tông Chủ** → **Đệ Tử**
-- Teleport về tông môn bất kỳ lúc nào
+## 🏯 Tông Môn
+- Lập Tông (Hóa Thần+), tự động tạo kết giới an toàn. Thu nạp, đuổi đệ tử. Dịch chuyển về tông môn miễn phí.
 
 ---
 
 ## 🗡️ Ngự Kiếm Phi Hành
-
-- Yêu cầu: **Kim Đan** trở lên
-- Bật/tắt chế độ bay bằng lệnh
-- Tiêu hao **Linh Lực** khi bay
+- Kích hoạt bằng `/tutien ngukiem` (Cần Kim Đan+).
+- Tiêu tốn 50 Linh Lực mỗi 2 giây bay. Hết linh lực tự rơi xuống.
 
 ---
 
 ## 👑 Cấm Thuật Tiên Đế
-
-Chỉ dành cho cảnh giới **Tiên Đế** — đỉnh cao tu luyện:
-
-| Thần Thông | Linh Lực | Hiệu Ứng |
-|-----------|---------|----------|
-| 🌩️ Chân Thiên Diệt | 500 | Sét + 2000 DMG AoE 20 blocks |
-| 🌪️ Hô Phong Hoán Vũ | 300 | Bão sét 5 giây |
-| 🏔️ Địa Liệt Sơn Băng | 400 | Hất tung + 1000 DMG AoE |
-| ⚔️ Tát Đậu Thành Binh | 200 | Triệu hồi 3 Iron Golem |
-| ❤️ Huyết Khí Vô Tận | 600 | Full HP + buff 1 phút |
+5 kỹ năng tối thượng cho Tiên Đế:
+- 🌩️ **Chân Thiên Diệt**: Gọi sét, sát thương AoE khủng.
+- 🌪️ **Hô Phong Hoán Vũ**: Tạo bão sét xung quanh.
+- 🏔️ **Địa Liệt Sơn Băng**: Động đất hất tung kẻ thù.
+- ⚔️ **Tát Đậu Thành Binh**: Triệu hồi Golem đệ tử.
+- ❤️ **Huyết Khí Vô Tận**: Hồi phục 100% HP và thêm lượng lớn máu ảo.
 
 ---
 
-## 📝 Danh Sách Lệnh
+## 📝 Lệnh & PlaceholderAPI
 
-### Lệnh người chơi
-
+### Lệnh Chính
 | Lệnh | Mô tả |
 |-------|--------|
-| `/tutien` | Xem danh sách lệnh |
-| `/tutien menu` | Mở giao diện chính |
-| `/tutien tuluyen` | Nhập định tọa thiền (AFK nhận Tu Vi) |
-| `/tutien xem [tên]` | Xem thông tin tu vi |
-| `/tutien luyendan` | Mở Bát Quái Đan Lò |
-| `/tutien dokiep` | Mở giao diện đột phá |
-| `/tutien ngukiem` | Bật/tắt ngự kiếm phi hành |
-| `/tutien tuido` | Mở Túi Đồ Hư Không |
-| `/tutien laptong <tên>` | Lập Tông Môn (Hóa Thần+) |
-| `/tutien tongmon moi <tên>` | Thu nhận đệ tử |
-| `/tutien tongmon duoi <tên>` | Trục xuất đệ tử |
-| `/tutien tongmon roi` | Rời tông môn |
-| `/tutien tongmon ve` | Teleport về tông môn |
+| `/tutien menu` | Giao diện tổng |
+| `/tutien tuluyen` | Tọa thiền (AFK) |
+| `/tutien ngukiem` | Ngự kiếm phi hành |
+| `/tutien bequan` | Cửa hàng điểm Bế Quan |
+| `/tutien chetac` | Lò rèn trang bị |
+| `/tutien nhiemvu` | Bảng nhiệm vụ ngày |
+| `/tutien linhthuvien` | Vào phụ bản |
+| `/tutien gacha` | Quay Linh Thú |
+| `/tutien vangioi` | Cửa hàng Vạn Giới Các |
+| `/tutien dokiep` | Đột phá cảnh giới |
+| `/tutien tongmon` | Quản lý tông môn |
+| `/tiende` | Thi triển Cấm Thuật (Tiên Đế) |
+| `/tutien admin ...` | Quản trị viên (Set Tu Vi, Linh Lực, Cảnh Giới...) |
 
-### Lệnh Tiên Đế
-
-| Lệnh | Mô tả |
-|-------|--------|
-| `/tiende thiendiet` | Chân Thiên Diệt |
-| `/tiende hophong` | Hô Phong Hoán Vũ |
-| `/tiende dialiet` | Địa Liệt Sơn Băng |
-| `/tiende tatdau` | Tát Đậu Thành Binh |
-| `/tiende huyetkhi` | Huyết Khí Vô Tận |
-
-### Lệnh Admin (`tutien.admin`)
-
-```
-/tutien admin tuvi <add/set/remove> <tên> <số>
-/tutien admin linhluc <add/set/remove> <tên> <số>
-/tutien admin canhgioi <tên> <CANH_GIOI>
-/tutien admin linhcan <tên> <LINH_CAN>
-/tutien admin he <tên> <HE>
-```
-
----
-
-## 📊 PlaceholderAPI
-
-| Placeholder | Giá trị |
-|------------|---------|
-| `%tutien_canhgioi%` | Tên cảnh giới |
-| `%tutien_tuvi%` | Tu Vi hiện tại |
-| `%tutien_tuvi_max%` | Tu Vi cần đột phá |
-| `%tutien_linhcan%` | Linh Căn |
-| `%tutien_linhluc%` | Linh Lực |
-| `%tutien_linhluc_max%` | Linh Lực tối đa |
-| `%tutien_bonus_damage%` | DMG bonus từ đan |
-| `%tutien_bonus_health%` | HP bonus từ đan |
-| `%tutien_danlo_cap%` | Cấp lò luyện |
-| `%tutien_luyen_count%` | Số lần đã luyện |
-| `%tutien_balance%` | Số dư Vault |
+### PlaceholderAPI Thường Dùng
+- `%tutien_canhgioi%`, `%tutien_tuvi%`, `%tutien_linhluc%`, `%tutien_linhcan%`
+- `%tutien_bequan_diem%` (Điểm Bế Quan)
+- `%tutien_daoniem%` (Đạo Niệm - Gacha)
 
 ---
 
 ## ⚙️ Cấu Hình
-
-| File | Mô tả |
-|------|-------|
-| `canhgioi.yml` | Chỉ số 17 cảnh giới (HP, DMG, Tu Vi yêu cầu) |
-| `danduoc.yml` | 18 công thức đan dược + nâng cấp lò + khu vực WorldGuard |
-| `VanGioiCacGUI.yml` | Cửa hàng 4 phân khu (vật phẩm, giá, cảnh giới) |
-| `config.yml` | Cấu hình GUI chính |
-
-### Ví dụ cấu hình đan dược
-
-```yaml
-DanDuoc:
-  TICH_COC_DAN:
-    TenHienThi: "Tích Cốc Đan"
-    Material: DRIED_KELP
-    MoTa: "Nhịn đói 1 tháng."
-    CanhGioiMin: PHAM_NHAN
-    TyLe: 75
-    BonusDamage: 0.1
-    BonusHealth: 0.0
-    BonusTuVi: 5
-    NguyenLieu:
-      - "WHEAT:16:Lúa Mì"           # Hiển thị tiếng Việt trong GUI
-      - "BROWN_MUSHROOM:8:Nấm Nâu"
-      - "SUGAR:4:Đường"
-```
+Plugin sẽ tự generate các file sau:
+- `canhgioi.yml` (Chỉ số cảnh giới)
+- `danduoc.yml` (Công thức đan dược)
+- `VanGioiCacGUI.yml` (Cửa hàng tiền tệ Vault)
 
 ---
 
-## 📂 Cấu Trúc Mã Nguồn
-
+## 📂 Cấu Trúc Mã Nguồn (Tham Khảo)
 ```
 src/main/java/tutien/
-├── core/               # Hạt nhân
-│   ├── TuTienPlugin    # Main class
-│   ├── PlayerDataManager
-│   ├── CanhGioi        # 17 cảnh giới
-│   ├── LinhCan         # 6 linh căn
-│   ├── HeTuLuyen       # 7 đại đạo
-│   ├── EconomyManager  # Vault Economy
-│   └── TuTienExpansion # PlaceholderAPI
-├── command/            # Lệnh
-│   ├── TuTienCommand   # /tutien
-│   └── TienDeCommand   # /tiende
-├── event/              # Sự kiện
-│   ├── PlayerListener
-│   ├── CombatListener
-│   ├── ItemListener
-│   ├── TeleportListener
-│   ├── TongMonListener
-│   └── AutoPickupListener
-├── tutien/gui/         # Giao diện
-│   ├── MainMenu
-│   ├── VanGioiCacGUI   # Cửa hàng (data-driven)
-│   ├── LuyenDanGUI     # Luyện đan (data-driven)
-│   ├── DotPhaGUI       # Đột phá
-│   ├── ChonHeGUI       # Chọn hệ
-│   └── TuiDoGUI        # Túi đồ
-├── combat/
-│   └── StatsManager    # Chỉ số chiến đấu
-├── inventory/
-│   └── TuiDoManager    # Quản lý túi đồ ảo
-├── tongmon/
-│   └── TongMonManager  # Quản lý bang hội
-└── task/
-    └── TuLuyenTask     # Tọa thiền mỗi giây
+├── core/               # Main, Manager, Enums, Expansions
+├── command/            # Lệnh người chơi & Admin
+├── event/              # Xử lý Combat, Movement, Block, Quit, v.v.
+├── gui/                # Đan Lò, Chế Tác, Nhiệm Vụ, Phụ Bản, Gacha, Bế Quan
+├── combat/             # Chỉ số Stats (HP, DMG theo Cảnh Giới)
+├── craft/              # Hệ thống Chế Tác Lò Rèn
+├── dungeon/            # Linh Thú Viên & Boss
+├── inventory/          # Túi đồ ảo
+├── quest/              # Quản lý Nhiệm Vụ Ngày
+├── tongmon/            # Bang hội
+└── task/               # TuLuyenTask, NguKiemTask, AutoSaveTask, BossTask
 ```
 
 ---
@@ -372,9 +203,7 @@ src/main/java/tutien/
 ## 👨‍💻 Tác Giả
 
 - **Tài Dev Nguyễn**
-- Phiên bản: `1.0`
-- API: Spigot 1.20.6
-
----
+- Cập nhật Sprint 4 (Phiên bản: `2.0`)
+- Tương thích API: Spigot 1.20.6
 
 > *"Vạn pháp quy nhất, nhất kiếm phá vạn pháp."* ⚔️
