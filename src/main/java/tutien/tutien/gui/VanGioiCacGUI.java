@@ -70,6 +70,20 @@ public class VanGioiCacGUI implements Listener {
             inv.setItem(slot, item);
         }
 
+        // v2.1: Nút Đổi Khoáng Thạch (slot 23)
+        ItemStack ktItem = new ItemStack(Material.RAW_GOLD);
+        ItemMeta ktMeta = ktItem.getItemMeta();
+        ktMeta.setDisplayName("§6§l⛏ Đổi Khoáng Thạch");
+        ktMeta.setLore(Arrays.asList(
+            "§7Đổi nguyên liệu lấy Khoáng Thạch.",
+            "§7Khoáng Thạch dùng để Chế Tác,",
+            "§7Nâng Cấp Lò Rèn, và trao đổi.",
+            "",
+            "§e[Nhấp để mở]"
+        ));
+        ktItem.setItemMeta(ktMeta);
+        inv.setItem(23, ktItem);
+
         fillEmpty(inv);
         player.openInventory(inv);
     }
@@ -207,8 +221,15 @@ public class VanGioiCacGUI implements Listener {
         ItemStack clicked = event.getCurrentItem();
         if (clicked == null || !clicked.hasItemMeta()) return;
 
-        // Menu chính → mở phân khu
+        // Menu chính → mở phân khu hoặc Khoáng Thạch
         if (isMain) {
+            // v2.1: Click nút Đổi Khoáng Thạch
+            if (clicked.getType() == Material.RAW_GOLD) {
+                TuTienPlugin p = TuTienPlugin.getPlugin(TuTienPlugin.class);
+                KhoangThachGUI.open(player, p.getPlayerDataManager());
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+                return;
+            }
             String clickedName = clicked.getItemMeta().getDisplayName();
             String targetKey = findCategoryKeyByIconName(clickedName);
             if (targetKey != null) {

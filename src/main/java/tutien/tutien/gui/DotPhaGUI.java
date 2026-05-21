@@ -218,6 +218,17 @@ public class DotPhaGUI implements Listener {
             }
 
             // --- VƯỢT QUA ĐIỀU KIỆN - TIẾN HÀNH ĐỘ KIẾP ---
+
+            // Kiểm tra cooldown 30 giây
+            if (dataManager.isDokiepOnCooldown(player)) {
+                long remaining = 30 - (System.currentTimeMillis() - dataManager.getDokiepCooldown(player)) / 1000;
+                player.sendMessage("§c[Độ Kiếp] §fĐang trong giai đoạn hồi phục! Còn §e" + remaining + "s§f nữa.");
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
+                return;
+            }
+            // Set cooldown khi bắt đầu độ kiếp
+            dataManager.setDokiepCooldown(player, System.currentTimeMillis());
+
             player.closeInventory();
 
             // Trừ đan dược trong túi (nếu có yêu cầu đan dược)
@@ -235,10 +246,22 @@ public class DotPhaGUI implements Listener {
 
     private static String getRequiredPillName(CanhGioi nextRank) {
         return switch (nextRank) {
-            case LUYEN_KHI -> "Tụ Khí Đan";
-            case TRUC_CO -> "Trúc Cơ Đan";
-            case KIM_DAN -> "Định Linh Đan";
-            case NGUYEN_ANH -> "Bảo Vật Đột Phá";
+            case LUYEN_KHI  -> "Tụ Khí Đan";
+            case TRUC_CO    -> "Trúc Cơ Đan";
+            case KIM_DAN    -> "Định Linh Đan";
+            case NGUYEN_ANH -> "Nguyên Anh Đan";
+            case HOA_THAN   -> "Hóa Thần Đan";
+            case LUYEN_HU   -> "Luyện Hư Đan";
+            case HOP_THE    -> "Hợp Thể Đan";
+            case DAI_THUA   -> "Đại Thừa Đan";
+            case DO_KIEP    -> "Độ Kiếp Đan";
+            case CHAN_TIEN  -> "Chân Tiên Đan";
+            case DIA_TIEN   -> "Địa Tiên Đan";
+            case THIEN_TIEN -> "Thiên Tiên Đan";
+            case HUYEN_TIEN -> "Huyền Tiên Đan";
+            case TIEN_QUAN  -> "Tiên Quan Đan";
+            case TIEN_VUONG -> "Tiên Vương Đan";
+            case TIEN_DE    -> "Tiên Đế Đan";
             default -> "Không";
         };
     }

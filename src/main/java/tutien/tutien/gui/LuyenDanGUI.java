@@ -462,6 +462,10 @@ public class LuyenDanGUI implements Listener {
                     } else {
                         player.getInventory().addItem(createPillItem(pill));
                     }
+                    TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+                    if (plugin.getNhiemVuManager() != null) {
+                        plugin.getNhiemVuManager().addProgress(player, tutien.quest.NhiemVuManager.NhiemVu.LUYEN_DAN, 1);
+                    }
                 } else {
                     failCount++;
                 }

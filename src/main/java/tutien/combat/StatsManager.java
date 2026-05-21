@@ -7,9 +7,9 @@ import tutien.core.HeTuLuyen;
 import tutien.core.PlayerDataManager;
 
 /**
- * Lớp quản lý chỉ số thuộc tính (Máu, Sát thương, Tốc độ)
- * Tích hợp sâu các bùa lợi từ 7 Đại Đạo.
- * ĐÃ NÂNG CẤP: Cộng chỉ số vĩnh viễn từ Đan Dược (Luyện Đan).
+ * Lớp quản lý chỉ số thuộc tính (Máu, Sát thương, Tốc độ).
+ * ĐÃ SỬA: Đọc MaxMau/BaseDamage từ CanhGioi (config-driven).
+ * ĐÃ ĐỒNG BỘ: % buff khớp chính xác với mô tả trong HeTuLuyen.
  */
 public class StatsManager {
 
@@ -17,51 +17,50 @@ public class StatsManager {
         CanhGioi cg = dataManager.getCanhGioi(player);
         HeTuLuyen he = dataManager.getHeTuLuyen(player);
 
-        // 1. Chỉ số cơ bản theo Cảnh giới (Máu tăng dần, Sát thương tay tăng dần)
-        int level = cg.ordinal();
-        double finalMaxHealth = 20.0 + (level * 10.0);
-        double finalDamage = 1.0 + (level * 2.0);
-        double finalSpeed = 0.2;
+        // 1. Chỉ số cơ bản đọc TRỰC TIẾP từ CanhGioi enum (data từ canhgioi.yml)
+        double finalMaxHealth = cg.getMaxMau();
+        double finalDamage    = cg.getBaseDamage();
+        double finalSpeed     = 0.2;
 
-        // 2. Áp dụng Buff dựa trên Hệ Tu Luyện (Tăng trưởng chuyên biệt)
+        // 2. Buff theo Hệ Tu Luyện — ĐÃ ĐỒNG BỘ 100% với mô tả HeTuLuyen.java
         switch (he) {
             case THE_TU:
-                // Thể Tu: Nhục thân thành thánh, máu cực dày (+40%)
+                // "+40% Máu tối đa"
                 finalMaxHealth *= 1.4;
                 break;
-
             case MA_TU:
-                // Ma Tu: Nghịch thiên tàn sát, sát thương tay cực khủng (+50%)
-                finalDamage *= 1.5;
+                // "+30% Sát thương" (CombatListener xử lý thêm -20% phòng thủ khi nhận đòn)
+                finalDamage *= 1.3;
                 break;
-
             case YEU_TU:
-                // Yêu Tu: Linh hoạt như thú, tăng tốc độ di chuyển (+30%)
-                finalSpeed *= 1.3;
+                // "+15% Tốc độ di chuyển" (hồi máu × 2 handle trong CombatListener)
+                finalSpeed *= 1.15;
                 break;
-
             case KIEM_TU:
-                // Kiếm Tu: Kiếm ý tung hoành (+25% Damage)
-                finalDamage *= 1.25;
+                // "+20% Sát thương Kiếm" ở base; CombatListener thêm 20% bonus khi cầm kiếm
+                finalDamage *= 1.20;
                 break;
-
             case PHAP_TU:
-                // Pháp Tu: Thần hồn mạnh mẽ, tăng giới hạn Linh Lực (Xử lý ở lớp khác)
-                // Cộng thêm 1 chút sát thương phụ họa
-                finalDamage *= 1.1;
+                // "+15% Sát thương phép"; +30% Linh Lực max handled in TuLuyenTask
+                finalDamage *= 1.15;
                 break;
-
+            case DAN_TU:
+                // Bonus đến từ đan dược tích lũy, không buff base stats
+                break;
+            case SONG_TU:
+                // "+15% Tu Vi khi gần đạo lữ" — handled in TuLuyenTask; nhỏ buff base để cân bằng
+                finalMaxHealth *= 1.05;
+                finalDamage    *= 1.05;
+                break;
             default:
                 break;
         }
 
-        // 3. [MỚI] Cộng chỉ số vĩnh viễn từ Đan Dược (Luyện Đan)
-        double pillBonusDamage = dataManager.getBonusDamage(player);
-        double pillBonusHealth = dataManager.getBonusHealth(player);
-        finalDamage += pillBonusDamage;
-        finalMaxHealth += pillBonusHealth;
+        // 3. Cộng chỉ số vĩnh viễn từ đan dược (Luyện Đan)
+        finalDamage    += dataManager.getBonusDamage(player);
+        finalMaxHealth += dataManager.getBonusHealth(player);
 
-        // 4. Cập nhật vào Attributes của Minecraft
+        // 4. Áp dụng vào Minecraft Attributes
         if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) != null) {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(finalMaxHealth);
         }
@@ -72,7 +71,7 @@ public class StatsManager {
             player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(finalSpeed);
         }
 
-        // Đồng bộ máu hiện tại (Nếu máu cũ cao hơn max mới thì bóp lại)
+        // 5. Đồng bộ HP hiện tại không vượt quá max mới
         if (player.getHealth() > finalMaxHealth) {
             player.setHealth(finalMaxHealth);
         }

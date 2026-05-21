@@ -278,6 +278,417 @@ DanDuoc:
       - "ENCHANTED_GOLDEN_APPLE:4:Táo Vàng Phù Phép"
       - "DRAGON_BREATH:32:Hơi Thở Rồng"
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  BỔ SUNG NHẤT-TAM PHẨM (Phàm Nhân / Luyện Khí / Trúc Cơ)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  DUONG_KHI_DAN:
+    TenHienThi: "Dưỡng Khí Đan"
+    Material: KELP
+    MoTa: "Tự động bổ sung oxy, tẩy trược khí."
+    CanhGioiMin: PHAM_NHAN
+    TyLe: 80
+    BonusDamage: 0.05
+    BonusHealth: 0.3
+    BonusTuVi: 3
+    NguyenLieu:
+      - "KELP:16:Tảo Biển"
+      - "SEAGRASS:12:Cỏ Biển"
+      - "SUGAR:8:Đường"
+
+  HOI_LINH_DAN:
+    TenHienThi: "Hồi Linh Đan"
+    Material: GLOW_BERRIES
+    MoTa: "Hồi phục linh lực nhanh chóng."
+    CanhGioiMin: PHAM_NHAN
+    TyLe: 72
+    BonusDamage: 0.0
+    BonusHealth: 0.4
+    BonusTuVi: 4
+    NguyenLieu:
+      - "GLOW_BERRIES:20:Quả Phát Sáng"
+      - "HONEY_BOTTLE:4:Bình Mật Ong"
+      - "SUGAR_CANE:12:Mía Đường"
+
+  TIEU_HOAN_DAN:
+    TenHienThi: "Tiểu Hoàn Đan"
+    Material: CLAY_BALL
+    MoTa: "Chữa trị vết thương nhỏ, phục hồi khí huyết."
+    CanhGioiMin: PHAM_NHAN
+    TyLe: 78
+    BonusDamage: 0.0
+    BonusHealth: 0.6
+    BonusTuVi: 3
+    NguyenLieu:
+      - "CLAY_BALL:16:Viên Đất Sét"
+      - "RED_MUSHROOM:8:Nấm Đỏ"
+      - "SWEET_BERRIES:12:Quả Mọng"
+
+  GIAI_DOC_DAN:
+    TenHienThi: "Giải Độc Đan"
+    Material: MILK_BUCKET
+    MoTa: "Giải trừ mọi độc tố trong cơ thể."
+    CanhGioiMin: PHAM_NHAN
+    TyLe: 70
+    BonusDamage: 0.0
+    BonusHealth: 0.3
+    BonusTuVi: 5
+    NguyenLieu:
+      - "SPIDER_EYE:8:Mắt Nhện"
+      - "FERMENTED_SPIDER_EYE:4:Mắt Nhện Lên Men"
+      - "HONEY_BOTTLE:4:Bình Mật Ong"
+
+  CO_CO_DAN:
+    TenHienThi: "Cố Cơ Đan"
+    Material: BRICK
+    MoTa: "Củng cố căn cơ, tăng nền tảng tu luyện."
+    CanhGioiMin: LUYEN_KHI
+    TyLe: 62
+    BonusDamage: 0.1
+    BonusHealth: 0.5
+    BonusTuVi: 7
+    NguyenLieu:
+      - "IRON_INGOT:12:Thỏi Sắt"
+      - "BONE_MEAL:16:Bột Xương"
+      - "COAL:24:Than Đá"
+
+  ON_DUONG_DAN:
+    TenHienThi: "Ôn Dưỡng Đan"
+    Material: COOKIE
+    MoTa: "Ôn hòa dưỡng sinh, trị thương nội tạng."
+    CanhGioiMin: LUYEN_KHI
+    TyLe: 68
+    BonusDamage: 0.05
+    BonusHealth: 0.7
+    BonusTuVi: 5
+    NguyenLieu:
+      - "COCOA_BEANS:16:Hạt Ca Cao"
+      - "WHEAT:20:Lúa Mì"
+      - "MILK_BUCKET:2:Xô Sữa"
+
+  LINH_KHIEU_DAN:
+    TenHienThi: "Linh Khiếu Đan"
+    Material: AMETHYST_SHARD
+    MoTa: "Khai mở linh khiếu, tăng giác quan."
+    CanhGioiMin: LUYEN_KHI
+    TyLe: 55
+    BonusDamage: 0.2
+    BonusHealth: 0.3
+    BonusTuVi: 10
+    NguyenLieu:
+      - "AMETHYST_SHARD:12:Mảnh Thạch Anh Tím"
+      - "LAPIS_LAZULI:16:Lưu Ly"
+      - "GLOWSTONE_DUST:8:Bột Huỳnh Quang"
+
+  TANG_LUC_DAN:
+    TenHienThi: "Tăng Lực Đan"
+    Material: BLAZE_POWDER
+    MoTa: "Bùng nổ sức mạnh tạm thời."
+    CanhGioiMin: LUYEN_KHI
+    TyLe: 65
+    BonusDamage: 0.25
+    BonusHealth: 0.0
+    BonusTuVi: 6
+    NguyenLieu:
+      - "BLAZE_POWDER:12:Bột Lửa"
+      - "GUNPOWDER:16:Thuốc Súng"
+      - "SUGAR:8:Đường"
+
+  MINH_MUC_DAN:
+    TenHienThi: "Minh Mục Đan"
+    Material: ENDER_PEARL
+    MoTa: "Sáng mắt, nhìn thấu huyền cơ."
+    CanhGioiMin: LUYEN_KHI
+    TyLe: 60
+    BonusDamage: 0.1
+    BonusHealth: 0.2
+    BonusTuVi: 8
+    NguyenLieu:
+      - "ENDER_PEARL:4:Ngọc Ender"
+      - "GLOW_INK_SAC:8:Túi Mực Phát Sáng"
+      - "GOLDEN_CARROT:8:Cà Rốt Vàng"
+
+  THONG_MACH_DAN:
+    TenHienThi: "Thông Mạch Đan"
+    Material: REDSTONE
+    MoTa: "Khai thông kinh mạch bế tắc."
+    CanhGioiMin: TRUC_CO
+    TyLe: 52
+    BonusDamage: 0.15
+    BonusHealth: 0.8
+    BonusTuVi: 12
+    NguyenLieu:
+      - "REDSTONE:32:Bột Hồng Thạch"
+      - "GOLD_NUGGET:16:Mảnh Vàng"
+      - "GHAST_TEAR:2:Nước Mắt Ghast"
+
+  DAI_BO_DAN:
+    TenHienThi: "Đại Bổ Đan"
+    Material: GOLDEN_CARROT
+    MoTa: "Đại bổ nguyên khí, tăng cường toàn diện."
+    CanhGioiMin: TRUC_CO
+    TyLe: 50
+    BonusDamage: 0.2
+    BonusHealth: 1.2
+    BonusTuVi: 15
+    NguyenLieu:
+      - "GOLDEN_CARROT:16:Cà Rốt Vàng"
+      - "GOLDEN_APPLE:2:Táo Vàng"
+      - "GLISTERING_MELON_SLICE:12:Dưa Hấu Lấp Lánh"
+
+  HUYET_KHI_DAN:
+    TenHienThi: "Huyết Khí Đan"
+    Material: MAGMA_CREAM
+    MoTa: "Bùng nổ huyết khí, tăng sinh lực."
+    CanhGioiMin: TRUC_CO
+    TyLe: 48
+    BonusDamage: 0.15
+    BonusHealth: 1.5
+    BonusTuVi: 12
+    NguyenLieu:
+      - "MAGMA_CREAM:12:Kem Dung Nham"
+      - "BLAZE_ROD:4:Que Lửa"
+      - "SPIDER_EYE:16:Mắt Nhện"
+      - "BONE:12:Xương"
+
+  LINH_GIAC_DAN:
+    TenHienThi: "Linh Giác Đan"
+    Material: ECHO_SHARD
+    MoTa: "Tăng cường linh giác, cảm ứng nguy hiểm."
+    CanhGioiMin: TRUC_CO
+    TyLe: 45
+    BonusDamage: 0.2
+    BonusHealth: 0.5
+    BonusTuVi: 15
+    NguyenLieu:
+      - "ECHO_SHARD:4:Mảnh Vọng Âm"
+      - "SCULK:16:Đá Sculk"
+      - "AMETHYST_SHARD:8:Mảnh Thạch Anh Tím"
+
+  BACH_THAO_DAN:
+    TenHienThi: "Bách Thảo Đan"
+    Material: FERN
+    MoTa: "Tinh hoa trăm loại thảo dược."
+    CanhGioiMin: TRUC_CO
+    TyLe: 50
+    BonusDamage: 0.1
+    BonusHealth: 1.0
+    BonusTuVi: 10
+    NguyenLieu:
+      - "FERN:16:Dương Xỉ"
+      - "DANDELION:12:Bồ Công Anh"
+      - "BLUE_ORCHID:8:Lan Xanh"
+      - "SWEET_BERRIES:20:Quả Mọng"
+
+  THAN_TUY_DAN:
+    TenHienThi: "Thần Túy Đan"
+    Material: CHORUS_FRUIT
+    MoTa: "Giải phóng tiềm năng ẩn sâu trong cơ thể."
+    CanhGioiMin: TRUC_CO
+    TyLe: 42
+    BonusDamage: 0.25
+    BonusHealth: 0.8
+    BonusTuVi: 18
+    NguyenLieu:
+      - "CHORUS_FRUIT:12:Quả Hợp Xướng"
+      - "ENDER_PEARL:8:Ngọc Ender"
+      - "PHANTOM_MEMBRANE:4:Màng Phantom"
+
+  BOI_NGUYEN_DAN:
+    TenHienThi: "Bồi Nguyên Đan"
+    Material: HEART_OF_THE_SEA
+    MoTa: "Bồi dưỡng nguyên lực, nền tảng vững chắc."
+    CanhGioiMin: TRUC_CO
+    TyLe: 40
+    BonusDamage: 0.2
+    BonusHealth: 1.0
+    BonusTuVi: 20
+    NguyenLieu:
+      - "HEART_OF_THE_SEA:1:Trái Tim Biển Cả"
+      - "PRISMARINE_SHARD:16:Mảnh Hải Tinh"
+      - "NAUTILUS_SHELL:4:Vỏ Ốc Anh Vũ"
+      - "GLOW_BERRIES:16:Quả Phát Sáng"
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  BỔ SUNG TỨ-LỤC PHẨM (Kim Đan / Nguyên Anh)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  HUYEN_LINH_DAN:
+    TenHienThi: "Huyền Linh Đan"
+    Material: CRYING_OBSIDIAN
+    MoTa: "Linh đan huyền bí, tăng cường thần thức."
+    CanhGioiMin: KIM_DAN
+    TyLe: 35
+    BonusDamage: 0.5
+    BonusHealth: 2.5
+    BonusTuVi: 35
+    NguyenLieu:
+      - "CRYING_OBSIDIAN:8:Hắc Diệu Thạch"
+      - "ENDER_EYE:8:Mắt Ender"
+      - "BLAZE_ROD:16:Que Lửa"
+      - "GHAST_TEAR:8:Nước Mắt Ghast"
+
+  TU_VAN_DAN:
+    TenHienThi: "Tử Vân Đan"
+    Material: SHULKER_SHELL
+    MoTa: "Mây tím vây quanh, tăng sức mạnh đáng kể."
+    CanhGioiMin: KIM_DAN
+    TyLe: 30
+    BonusDamage: 0.6
+    BonusHealth: 3.0
+    BonusTuVi: 40
+    NguyenLieu:
+      - "SHULKER_SHELL:4:Vỏ Shulker"
+      - "END_CRYSTAL:2:Tinh Thể End"
+      - "PHANTOM_MEMBRANE:12:Màng Phantom"
+      - "ECHO_SHARD:4:Mảnh Vọng Âm"
+
+  LUC_DIEP_DAN:
+    TenHienThi: "Lục Diệp Đan"
+    Material: MOSS_BLOCK
+    MoTa: "Tinh hoa lục giới, hài hòa âm dương."
+    CanhGioiMin: NGUYEN_ANH
+    TyLe: 28
+    BonusDamage: 0.7
+    BonusHealth: 3.5
+    BonusTuVi: 50
+    NguyenLieu:
+      - "MOSS_BLOCK:32:Khối Rêu"
+      - "SPORE_BLOSSOM:4:Hoa Bào Tử"
+      - "DRIPLEAF:16:Lá Sen"
+      - "GLOW_BERRIES:24:Quả Phát Sáng"
+
+  THIEN_CO_DAN:
+    TenHienThi: "Thiên Cơ Đan"
+    Material: CLOCK
+    MoTa: "Nắm bắt thiên cơ, lĩnh ngộ đạo lý."
+    CanhGioiMin: NGUYEN_ANH
+    TyLe: 25
+    BonusDamage: 0.8
+    BonusHealth: 4.0
+    BonusTuVi: 60
+    NguyenLieu:
+      - "CLOCK:4:Đồng Hồ"
+      - "AMETHYST_SHARD:16:Mảnh Thạch Anh Tím"
+      - "ECHO_SHARD:8:Mảnh Vọng Âm"
+      - "NETHER_STAR:1:Ngôi Sao Địa Ngục"
+
+  CUU_CHUYEN_DAN:
+    TenHienThi: "Cửu Chuyển Đan"
+    Material: FIRE_CHARGE
+    MoTa: "Qua 9 lần tinh luyện, uy lực vô song."
+    CanhGioiMin: NGUYEN_ANH
+    TyLe: 20
+    BonusDamage: 1.0
+    BonusHealth: 5.0
+    BonusTuVi: 80
+    NguyenLieu:
+      - "FIRE_CHARGE:16:Viên Lửa"
+      - "BLAZE_POWDER:24:Bột Lửa"
+      - "MAGMA_CREAM:16:Kem Dung Nham"
+      - "GHAST_TEAR:8:Nước Mắt Ghast"
+      - "DRAGON_BREATH:4:Hơi Thở Rồng"
+
+  HOA_LINH_DAN:
+    TenHienThi: "Hóa Linh Đan"
+    Material: END_CRYSTAL
+    MoTa: "Hóa giải linh lực ứ đọng, đột phá bế quan."
+    CanhGioiMin: NGUYEN_ANH
+    TyLe: 22
+    BonusDamage: 0.9
+    BonusHealth: 4.5
+    BonusTuVi: 70
+    NguyenLieu:
+      - "END_CRYSTAL:4:Tinh Thể End"
+      - "ENDER_EYE:12:Mắt Ender"
+      - "HEART_OF_THE_SEA:2:Trái Tim Biển Cả"
+      - "BLAZE_ROD:12:Que Lửa"
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  BỔ SUNG THẤT PHẨM+ (Hóa Thần / Luyện Hư / Hợp Thể)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  THAI_AT_DAN:
+    TenHienThi: "Thái Ất Đan"
+    Material: BEACON
+    MoTa: "Thái ất chân hỏa, luyện hóa vạn vật."
+    CanhGioiMin: HOA_THAN
+    TyLe: 15
+    BonusDamage: 1.5
+    BonusHealth: 7.0
+    BonusTuVi: 120
+    NguyenLieu:
+      - "BEACON:1:Phong Hỏa Đài"
+      - "NETHER_STAR:3:Ngôi Sao Địa Ngục"
+      - "DRAGON_BREATH:16:Hơi Thở Rồng"
+      - "END_CRYSTAL:4:Tinh Thể End"
+      - "ECHO_SHARD:8:Mảnh Vọng Âm"
+
+  VAN_LINH_DAN:
+    TenHienThi: "Vạn Linh Đan"
+    Material: CONDUIT
+    MoTa: "Chứa vạn linh lực, bùng phát kinh thiên."
+    CanhGioiMin: HOA_THAN
+    TyLe: 12
+    BonusDamage: 1.8
+    BonusHealth: 8.0
+    BonusTuVi: 150
+    NguyenLieu:
+      - "CONDUIT:1:Lõi Biển Sâu"
+      - "NAUTILUS_SHELL:8:Vỏ Ốc Anh Vũ"
+      - "HEART_OF_THE_SEA:2:Trái Tim Biển Cả"
+      - "PRISMARINE_CRYSTALS:32:Tinh Thể Hải Tinh"
+      - "NETHER_STAR:2:Ngôi Sao Địa Ngục"
+
+  HON_PHACH_DAN:
+    TenHienThi: "Hồn Phách Đan"
+    Material: SOUL_LANTERN
+    MoTa: "Ngưng tụ hồn phách, tăng cường ý chí."
+    CanhGioiMin: LUYEN_HU
+    TyLe: 10
+    BonusDamage: 2.0
+    BonusHealth: 10.0
+    BonusTuVi: 180
+    NguyenLieu:
+      - "SOUL_LANTERN:8:Lồng Đèn Hồn"
+      - "WITHER_SKELETON_SKULL:2:Sọ Wither"
+      - "TOTEM_OF_UNDYING:2:Vật Tổ Bất Tử"
+      - "NETHER_STAR:3:Ngôi Sao Địa Ngục"
+      - "DRAGON_BREATH:24:Hơi Thở Rồng"
+
+  HON_DON_DAN:
+    TenHienThi: "Hỗn Độn Đan"
+    Material: DRAGON_HEAD
+    MoTa: "Chứa hỗn độn chi lực, nghịch thiên đoạt mệnh."
+    CanhGioiMin: LUYEN_HU
+    TyLe: 8
+    BonusDamage: 2.5
+    BonusHealth: 12.0
+    BonusTuVi: 220
+    NguyenLieu:
+      - "DRAGON_HEAD:1:Đầu Rồng"
+      - "DRAGON_EGG:1:Trứng Rồng"
+      - "NETHER_STAR:4:Ngôi Sao Địa Ngục"
+      - "TOTEM_OF_UNDYING:4:Vật Tổ Bất Tử"
+      - "ECHO_SHARD:12:Mảnh Vọng Âm"
+
+  NGHICH_THIEN_THAN_DAN:
+    TenHienThi: "Nghịch Thiên Thần Đan"
+    Material: NETHER_STAR
+    MoTa: "Đan dược tối thượng, vi phạm thiên đạo."
+    CanhGioiMin: HOP_THE
+    TyLe: 5
+    BonusDamage: 3.0
+    BonusHealth: 15.0
+    BonusTuVi: 300
+    NguyenLieu:
+      - "NETHER_STAR:6:Ngôi Sao Địa Ngục"
+      - "DRAGON_EGG:1:Trứng Rồng"
+      - "TOTEM_OF_UNDYING:4:Vật Tổ Bất Tử"
+      - "ENCHANTED_GOLDEN_APPLE:4:Táo Vàng Phù Phép"
+      - "ECHO_SHARD:16:Mảnh Vọng Âm"
+      - "HEART_OF_THE_SEA:4:Trái Tim Biển Cả"
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #  CẤU HÌNH NÂNG CẤP LÒ LUYỆN
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

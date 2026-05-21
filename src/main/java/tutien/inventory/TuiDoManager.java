@@ -223,6 +223,28 @@ public class TuiDoManager {
         autoPickupMap.remove(uuid);
     }
 
+    /**
+     * Lưu không xóa RAM — dùng cho AutoSave định kỳ.
+     * Gọi trên async thread.
+     */
+    public void savePlayerAsync(Player player) {
+        UUID uuid = player.getUniqueId();
+        if (!storageMap.containsKey(uuid)) return;
+
+        File file = getFile(uuid);
+        FileConfiguration config = new YamlConfiguration();
+
+        config.set("AutoPickup", autoPickupMap.getOrDefault(uuid, false));
+        Map<String, StoredItem> items = storageMap.get(uuid);
+        for (Map.Entry<String, StoredItem> entry : new java.util.ArrayList<>(items.entrySet())) {
+            config.set("Items." + entry.getKey() + ".sample", entry.getValue().sample);
+            config.set("Items." + entry.getKey() + ".amount", entry.getValue().amount);
+        }
+
+        try { config.save(file); } catch (IOException ignored) {}
+        // KHÔNG xóa storageMap — player vẫn đang online
+    }
+
     public void saveAll() {
         for (Player p : org.bukkit.Bukkit.getOnlinePlayers()) {
             savePlayer(p);

@@ -8,17 +8,18 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import tutien.core.CanhGioi;
+import tutien.core.HeTuLuyen;
 import tutien.core.LinhCan;
 import tutien.core.PlayerDataManager;
 
 /**
- * Task này chạy mỗi 1 giây (20 ticks).
- * Nhiệm vụ: Tăng Tu Vi và Linh Lực cho những ai đang Tọa Thiền.
- * Đã cập nhật: Tích hợp Đặc Quyền Địa Vị (VIP) giúp x1.5 -> x3 tốc độ tu luyện.
+ * Task chạy mỗi 1 giây (20 ticks).
+ * SPRINT 1+2: Tối ưu, thêm Song Tu, Pháp Tu Linh Lực, Bế Quan điểm.
  */
 public class TuLuyenTask extends BukkitRunnable {
 
     private final PlayerDataManager dataManager;
+    private int tickCount = 0;
 
     public TuLuyenTask(PlayerDataManager dataManager) {
         this.dataManager = dataManager;
@@ -26,79 +27,87 @@ public class TuLuyenTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        // Lặp qua tất cả người chơi đang online trên server
+        tickCount++;
+
         for (Player player : Bukkit.getOnlinePlayers()) {
 
-            // Kiểm tra xem người chơi này có đang bật chế độ Tọa Thiền hay không
-            if (dataManager.isDangTuLuyen(player)) {
+            boolean isMeditating = dataManager.isDangTuLuyen(player);
 
-                // ===================================================
-                // BƯỚC 1: XÁC ĐỊNH CHỈ SỐ CỦA NGƯỜI CHƠI VÀ ĐẶC QUYỀN VIP
-                // ===================================================
-
-                LinhCan linhCan = dataManager.getLinhCan(player);
-                CanhGioi cg = dataManager.getCanhGioi(player);
-
-                // Kiểm tra Địa Vị (VIP) qua hệ thống quyền (Permissions của LuckPerms)
-                double vipMultiplier = 1.0;
-                String vipPrefix = "";
-
-                if (player.hasPermission("tutien.vip.tiennhan")) {
-                    vipMultiplier = 3.0; // Tiên Nhân x3 Tốc độ
-                    vipPrefix = "§d[Tiên Nhân] ";
-                } else if (player.hasPermission("tutien.vip.hanhchu")) {
-                    vipMultiplier = 2.5; // Hành Chủ x2.5 Tốc độ
-                    vipPrefix = "§6[Hành Chủ] ";
-                } else if (player.hasPermission("tutien.vip.giachu")) {
-                    vipMultiplier = 2.0; // Gia Chủ x2 Tốc độ
-                    vipPrefix = "§e[Gia Chủ] ";
-                } else if (player.hasPermission("tutien.vip.hieuchu")) {
-                    vipMultiplier = 1.5; // Hiếu Chủ x1.5 Tốc độ
-                    vipPrefix = "§a[Hiếu Chủ] ";
+            // === BẾ QUAN ĐIỂM & NHIỆM VỤ: mỗi phút (60 ticks) cộng 1 điểm nếu đang tọa thiền ===
+            if (isMeditating && tickCount % 60 == 0) {
+                dataManager.addBeQuanDiem(player, 1);
+                tutien.core.TuTienPlugin plugin = tutien.core.TuTienPlugin.getPlugin(tutien.core.TuTienPlugin.class);
+                if (plugin.getNhiemVuManager() != null) {
+                    plugin.getNhiemVuManager().addProgress(player, tutien.quest.NhiemVuManager.NhiemVu.TU_LUYEN, 1);
                 }
+            }
 
-                // ===================================================
-                // BƯỚC 2: TÍNH TOÁN TU VI VÀ LINH LỰC NHẬN ĐƯỢC
-                // ===================================================
+            if (!isMeditating) continue;
 
-                // 1. Tính Tu Vi: Cơ bản 2 * Hệ số Linh Căn * Hệ số VIP
-                int baseTuVi = 2;
-                int finalTuVi = (int) (baseTuVi * linhCan.getTocDo() * vipMultiplier);
+            // =====================
+            // XÁC ĐỊNH CHỈ SỐ
+            // =====================
+            LinhCan linhCan = dataManager.getLinhCan(player);
+            CanhGioi cg = dataManager.getCanhGioi(player);
+            HeTuLuyen he = dataManager.getHeTuLuyen(player);
 
-                // 2. Tính Linh Lực: Cơ bản 5 * Hệ số Linh Căn * Bậc Cảnh Giới * Hệ số VIP
-                int baseLinhLuc = 5;
-                int heSoCanhGioi = cg.ordinal() + 1;
-                int linhLucNhanDuoc = (int) (baseLinhLuc * linhCan.getTocDo() * heSoCanhGioi * vipMultiplier);
+            // VIP Multiplier
+            double vipMultiplier = 1.0;
+            String vipPrefix = "";
+            if (player.hasPermission("tutien.vip.tiennhan"))      { vipMultiplier = 3.0; vipPrefix = "§d[Tiên Nhân] "; }
+            else if (player.hasPermission("tutien.vip.hanhchu")) { vipMultiplier = 2.5; vipPrefix = "§6[Hành Chủ] "; }
+            else if (player.hasPermission("tutien.vip.giachu"))  { vipMultiplier = 2.0; vipPrefix = "§e[Gia Chủ] "; }
+            else if (player.hasPermission("tutien.vip.hieuchu")) { vipMultiplier = 1.5; vipPrefix = "§a[Hiếu Chủ] "; }
 
-                // ===================================================
-                // BƯỚC 3: CẬP NHẬT CHỈ SỐ VÀO HỆ THỐNG
-                // ===================================================
-
-                int currentTuVi = dataManager.getTuVi(player);
-                int currentLinhLuc = dataManager.getLinhLuc(player);
-                int maxLinhLuc = cg.getMaxLinhLuc();
-
-                // Lưu Tu Vi mới
-                dataManager.setTuVi(player, currentTuVi + finalTuVi);
-
-                // Lưu Linh Lực mới (Đảm bảo không vượt quá Max)
-                int newLinhLuc = currentLinhLuc + linhLucNhanDuoc;
-                if (newLinhLuc > maxLinhLuc) {
-                    newLinhLuc = maxLinhLuc;
+            // =====================
+            // SONG TU: +15% Tu Vi nếu gần đạo lữ (cũng đang tọa thiền)
+            // =====================
+            double songTuBonus = 1.0;
+            if (he == HeTuLuyen.SONG_TU) {
+                long nearbyMeditating = player.getNearbyEntities(10, 10, 10).stream()
+                    .filter(e -> e instanceof Player)
+                    .map(e -> (Player) e)
+                    .filter(other -> dataManager.isDangTuLuyen(other))
+                    .count();
+                if (nearbyMeditating > 0) {
+                    songTuBonus = 1.15;
                 }
-                dataManager.setLinhLuc(player, newLinhLuc);
+            }
 
-                // ===================================================
-                // BƯỚC 4: HIỂN THỊ THÔNG BÁO VÀ HIỆU ỨNG
-                // ===================================================
+            // =====================
+            // TÍNH TU VI & LINH LỰC
+            // =====================
+            int baseTuVi = 2;
+            int finalTuVi = (int) (baseTuVi * linhCan.getTocDo() * vipMultiplier * songTuBonus);
 
-                // Gửi thông báo chữ nhảy liên tục (Thêm Tiền tố VIP nếu có)
-                String actionBarMsg = vipPrefix + "§d§l[TỌA THIỀN] §fTu vi: §e+" + finalTuVi + " §f| Linh lực: §b+" + linhLucNhanDuoc;
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionBarMsg));
+            int baseLinhLuc = 5;
+            int heSoCanhGioi = cg.ordinal() + 1;
+            int linhLucNhanDuoc = (int) (baseLinhLuc * linhCan.getTocDo() * heSoCanhGioi * vipMultiplier);
 
-                // Triệu hồi các hạt linh khí (Thêm nhiều hạt hơn nếu là VIP)
+            // Pháp Tu: giới hạn Linh Lực cao hơn 30%
+            int maxLinhLuc = dataManager.getMaxLinhLucEffective(player);
+
+            // =====================
+            // CẬP NHẬT
+            // =====================
+            dataManager.setTuVi(player, dataManager.getTuVi(player) + finalTuVi);
+
+            int newLinhLuc = Math.min(maxLinhLuc, dataManager.getLinhLuc(player) + linhLucNhanDuoc);
+            dataManager.setLinhLuc(player, newLinhLuc);
+
+            // =====================
+            // HIỂN THỊ ACTION BAR
+            // =====================
+            String songTuIcon = (songTuBonus > 1.0) ? "§d♥ " : "";
+            String actionBarMsg = vipPrefix + songTuIcon + "§d§l[TỌA THIỀN] §fTu vi: §e+" + finalTuVi
+                + " §f| Linh lực: §b+" + linhLucNhanDuoc
+                + " §f| Bế quan: §6" + dataManager.getBeQuanDiem(player);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionBarMsg));
+
+            // Hiệu ứng hạt (không spam quá nhiều)
+            if (tickCount % 2 == 0) { // Mỗi 2 giây thay vì mỗi giây
                 Location loc = player.getLocation().add(0, 1, 0);
-                int particleCount = (vipMultiplier > 1.0) ? 25 : 10;
+                int particleCount = (vipMultiplier > 1.0) ? 15 : 6;
                 player.getWorld().spawnParticle(Particle.ENCHANT, loc, particleCount, 0.5, 0.5, 0.5, 0.1);
             }
         }

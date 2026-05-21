@@ -103,6 +103,53 @@ public class TuTienExpansion extends PlaceholderExpansion {
             return "0";
         }
 
+        // =============================================
+        // v2.1: PLACEHOLDER MỚI
+        // =============================================
+
+        // %tutien_khoangthach% -> Số Khoáng Thạch
+        if (identifier.equalsIgnoreCase("khoangthach"))
+            return String.valueOf(dataManager.getKhoangThach(player));
+
+        // %tutien_daoniem% -> Số Đạo Niệm
+        if (identifier.equalsIgnoreCase("daoniem"))
+            return String.valueOf(dataManager.getDaoNiem(player));
+
+        // %tutien_bequan_diem% -> Điểm Bế Quan
+        if (identifier.equalsIgnoreCase("bequan_diem"))
+            return String.valueOf(dataManager.getBeQuanDiem(player));
+
+        // %tutien_canhgioi_1% -> %tutien_canhgioi_10%: Top Cảnh Giới
+        // %tutien_tuvi_top_1% -> %tutien_tuvi_top_10%: Top Tu Vi
+        // %tutien_khoangthach_top_1% -> %tutien_khoangthach_top_10%
+        // %tutien_daoniem_top_1% -> %tutien_daoniem_top_10%
+        // %tutien_bequandiem_top_1% -> %tutien_bequandiem_top_10%
+        if (identifier.toLowerCase().matches("(canhgioi|tuvi_top|khoangthach_top|daoniem_top|bequandiem_top)_\\d+")) {
+            TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            LeaderboardManager lb = plugin.getLeaderboardManager();
+            if (lb == null) return "N/A";
+
+            String[] parts = identifier.split("_");
+            int rank;
+            try { rank = Integer.parseInt(parts[parts.length - 1]); }
+            catch (NumberFormatException e) { return "N/A"; }
+
+            String category;
+            if (identifier.toLowerCase().startsWith("canhgioi_")) category = "canhgioi";
+            else if (identifier.toLowerCase().startsWith("tuvi_top_")) category = "tuvi";
+            else if (identifier.toLowerCase().startsWith("khoangthach_top_")) category = "khoangthach";
+            else if (identifier.toLowerCase().startsWith("daoniem_top_")) category = "daoniem";
+            else if (identifier.toLowerCase().startsWith("bequandiem_top_")) category = "bequandiem";
+            else return "N/A";
+
+            LeaderboardManager.LeaderEntry entry = lb.getEntry(category, rank);
+            if (entry == null) return "§7Trống";
+            if (category.equals("canhgioi")) {
+                return entry.playerName() + " §7- §d" + entry.extra();
+            }
+            return entry.playerName() + " §7- §e" + entry.value();
+        }
+
         return null; // Trả về null nếu người dùng gõ sai tên biến
     }
 }

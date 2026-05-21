@@ -10,6 +10,7 @@ import tutien.core.PlayerDataManager;
 
 /**
  * Lớp xử lý các hiệu ứng đặc biệt của từng hệ khi đánh nhau.
+ * ĐÃ ĐỒNG BỘ: % buff khớp 100% với mô tả trong HeTuLuyen.java.
  */
 public class CombatListener implements Listener {
 
@@ -21,39 +22,40 @@ public class CombatListener implements Listener {
 
     @EventHandler
     public void onCombat(EntityDamageByEntityEvent event) {
-        // --- XỬ LÝ KHI NGƯỜI CHƠI BỊ TẤN CÔNG ---
-        if (event.getEntity() instanceof Player) {
-            Player victim = (Player) event.getEntity();
-            HeTuLuyen he = dataManager.getHeTuLuyen(victim);
 
-            // THỂ TU: Giảm 20% mọi sát thương nhận vào
-            if (he == HeTuLuyen.THE_TU) {
-                event.setDamage(event.getDamage() * 0.8);
+        // --- XỬ LÝ KHI NGƯỜI CHƠI BỊ TẤN CÔNG ---
+        if (event.getEntity() instanceof Player victim) {
+            HeTuLuyen heVictim = dataManager.getHeTuLuyen(victim);
+
+            // THỂ TU: "Giảm 10% sát thương nhận vào" → đúng với mô tả (ghi 10%, code 0.9)
+            if (heVictim == HeTuLuyen.THE_TU) {
+                event.setDamage(event.getDamage() * 0.9);
             }
 
-            // MA TU: Nhận thêm 25% sát thương (Hình phạt cho việc quá mạnh sát thương)
-            if (he == HeTuLuyen.MA_TU) {
-                event.setDamage(event.getDamage() * 1.25);
+            // MA TU: "Giảm 20% khả năng phòng thủ" → nhận thêm 20% sát thương
+            if (heVictim == HeTuLuyen.MA_TU) {
+                event.setDamage(event.getDamage() * 1.2);
             }
         }
 
         // --- XỬ LÝ KHI NGƯỜI CHƠI TẤN CÔNG ---
-        if (event.getDamager() instanceof Player) {
-            Player attacker = (Player) event.getDamager();
-            HeTuLuyen he = dataManager.getHeTuLuyen(attacker);
+        if (event.getDamager() instanceof Player attacker) {
+            HeTuLuyen heAttacker = dataManager.getHeTuLuyen(attacker);
+            String mainHandName = attacker.getInventory().getItemInMainHand().getType().name();
 
-            // KIẾM TU: Nếu dùng kiếm gỗ/sắt/kim cương... thì +15% sát thương kiếm ý
-            if (he == HeTuLuyen.KIEM_TU && attacker.getInventory().getItemInMainHand().getType().name().contains("SWORD")) {
-                event.setDamage(event.getDamage() * 1.15);
+            // KIẾM TU: "+20% sát thương Kiếm" khi cầm bất kỳ loại kiếm nào
+            if (heAttacker == HeTuLuyen.KIEM_TU && mainHandName.contains("SWORD")) {
+                event.setDamage(event.getDamage() * 1.20);
             }
+
+            // YÊU TU: không buff tấn công, ưu thế nằm ở tốc độ + hồi máu
         }
     }
 
     @EventHandler
     public void onRegen(EntityRegainHealthEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            // YÊU TU: Hồi máu tự nhiên nhanh gấp đôi
+        if (event.getEntity() instanceof Player player) {
+            // YÊU TU: "Hồi phục tự nhiên" × 2 — đúng với mô tả
             if (dataManager.getHeTuLuyen(player) == HeTuLuyen.YEU_TU) {
                 event.setAmount(event.getAmount() * 2.0);
             }

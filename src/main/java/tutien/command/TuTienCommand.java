@@ -44,23 +44,24 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             sender.sendMessage("§e=== §6§lHệ Thống Tu Tiên §e===");
-            sender.sendMessage("§f/tutien menu §7- Mở giao diện hệ thống");
-            sender.sendMessage("§f/tutien tuluyen §7- Nhập định tọa thiền (AFK)");
-            sender.sendMessage("§f/tutien xem [tên] §7- Xem thông tin tu vi");
-            sender.sendMessage("§f/tutien ngukiem §7- Ngự kiếm phi hành");
-            sender.sendMessage("§f/tutien dokiep §7- Kích hoạt Thiên Kiếp để đột phá!");
-            sender.sendMessage("§f/tutien luyendan §7- Mở Bát Quái Đan Lò");
-            sender.sendMessage("§f/tutien laptong <Tên> §7- Lập Tông Môn (Yêu cầu: Hóa Thần)");
+            sender.sendMessage("§f/tutien menu §7- Mở giao diện chính");
+            sender.sendMessage("§f/tutien tuluyen §7- Tọa thiền (AFK)");
+            sender.sendMessage("§f/tutien dokiep §7- Đột phá cảnh giới");
+            sender.sendMessage("§f/tutien ngukiem §7- Ngự kiếm phi hành (Kiếm Đan+, tiêu Linh Lực)");
+            sender.sendMessage("§f/tutien luyendan §7- Lượng đan luyện");
+            sender.sendMessage("§f/tutien chetac §7- Chế tác trang bị (Sprint 3)");
+            sender.sendMessage("§f/tutien nhiemvu §7- Nhiệm vụ hàng ngày (Sprint 3)");
+            sender.sendMessage("§f/tutien bequan §7- Cửa hàng điểm Bế Quan (Sprint 2)");
+            sender.sendMessage("§f/tutien linhthuvien §7- Linh Thú Viên phụ bản (Sprint 4)");
+            sender.sendMessage("§f/tutien gacha §7- Triệu hồi Linh Thú (Sprint 4)");
             sender.sendMessage("§f/tutien tongmon §7- Quản lý Tông Môn");
-            sender.sendMessage("§f/tutien tuido §7- Mở Túi Đồ Hư Không (AFK)");
+            sender.sendMessage("§f/tutien tuido §7- Túi Đồ Hư Không");
+            sender.sendMessage("§f/tutien xem [tên] §7- Xem thông tin");
 
             if (sender.hasPermission("tutien.admin")) {
                 sender.sendMessage("§c=== §4§lQuyền Lực Thiên Đạo (Admin) §c===");
                 sender.sendMessage("§f/tutien admin tuvi <add/set/remove> <tên> <số>");
-                sender.sendMessage("§f/tutien admin linhluc <add/set/remove> <tên> <số>");
                 sender.sendMessage("§f/tutien admin canhgioi <tên> <CẢNH_GIỚI>");
-                sender.sendMessage("§f/tutien admin linhcan <tên> <LINH_CĂN>");
-                sender.sendMessage("§f/tutien admin he <tên> <HỆ>");
             }
             return true;
         }
@@ -75,20 +76,15 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
             if (!isMeditating) {
                 dataManager.setTuLuyenMode(p, true);
                 Location loc = p.getLocation();
+                // Chỉ căn giữa block, không nâng Y lên nữa để tránh lơ lửng/giật
                 loc.setX(loc.getBlockX() + 0.5);
                 loc.setZ(loc.getBlockZ() + 0.5);
-                loc.setY(loc.getY() + 0.6);
                 p.teleport(loc);
-
-                p.addPotionEffect(new org.bukkit.potion.PotionEffect(
-                        org.bukkit.potion.PotionEffectType.LEVITATION,
-                        Integer.MAX_VALUE, 250, false, false));
 
                 p.sendMessage("§a§l[Tu Tiên] §fNgươi đã nhập định tọa thiền. Linh khí thiên địa đang hội tụ...");
                 p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
             } else {
                 dataManager.setTuLuyenMode(p, false);
-                p.removePotionEffect(org.bukkit.potion.PotionEffectType.LEVITATION);
 
                 p.sendMessage("§e§l[Tu Tiên] §fNgươi đã xuất định, kết thúc quá trình tu luyện.");
                 p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1f, 1f);
@@ -136,34 +132,79 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
         // --- LỆNH ĐỘ KIẾP ---
         if (subCmd.equals("dokiep")) {
             if (!(sender instanceof Player)) return true;
-            Player player = (Player) sender;
-
-            // Xóa logic kiểm tra cũ, mở giao diện Bảng Đột Phá
-            DotPhaGUI.open(player, plugin);
+            DotPhaGUI.open((Player) sender, plugin);
             return true;
         }
 
-        // --- LỆNH NGỰ KIẾM ---
+        // --- LỆNH NGỰ KIẾM (SPRINT 2 UPGRADE: tiêu Linh Lực) ---
         if (subCmd.equals("ngukiem")) {
             if (!(sender instanceof Player)) return true;
             Player player = (Player) sender;
             CanhGioi cg = dataManager.getCanhGioi(player);
 
-            if (cg.ordinal() >= CanhGioi.KIM_DAN.ordinal()) {
-                if (dataManager.getLinhLuc(player) <= 0) {
-                    player.sendMessage("§cKhông đủ Linh Lực để xuất kiếm!");
+            if (cg.ordinal() < CanhGioi.KIM_DAN.ordinal()) {
+                player.sendMessage("§cCần đạt §bKim Đan §ftrở lên mới có thể ngự kiếm!");
+                return true;
+            }
+
+            if (tutien.task.NguKiemTask.isFlying(player)) {
+                tutien.task.NguKiemTask.stopFlight(player);
+            } else {
+                if (dataManager.getLinhLuc(player) < 50) {
+                    player.sendMessage("§c[Ngự Kiếm] §fCần §e50 Linh Lực §fđể xuất kiếm!");
                     return true;
                 }
-
-                boolean isFlying = player.getAllowFlight();
-                player.setAllowFlight(!isFlying);
-                player.setFlying(!isFlying);
-
-                if (!isFlying) player.sendMessage("§b[Ngự Kiếm] §fKhởi động phi kiếm!");
-                else player.sendMessage("§b[Ngự Kiếm] §fThu hồi phi kiếm.");
-            } else {
-                player.sendMessage("§cCần đạt §bKim Đan §fmới có thể ngự kiếm!");
+                tutien.task.NguKiemTask.startFlight(player);
             }
+            return true;
+        }
+
+        // --- LỆNH BẾ QUAN SHOP (SPRINT 2) ---
+        if (subCmd.equals("bequan")) {
+            if (!(sender instanceof Player)) return true;
+            tutien.tutien.gui.BeQuanShopGUI.open((Player) sender, dataManager);
+            return true;
+        }
+
+        // --- LỆNH CHẾ TÁC (SPRINT 3) ---
+        if (subCmd.equals("chetac")) {
+            if (!(sender instanceof Player)) return true;
+            tutien.tutien.gui.CheGUI.open((Player) sender, dataManager, plugin.getCheManager());
+            return true;
+        }
+
+        // --- LỆNH NHIỆM VỤ (SPRINT 3) ---
+        if (subCmd.equals("nhiemvu")) {
+            if (!(sender instanceof Player)) return true;
+            tutien.tutien.gui.NhiemVuGUI.open((Player) sender, plugin.getNhiemVuManager());
+            return true;
+        }
+
+        // --- LỆNH LINH THÚ VIÊN (SPRINT 4) ---
+        if (subCmd.equals("linhthuvien")) {
+            if (!(sender instanceof Player)) return true;
+            tutien.tutien.gui.LinhThuVienGUI.open((Player) sender, dataManager, plugin.getLinhThuVienManager());
+            return true;
+        }
+
+        // --- LỆNH GACHA (SPRINT 4) ---
+        if (subCmd.equals("gacha")) {
+            if (!(sender instanceof Player)) return true;
+            tutien.tutien.gui.GachaGUI.open((Player) sender, dataManager, plugin.getGachaGUI());
+            return true;
+        }
+
+        // --- LỆNH VẠN GIỚI CÁC (v2.1) ---
+        if (subCmd.equals("vangioi")) {
+            if (!(sender instanceof Player)) return true;
+            tutien.tutien.gui.VanGioiCacGUI.open((Player) sender);
+            return true;
+        }
+
+        // --- LỆNH XẾP HẠNG (v2.1) ---
+        if (subCmd.equals("xephang")) {
+            if (!(sender instanceof Player)) return true;
+            tutien.tutien.gui.XepHangGUI.open((Player) sender, plugin);
             return true;
         }
 
@@ -426,6 +467,9 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
             completions.add("menu"); completions.add("tuluyen"); completions.add("xem");
             completions.add("dokiep"); completions.add("ngukiem"); completions.add("luyendan");
             completions.add("laptong"); completions.add("tongmon"); completions.add("tuido");
+            completions.add("bequan"); completions.add("chetac"); completions.add("nhiemvu");
+            completions.add("linhthuvien"); completions.add("gacha"); completions.add("vangioi");
+            completions.add("xephang");
             if (sender.hasPermission("tutien.admin")) completions.add("admin");
         }
         else if (args.length == 2) {

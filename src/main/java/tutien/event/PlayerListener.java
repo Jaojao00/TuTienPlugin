@@ -65,20 +65,36 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        // Tránh lỗi kẹt trạng thái: Tự động tắt Tu Luyện nếu thoát game đột ngột
+        // Tránh lỗi kẹt trạng thái: Tự động tắt Tu Luyện và gỡ LEVITATION
         if (dataManager.isDangTuLuyen(player)) {
             dataManager.setTuLuyenMode(player, false);
+            player.removePotionEffect(org.bukkit.potion.PotionEffectType.LEVITATION);
         }
 
-        // Dọn dẹp RAM thời gian hồi chiêu
+        // Sprint 2: Tắt Ngự Kiếm khi thoát (tránh bay kẹt)
+        tutien.task.NguKiemTask.cleanupPlayer(player.getUniqueId());
+        player.setFlying(false);
+        player.setAllowFlight(false);
+
+        // Dọn dẹp RAM cooldowns
         thuanDiCooldowns.remove(player.getUniqueId());
+
+        // Sprint 3: Giải phóng RAM nhiệm vụ
+        if (plugin.getNhiemVuManager() != null) {
+            plugin.getNhiemVuManager().cleanupPlayer(player.getUniqueId());
+        }
+
+        // Sprint 4: Dọn dẹp Linh Thú Viên (kill boss nếu còn)
+        if (plugin.getLinhThuVienManager() != null) {
+            plugin.getLinhThuVienManager().cleanupPlayer(player.getUniqueId());
+        }
 
         // Lưu dữ liệu Túi Đồ Hư Không
         if (plugin.getTuiDoManager() != null) {
             plugin.getTuiDoManager().savePlayer(player);
         }
 
-        // Lưu dữ liệu khi người chơi thoát
+        // Lưu dữ liệu player
         dataManager.savePlayer(player);
     }
 
@@ -163,12 +179,16 @@ public class PlayerListener implements Listener {
 
         if (dataManager.isDangTuLuyen(player)) {
             Location to = event.getTo();
-            // Đã fix cảnh báo: Thêm kiểm tra to != null để tránh NullPointerException
+            // FIX GIẬT: Chỉ chặn di chuyển ngang (X/Z). Cho phép Y thay đổi
+            // vì LEVITATION liên tục thay đổi Y — nếu chặn Y sẽ gây giật liên tục.
             if (to != null && (event.getFrom().getX() != to.getX() ||
-                    event.getFrom().getY() != to.getY() ||
                     event.getFrom().getZ() != to.getZ())) {
-
-                event.setTo(event.getFrom()); // Đóng băng tại chỗ
+                // Giữ nguyên X/Z từ vị trí cũ, nhưng cho phép Y theo vị trí mới
+                Location fixed = event.getFrom().clone();
+                fixed.setY(to.getY());
+                fixed.setPitch(to.getPitch());
+                fixed.setYaw(to.getYaw());
+                event.setTo(fixed);
             }
         }
     }
@@ -185,6 +205,39 @@ public class PlayerListener implements Listener {
                 dataManager.setTuLuyenMode(player, false);
                 player.sendMessage("§c§l[!] §fBị tấn công! Quá trình tọa thiền bị tẩu hỏa nhập ma, cưỡng chế dừng lại!");
                 player.removePotionEffect(PotionEffectType.LEVITATION);
+            }
+        }
+    }
+
+    // ==========================================
+    // NHIỆM VỤ HÀNG NGÀY: XÂY DỰNG (ĐẶT KHỐI)
+    // ==========================================
+    @EventHandler
+    public void onBlockPlace(org.bukkit.event.block.BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        if (plugin.getNhiemVuManager() != null) {
+            // Kiểm tra xem có đang đặt trong Tông Môn không
+            if (plugin.getTongMonManager() != null) {
+                UUID owner = plugin.getTongMonManager().checkKhongChoPhepTuongTac(event.getBlock().getLocation(), player);
+                if (owner == null) {
+                    // Cứ đặt khối và không bị chặn -> Tăng tiến độ (có thể đang ở Tông môn của mình)
+                    plugin.getNhiemVuManager().addProgress(player, tutien.quest.NhiemVuManager.NhiemVu.XAY_DUNG, 1);
+                }
+            }
+        }
+    }
+
+    // ==========================================
+    // NHIỆM VỤ HÀNG NGÀY: ĐÁNH QUÁI (GIẾT QUÁI)
+    // ==========================================
+    @EventHandler
+    public void onEntityDeath(org.bukkit.event.entity.EntityDeathEvent event) {
+        if (event.getEntity().getKiller() != null) {
+            Player player = event.getEntity().getKiller();
+            if (!(event.getEntity() instanceof Player)) {
+                if (plugin.getNhiemVuManager() != null) {
+                    plugin.getNhiemVuManager().addProgress(player, tutien.quest.NhiemVuManager.NhiemVu.DANH_QUAI, 1);
+                }
             }
         }
     }
