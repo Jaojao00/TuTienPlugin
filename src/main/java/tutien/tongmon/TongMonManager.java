@@ -2,6 +2,8 @@ package tutien.tongmon;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -15,7 +17,11 @@ import java.util.UUID;
 
 /**
  * Lớp quản lý lãnh địa, thành viên và tài nguyên của Tông Môn.
- * Cập nhật: Đảm bảo tích hợp đầy đủ lệnh truyền tống (Về Tông Môn).
+ * v2.2 Skyblock Edition:
+ *   - Không còn dịch chuyển ra tọa độ (10000, 10000) giữa hư không (Void) hay tự động đặt hàng rào phá đảo.
+ *   - Lưu trực tiếp tọa độ hiện tại (X, Y, Z) trên đảo Skyblock của Tông Chủ làm Đại Điện Tông Môn.
+ *   - Hỗ trợ lệnh /tutien tongmon sethome để Tông Chủ dời vị trí truyền tống.
+ *   - Kiểm tra mặt đất an toàn trước khi dịch chuyển thành viên về Tông Môn (chống rơi xuống Void).
  */
 public class TongMonManager {
 
@@ -23,9 +29,8 @@ public class TongMonManager {
     private final File file;
     private FileConfiguration config;
 
-    // Lưu trữ thông tin Tông môn: UUID Chủ Tông -> Dữ liệu Tông Môn
     private final Map<UUID, TongMonInfo> tongMonMap = new HashMap<>();
-    private int tongMonCount = 0; // Đếm số lượng tông môn để tính toán tọa độ đất trống
+    private int tongMonCount = 0;
 
     public TongMonManager(TuTienPlugin plugin) {
         this.plugin = plugin;
@@ -37,8 +42,7 @@ public class TongMonManager {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
         }
         config = YamlConfiguration.loadConfiguration(file);
         tongMonMap.clear();
@@ -51,14 +55,14 @@ public class TongMonManager {
                 String path = "Sects." + uuidStr;
                 String name = config.getString(path + ".Name");
                 int cx = config.getInt(path + ".CenterX");
+                int cy = config.getInt(path + ".CenterY", 100);
                 int cz = config.getInt(path + ".CenterZ");
-                int radius = config.getInt(path + ".Radius");
+                int radius = config.getInt(path + ".Radius", 25);
                 String worldName = config.getString(path + ".World");
 
-                TongMonInfo info = new TongMonInfo(name, cx, cz, radius, worldName);
+                TongMonInfo info = new TongMonInfo(name, cx, cy, cz, radius, worldName);
                 info.taiNguyen = config.getInt(path + ".TaiNguyen", 0);
 
-                // Nạp danh sách thành viên
                 if (config.contains(path + ".Members")) {
                     for (String memberStr : config.getConfigurationSection(path + ".Members").getKeys(false)) {
                         info.members.put(UUID.fromString(memberStr), config.getString(path + ".Members." + memberStr));
@@ -71,7 +75,7 @@ public class TongMonManager {
 
     public void saveData() {
         config.set("TongMonCount", tongMonCount);
-        config.set("Sects", null); // Xóa dữ liệu cũ để ghi đè dữ liệu mới cho an toàn
+        config.set("Sects", null);
 
         for (Map.Entry<UUID, TongMonInfo> entry : tongMonMap.entrySet()) {
             String path = "Sects." + entry.getKey().toString();
@@ -79,12 +83,12 @@ public class TongMonManager {
 
             config.set(path + ".Name", info.name);
             config.set(path + ".CenterX", info.centerX);
+            config.set(path + ".CenterY", info.centerY);
             config.set(path + ".CenterZ", info.centerZ);
             config.set(path + ".Radius", info.radius);
             config.set(path + ".World", info.world);
             config.set(path + ".TaiNguyen", info.taiNguyen);
 
-            // Lưu thành viên
             for (Map.Entry<UUID, String> member : info.members.entrySet()) {
                 config.set(path + ".Members." + member.getKey().toString(), member.getValue());
             }
@@ -97,19 +101,30 @@ public class TongMonManager {
         }
     }
 
-    // Đổi tên hàm từ saveTongMon thành createTongMon cho chuẩn logic
     public void createTongMon(Player owner, String tenTongMon, int cx, int cz, int radius) {
-        TongMonInfo info = new TongMonInfo(tenTongMon, cx, cz, radius, owner.getWorld().getName());
-
-        // Người tạo mặc định là TÔNG CHỦ
+        int cy = owner.getLocation().getBlockY();
+        TongMonInfo info = new TongMonInfo(tenTongMon, cx, cy, cz, radius, owner.getWorld().getName());
         info.members.put(owner.getUniqueId(), "TONG_CHU");
 
         tongMonMap.put(owner.getUniqueId(), info);
         tongMonCount++;
-        saveData(); // Lưu ngay lập tức
+        saveData();
     }
 
-    // Thêm đệ tử vào tông môn
+    /**
+     * Cập nhật lại điểm truyền tống Tông Môn tại vị trí hiện tại của Tông Chủ.
+     */
+    public boolean setTongMonHome(Player owner, Location loc) {
+        TongMonInfo info = tongMonMap.get(owner.getUniqueId());
+        if (info == null || loc.getWorld() == null) return false;
+        info.centerX = loc.getBlockX();
+        info.centerY = loc.getBlockY();
+        info.centerZ = loc.getBlockZ();
+        info.world = loc.getWorld().getName();
+        saveData();
+        return true;
+    }
+
     public boolean addMember(UUID tongMonId, Player target, String role) {
         if (tongMonMap.containsKey(tongMonId)) {
             tongMonMap.get(tongMonId).members.put(target.getUniqueId(), role);
@@ -119,7 +134,6 @@ public class TongMonManager {
         return false;
     }
 
-    // Đuổi đệ tử hoặc đệ tử tự rời đi
     public boolean removeMember(UUID tongMonId, Player target) {
         if (tongMonMap.containsKey(tongMonId)) {
             tongMonMap.get(tongMonId).members.remove(target.getUniqueId());
@@ -129,17 +143,15 @@ public class TongMonManager {
         return false;
     }
 
-    // Lấy ID (UUID của chủ tông) của Tông Môn mà người chơi này đang tham gia
     public UUID getTongMonIdOfPlayer(Player player) {
         for (Map.Entry<UUID, TongMonInfo> entry : tongMonMap.entrySet()) {
             if (entry.getValue().members.containsKey(player.getUniqueId())) {
                 return entry.getKey();
             }
         }
-        return null; // Không thuộc tông môn nào
+        return null;
     }
 
-    // Kiểm tra xem đã tạo tông môn (làm Tông Chủ) chưa
     public boolean hasTongMon(Player player) {
         return tongMonMap.containsKey(player.getUniqueId());
     }
@@ -148,7 +160,6 @@ public class TongMonManager {
         return tongMonCount;
     }
 
-    // Quản lý tài nguyên Tông Môn
     public void addTaiNguyen(UUID tongMonId, int amount) {
         if (tongMonMap.containsKey(tongMonId)) {
             tongMonMap.get(tongMonId).taiNguyen += amount;
@@ -156,41 +167,43 @@ public class TongMonManager {
         }
     }
 
-    // [QUAN TRỌNG] Lấy tọa độ an toàn để truyền tống về Tông Môn (Hỗ trợ lệnh
-    // /tutien tongmon ve)
+    /**
+     * Lấy tọa độ an toàn để truyền tống về Tông Môn trên Skyblock (không rơi xuống Void).
+     */
     public Location getTongMonLocation(UUID tongMonId) {
         if (tongMonMap.containsKey(tongMonId)) {
             TongMonInfo info = tongMonMap.get(tongMonId);
-            org.bukkit.World world = Bukkit.getWorld(info.world);
+            World world = Bukkit.getWorld(info.world);
             if (world != null) {
-                // Lấy block cao nhất để tránh bị kẹt trong lòng đất
+                Block ground = world.getBlockAt(info.centerX, info.centerY - 1, info.centerZ);
+                if (ground.getType().isSolid()) {
+                    return new Location(world, info.centerX + 0.5, info.centerY, info.centerZ + 0.5);
+                }
                 int highestY = world.getHighestBlockYAt(info.centerX, info.centerZ);
-                return new Location(world, info.centerX + 0.5, highestY + 1, info.centerZ + 0.5);
+                if (highestY > world.getMinHeight()) {
+                    return new Location(world, info.centerX + 0.5, highestY + 1, info.centerZ + 0.5);
+                }
             }
         }
         return null;
     }
 
-    // Hàm kiểm tra xem một block có nằm trong vùng đất của ai không
     public UUID checkKhongChoPhepTuongTac(Location loc, Player player) {
         for (Map.Entry<UUID, TongMonInfo> entry : tongMonMap.entrySet()) {
             TongMonInfo info = entry.getValue();
-            if (!loc.getWorld().getName().equals(info.world))
+            if (loc.getWorld() == null || !loc.getWorld().getName().equals(info.world))
                 continue;
 
-            // Kiểm tra ranh giới
             if (Math.abs(loc.getBlockX() - info.centerX) <= info.radius &&
                     Math.abs(loc.getBlockZ() - info.centerZ) <= info.radius) {
-
-                // Nếu người đập ĐANG NẰM TRONG DANH SÁCH THÀNH VIÊN -> Cho phép đập phá
                 if (info.members.containsKey(player.getUniqueId())) {
                     return null;
                 } else {
-                    return entry.getKey(); // Báo lỗi: Đây là đất của Tông Môn khác
+                    return entry.getKey();
                 }
             }
         }
-        return null; // Đất vô chủ, tự do tương tác
+        return null;
     }
 
     public String getTenTongMon(UUID owner) {
@@ -200,19 +213,20 @@ public class TongMonManager {
         return "Vô Danh Tông";
     }
 
-    // Class nội bộ lưu dữ liệu bao gồm cả thành viên và tài nguyên
     private static class TongMonInfo {
         String name;
         int centerX;
+        int centerY;
         int centerZ;
         int radius;
         String world;
-        int taiNguyen; // Kho bạc tông môn
-        Map<UUID, String> members; // UUID -> Chức vụ (Ví dụ: TONG_CHU, TRUONG_LAO, DE_TU)
+        int taiNguyen;
+        Map<UUID, String> members;
 
-        TongMonInfo(String name, int cx, int cz, int radius, String world) {
+        TongMonInfo(String name, int cx, int cy, int cz, int radius, String world) {
             this.name = name;
             this.centerX = cx;
+            this.centerY = cy;
             this.centerZ = cz;
             this.radius = radius;
             this.world = world;

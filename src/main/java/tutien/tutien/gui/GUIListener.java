@@ -1,5 +1,6 @@
 package tutien.tutien.gui;
 
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,63 +9,55 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import tutien.core.TuTienPlugin;
 
 /**
- * Lớp xử lý khi người chơi bấm vào các nút trong Giao Diện.
- * Đã cập nhật: Sử dụng gọi hàm Static để mở Vạn Giới Các, sửa lỗi missing method trong Plugin.
+ * Lớp xử lý khi người chơi bấm vào các nút trong Giao Diện Chính (MainMenu 54 ô).
  */
 public class GUIListener implements Listener {
 
     private final TuTienPlugin plugin;
 
-    // Khởi tạo và nhận tham chiếu từ lớp chính
     public GUIListener(TuTienPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // Lấy tên Menu từ config.yml (có giá trị mặc định nếu chưa chỉnh)
-        String menuTitle = plugin.getConfig().getString("Menu.MainMenu.Title", "§8§lHệ Thống Tu Tiên");
+        String menuTitle = plugin.getConfig().getString("Menu.MainMenu.Title", MainMenu.GUI_TITLE);
 
-        // Kiểm tra đúng tên Menu
         if (event.getView().getTitle().equals(menuTitle)) {
-            event.setCancelled(true); // Ngăn không cho người chơi lấy đồ ra ngoài
+            event.setCancelled(true);
 
             if (event.getCurrentItem() == null) return;
-            Player player = (Player) event.getWhoClicked();
+            if (!(event.getWhoClicked() instanceof Player player)) return;
 
             int slot = event.getRawSlot();
+            if (slot >= 54) return;
 
-            // Lấy vị trí các nút từ config.yml để linh hoạt chỉnh sửa
-            int infoSlot = plugin.getConfig().getInt("Menu.MainMenu.Items.ThongTin.Slot", 10);
-            int rewardSlot = plugin.getConfig().getInt("Menu.MainMenu.Items.DoiThuong.Slot", 12);
-            int shopSlot = plugin.getConfig().getInt("Menu.MainMenu.Items.CuaHang.Slot", 14);
-            int flySlot = plugin.getConfig().getInt("Menu.MainMenu.Items.NguKiem.Slot", 16);
-
-            if (slot == infoSlot) { // --- Nút Thông Tin ---
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.0f);
-            }
-            else if (slot == rewardSlot) { // --- Nút Đổi Thưởng ---
-                if (event.getCurrentItem().getType() == org.bukkit.Material.BARRIER) {
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                } else {
-                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
-                    String msg = plugin.getConfig().getString("Messages.DoiThuong", "§b[Hệ Thống] Giao diện đổi thưởng đang được thiết kế!");
-                    player.sendMessage(msg);
+            switch (slot) {
+                case 4 -> player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.2f);
+                case 10 -> {
                     player.closeInventory();
+                    player.performCommand("tutien tuluyen");
                 }
-            }
-            else if (slot == shopSlot) { // --- Nút Cửa Hàng (Vạn Giới Các) - MỞ CỬA TỰ DO ---
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1.0f, 1.0f);
-                VanGioiCacGUI.open(player);
-            }
-            else if (slot == flySlot) { // --- Nút Ngự Kiếm Phi Hành ---
-                if (event.getCurrentItem().getType() == org.bukkit.Material.BARRIER) {
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                } else {
-                    player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1.0f, 1.5f);
-                    player.closeInventory();
-                    player.performCommand("tutien ngukiem");
+                case 12 -> DotPhaGUI.open(player, plugin);
+                case 14 -> LuyenDanGUI.open(player, plugin.getPlayerDataManager());
+                case 16 -> CheGUI.open(player, plugin.getPlayerDataManager(), plugin.getCheManager());
+                case 19 -> VanGioiCacGUI.open(player);
+                case 21 -> KhoangThachGUI.open(player, plugin.getPlayerDataManager());
+                case 23 -> GachaGUI.open(player, plugin.getPlayerDataManager(), plugin.getGachaGUI());
+                case 25 -> BeQuanShopGUI.open(player, plugin.getPlayerDataManager());
+                case 28 -> LinhThuVienGUI.open(player, plugin.getPlayerDataManager(), plugin.getLinhThuVienManager());
+                case 30 -> NhiemVuGUI.open(player, plugin.getNhiemVuManager());
+                case 32 -> TuiDoGUI.open(player, plugin.getTuiDoManager());
+                case 34 -> {
+                    if (event.getCurrentItem().getType() == Material.BARRIER) {
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    } else {
+                        player.closeInventory();
+                        player.performCommand("tutien ngukiem");
+                    }
                 }
+                case 39, 40 -> XepHangGUI.open(player, plugin);
+                case 41 -> ChonHeGUI.open(player, plugin.getPlayerDataManager());
             }
         }
     }

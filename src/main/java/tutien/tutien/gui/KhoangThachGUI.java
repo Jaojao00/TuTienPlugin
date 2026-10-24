@@ -140,17 +140,25 @@ public class KhoangThachGUI implements Listener {
 
     private static int countMaterial(Player player, Material mat) {
         int count = 0;
-        for (ItemStack is : player.getInventory().getContents())
-            if (is != null && is.getType() == mat) count += is.getAmount();
+        for (ItemStack is : player.getInventory().getContents()) {
+            if (is != null && is.getType() == mat && tutien.core.ItemKeys.isValidRawMaterial(is)) {
+                count += is.getAmount();
+            }
+        }
         return count;
     }
 
     private static void removeMaterial(Player player, Material mat, int amount) {
         int toRemove = amount;
         for (ItemStack is : player.getInventory().getContents()) {
-            if (is == null || is.getType() != mat) continue;
-            if (is.getAmount() > toRemove) { is.setAmount(is.getAmount() - toRemove); return; }
-            else { toRemove -= is.getAmount(); is.setAmount(0); }
+            if (is == null || is.getType() != mat || !tutien.core.ItemKeys.isValidRawMaterial(is)) continue;
+            if (is.getAmount() > toRemove) {
+                is.setAmount(is.getAmount() - toRemove);
+                return;
+            } else {
+                toRemove -= is.getAmount();
+                is.setAmount(0);
+            }
             if (toRemove <= 0) return;
         }
     }

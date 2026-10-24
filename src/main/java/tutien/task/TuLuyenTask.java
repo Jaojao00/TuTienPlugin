@@ -7,14 +7,25 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import tutien.combat.StatsManager;
 import tutien.core.CanhGioi;
 import tutien.core.HeTuLuyen;
 import tutien.core.LinhCan;
 import tutien.core.PlayerDataManager;
+import tutien.core.TuTienPlugin;
+import tutien.quest.NhiemVuManager;
+import tutien.tutien.gui.GachaGUI;
+import tutien.tutien.gui.LuyenDanGUI;
+
+import java.util.Set;
 
 /**
  * Task chạy mỗi 1 giây (20 ticks).
- * SPRINT 1+2: Tối ưu, thêm Song Tu, Pháp Tu Linh Lực, Bế Quan điểm.
+ * v2.2 Skyblock Edition:
+ *   - Tích hợp Song Tu (+15% Tu Vi), Pháp Tu (+30% Linh Lực), Điểm Bế Quan (1 phút/điểm).
+ *   - Tích hợp Linh Thú AFK Bonus: Thanh Lang Vũ (+10% Tu Vi), Thiên Phượng (+50% Tu Vi).
+ *   - Tích hợp Phụ Kiện Hộ Mệnh (+3% Tu Vi mỗi bậc).
+ *   - Tích hợp Tự Động Luyện Đan (Auto-Alchemy): Mỗi 5 giây tự động luyện 1 mẻ của loại đan vừa chọn!
  */
 public class TuLuyenTask extends BukkitRunnable {
 
@@ -31,14 +42,23 @@ public class TuLuyenTask extends BukkitRunnable {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
 
+            // === TỰ ĐỘNG LUYỆN ĐAN (mỗi 5 giây) ===
+            if (tickCount % 5 == 0 && dataManager.isAutoLuyenDan(player)) {
+                String lastPillKey = dataManager.getLastSelectedPill(player);
+                LuyenDanGUI.DanDuocData pill = LuyenDanGUI.findPillByKey(lastPillKey);
+                if (pill != null) {
+                    LuyenDanGUI.craftPillBatch(player, dataManager, pill, 1, true);
+                }
+            }
+
             boolean isMeditating = dataManager.isDangTuLuyen(player);
 
             // === BẾ QUAN ĐIỂM & NHIỆM VỤ: mỗi phút (60 ticks) cộng 1 điểm nếu đang tọa thiền ===
             if (isMeditating && tickCount % 60 == 0) {
                 dataManager.addBeQuanDiem(player, 1);
-                tutien.core.TuTienPlugin plugin = tutien.core.TuTienPlugin.getPlugin(tutien.core.TuTienPlugin.class);
+                TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
                 if (plugin.getNhiemVuManager() != null) {
-                    plugin.getNhiemVuManager().addProgress(player, tutien.quest.NhiemVuManager.NhiemVu.TU_LUYEN, 1);
+                    plugin.getNhiemVuManager().addProgress(player, NhiemVuManager.NhiemVu.TU_LUYEN, 1);
                 }
             }
 
@@ -67,7 +87,7 @@ public class TuLuyenTask extends BukkitRunnable {
                 long nearbyMeditating = player.getNearbyEntities(10, 10, 10).stream()
                     .filter(e -> e instanceof Player)
                     .map(e -> (Player) e)
-                    .filter(other -> dataManager.isDangTuLuyen(other))
+                    .filter(other -> other != player && dataManager.isDangTuLuyen(other))
                     .count();
                 if (nearbyMeditating > 0) {
                     songTuBonus = 1.15;
@@ -75,22 +95,36 @@ public class TuLuyenTask extends BukkitRunnable {
             }
 
             // =====================
+            // LINH THÚ & PHỤ KIỆN BONUS AFK
+            // =====================
+            double petBonus = 1.0;
+            Set<GachaGUI.LinhThu> pets = StatsManager.getActivePets(player);
+            if (pets.contains(GachaGUI.LinhThu.THIEN_PHUONG)) {
+                petBonus += 0.50;
+            } else if (pets.contains(GachaGUI.LinhThu.THANH_LANG)) {
+                petBonus += 0.10;
+            }
+
+            int accessoryTier = StatsManager.getBestAccessoryTier(player);
+            double accessoryBonus = 1.0 + (accessoryTier * 0.03);
+
+            // =====================
             // TÍNH TU VI & LINH LỰC
             // =====================
             int baseTuVi = 2;
-            int finalTuVi = (int) (baseTuVi * linhCan.getTocDo() * vipMultiplier * songTuBonus);
+            int finalTuVi = Math.max(1, (int) Math.round(
+                    baseTuVi * linhCan.getTocDo() * vipMultiplier * songTuBonus * petBonus * accessoryBonus));
 
             int baseLinhLuc = 5;
             int heSoCanhGioi = cg.ordinal() + 1;
-            int linhLucNhanDuoc = (int) (baseLinhLuc * linhCan.getTocDo() * heSoCanhGioi * vipMultiplier);
+            int linhLucNhanDuoc = (int) Math.round(baseLinhLuc * linhCan.getTocDo() * heSoCanhGioi * vipMultiplier);
 
-            // Pháp Tu: giới hạn Linh Lực cao hơn 30%
             int maxLinhLuc = dataManager.getMaxLinhLucEffective(player);
 
             // =====================
             // CẬP NHẬT
             // =====================
-            dataManager.setTuVi(player, dataManager.getTuVi(player) + finalTuVi);
+            dataManager.addTuVi(player, finalTuVi);
 
             int newLinhLuc = Math.min(maxLinhLuc, dataManager.getLinhLuc(player) + linhLucNhanDuoc);
             dataManager.setLinhLuc(player, newLinhLuc);
@@ -99,13 +133,14 @@ public class TuLuyenTask extends BukkitRunnable {
             // HIỂN THỊ ACTION BAR
             // =====================
             String songTuIcon = (songTuBonus > 1.0) ? "§d♥ " : "";
-            String actionBarMsg = vipPrefix + songTuIcon + "§d§l[TỌA THIỀN] §fTu vi: §e+" + finalTuVi
+            String petIcon = (petBonus > 1.0) ? "§b🐾 " : "";
+            String actionBarMsg = vipPrefix + songTuIcon + petIcon + "§d§l[TỌA THIỀN] §fTu vi: §e+" + finalTuVi
                 + " §f| Linh lực: §b+" + linhLucNhanDuoc
                 + " §f| Bế quan: §6" + dataManager.getBeQuanDiem(player);
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionBarMsg));
 
-            // Hiệu ứng hạt (không spam quá nhiều)
-            if (tickCount % 2 == 0) { // Mỗi 2 giây thay vì mỗi giây
+            // Hiệu ứng hạt mỗi 2 giây
+            if (tickCount % 2 == 0) {
                 Location loc = player.getLocation().add(0, 1, 0);
                 int particleCount = (vipMultiplier > 1.0) ? 15 : 6;
                 player.getWorld().spawnParticle(Particle.ENCHANT, loc, particleCount, 0.5, 0.5, 0.5, 0.1);

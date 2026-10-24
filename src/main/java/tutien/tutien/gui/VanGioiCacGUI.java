@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import tutien.core.CanhGioi;
 import tutien.core.EconomyManager;
+import tutien.core.ItemKeys;
 import tutien.core.PlayerDataManager;
 import tutien.core.TuTienPlugin;
 
@@ -23,16 +24,16 @@ import java.util.*;
 
 /**
  * Vạn Giới Các - Cửa hàng Tu Tiên (DATA-DRIVEN từ VanGioiCacGUI.yml)
- * Hỗ trợ: Vault Economy, phân khu nguyên liệu + đan dược, giới hạn cảnh giới.
+ * v2.2 Skyblock Edition:
+ * - Gắn PersistentDataContainer (ItemKeys) cho Nguyên Liệu và Đan Dược mua từ Shop.
+ * - Đan Dược mua từ Vạn Giới Các có thể bấm Chuột Phải ăn hoặc dùng để Đột Phá.
+ * - Phát vật phẩm an toàn không mất khi đầy túi.
  */
 public class VanGioiCacGUI implements Listener {
 
     private static FileConfiguration shopConfig;
     private static String MAIN_TITLE;
 
-    /**
-     * Nạp cấu hình từ file VanGioiCacGUI.yml
-     */
     public static void loadConfig(TuTienPlugin plugin) {
         File file = new File(plugin.getDataFolder(), "VanGioiCacGUI.yml");
         if (!file.exists()) plugin.saveResource("VanGioiCacGUI.yml", false);
@@ -40,9 +41,6 @@ public class VanGioiCacGUI implements Listener {
         MAIN_TITLE = shopConfig.getString("MainTitle", "§0§l⛩ Vạn Giới Các ⛩");
     }
 
-    /**
-     * Mở menu chính - chọn phân khu
-     */
     public static void open(Player player) {
         if (shopConfig == null) {
             player.sendMessage("§c[Vạn Giới Các] Cấu hình chưa được nạp!");
@@ -70,7 +68,7 @@ public class VanGioiCacGUI implements Listener {
             inv.setItem(slot, item);
         }
 
-        // v2.1: Nút Đổi Khoáng Thạch (slot 23)
+        // Nút Đổi Khoáng Thạch (slot 23)
         ItemStack ktItem = new ItemStack(Material.RAW_GOLD);
         ItemMeta ktMeta = ktItem.getItemMeta();
         ktMeta.setDisplayName("§6§l⛏ Đổi Khoáng Thạch");
@@ -88,9 +86,6 @@ public class VanGioiCacGUI implements Listener {
         player.openInventory(inv);
     }
 
-    /**
-     * Mở cửa hàng con theo phân khu
-     */
     public static void openSubShop(Player player, String categoryKey) {
         ConfigurationSection cat = shopConfig.getConfigurationSection("PhanKhu." + categoryKey);
         if (cat == null) return;
@@ -98,14 +93,12 @@ public class VanGioiCacGUI implements Listener {
         String title = cat.getString("Title", "§0VGC: " + categoryKey);
         Inventory inv = Bukkit.createInventory(null, 54, title);
 
-        // Nút quay lại
         ItemStack back = new ItemStack(Material.ARROW);
         ItemMeta bm = back.getItemMeta();
         bm.setDisplayName("§c§lQuay Lại");
         back.setItemMeta(bm);
         inv.setItem(49, back);
 
-        // Hiển thị số dư
         TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
         EconomyManager eco = plugin.getEconomyManager();
         ItemStack balanceItem = new ItemStack(Material.SUNFLOWER);
@@ -119,7 +112,6 @@ public class VanGioiCacGUI implements Listener {
         balanceItem.setItemMeta(balMeta);
         inv.setItem(45, balanceItem);
 
-        // Đổ vật phẩm
         ConfigurationSection items = cat.getConfigurationSection("Items");
         if (items != null) {
             int slotIndex = 0;
@@ -145,7 +137,7 @@ public class VanGioiCacGUI implements Listener {
 
                 List<String> lore = new ArrayList<>(itemSec.getStringList("Lore"));
                 lore.add("");
-                lore.add("§7Giá: §a" + price + " " + currencyName);
+                lore.add("§7Giá: §a" + eco.formatMoney(price) + " " + currencyName);
                 lore.add("§7Số lượng: §f" + amount);
                 try {
                     CanhGioi req = CanhGioi.valueOf(canhGioiStr);
@@ -157,6 +149,7 @@ public class VanGioiCacGUI implements Listener {
                 lore.add("§e[!] Nhấp để mua");
 
                 meta.setLore(lore);
+                ItemKeys.markItem(meta, "SHOP_ENTRY", itemKey);
                 shopItem.setItemMeta(meta);
                 inv.setItem(slots[slotIndex], shopItem);
                 slotIndex++;
@@ -167,9 +160,6 @@ public class VanGioiCacGUI implements Listener {
         player.openInventory(inv);
     }
 
-    /**
-     * Tìm key phân khu từ tên icon được click
-     */
     private static String findCategoryKeyByIconName(String iconName) {
         ConfigurationSection categories = shopConfig.getConfigurationSection("PhanKhu");
         if (categories == null) return null;
@@ -180,9 +170,6 @@ public class VanGioiCacGUI implements Listener {
         return null;
     }
 
-    /**
-     * Tìm dữ liệu item từ tên hiển thị trong phân khu
-     */
     private static ConfigurationSection findItemByName(String categoryKey, String displayName) {
         ConfigurationSection items = shopConfig.getConfigurationSection("PhanKhu." + categoryKey + ".Items");
         if (items == null) return null;
@@ -193,9 +180,6 @@ public class VanGioiCacGUI implements Listener {
         return null;
     }
 
-    /**
-     * Tìm key phân khu từ title cửa hàng con
-     */
     private static String findCategoryKeyByTitle(String title) {
         ConfigurationSection categories = shopConfig.getConfigurationSection("PhanKhu");
         if (categories == null) return null;
@@ -221,9 +205,7 @@ public class VanGioiCacGUI implements Listener {
         ItemStack clicked = event.getCurrentItem();
         if (clicked == null || !clicked.hasItemMeta()) return;
 
-        // Menu chính → mở phân khu hoặc Khoáng Thạch
         if (isMain) {
-            // v2.1: Click nút Đổi Khoáng Thạch
             if (clicked.getType() == Material.RAW_GOLD) {
                 TuTienPlugin p = TuTienPlugin.getPlugin(TuTienPlugin.class);
                 KhoangThachGUI.open(player, p.getPlayerDataManager());
@@ -239,17 +221,14 @@ public class VanGioiCacGUI implements Listener {
             return;
         }
 
-        // Nút quay lại
         if (clicked.getType() == Material.ARROW) {
             open(player);
             return;
         }
 
-        // Bỏ qua nút số dư & kính
         if (clicked.getType() == Material.SUNFLOWER) return;
         if (clicked.getType().name().contains("STAINED_GLASS_PANE")) return;
 
-        // Mua hàng
         String itemName = clicked.getItemMeta().getDisplayName();
         ConfigurationSection itemData = findItemByName(catKey, itemName);
         if (itemData == null) return;
@@ -258,7 +237,6 @@ public class VanGioiCacGUI implements Listener {
         int amount = itemData.getInt("Amount", 1);
         String canhGioiStr = itemData.getString("CanhGioiMin", "PHAM_NHAN");
 
-        // Kiểm tra cảnh giới
         TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
         PlayerDataManager data = plugin.getPlayerDataManager();
         EconomyManager eco = plugin.getEconomyManager();
@@ -273,7 +251,6 @@ public class VanGioiCacGUI implements Listener {
             }
         } catch (Exception ignored) {}
 
-        // Kiểm tra Vault
         if (!eco.isVaultEnabled()) {
             player.sendMessage("§c[Vạn Giới Các] §fHệ thống kinh tế chưa sẵn sàng!");
             return;
@@ -282,20 +259,37 @@ public class VanGioiCacGUI implements Listener {
         if (eco.hasMoney(player, price)) {
             eco.takeMoney(player, price);
 
-            // Tạo vật phẩm sạch (không kèm lore giá cả)
-            Material mat = Material.matchMaterial(itemData.getString("Material", "STONE"));
-            if (mat == null) mat = Material.STONE;
-            ItemStack bought = new ItemStack(mat, amount);
-            ItemMeta meta = bought.getItemMeta();
-            meta.setDisplayName(itemName);
-            List<String> originalLore = itemData.getStringList("Lore");
-            if (!originalLore.isEmpty()) meta.setLore(originalLore);
-            bought.setItemMeta(meta);
+            String pillKey = itemData.getString("PillKey", null);
+            LuyenDanGUI.DanDuocData pillData = pillKey != null
+                    ? LuyenDanGUI.findPillByKey(pillKey)
+                    : LuyenDanGUI.findPillByName(itemName);
 
-            player.getInventory().addItem(bought);
+            ItemStack bought;
+            if (pillData != null) {
+                // Nếu là Đan Dược có trong danduoc.yml -> tạo bằng createPillItem chuẩn có PDC
+                bought = LuyenDanGUI.createPillItem(pillData);
+                bought.setAmount(amount);
+            } else {
+                Material mat = Material.matchMaterial(itemData.getString("Material", "STONE"));
+                if (mat == null) mat = Material.STONE;
+                bought = new ItemStack(mat, amount);
+                ItemMeta meta = bought.getItemMeta();
+                meta.setDisplayName(itemName);
+                List<String> originalLore = itemData.getStringList("Lore");
+                if (!originalLore.isEmpty()) meta.setLore(originalLore);
+                if ("NguyenLieu".equalsIgnoreCase(catKey)) {
+                    ItemKeys.markItem(meta, ItemKeys.TYPE_INGREDIENT, mat.name().toLowerCase());
+                } else {
+                    ItemKeys.markItem(meta, ItemKeys.TYPE_PILL, itemData.getName());
+                }
+                bought.setItemMeta(meta);
+            }
+
+            ItemKeys.giveItemSafe(player, bought);
             player.sendMessage("§a[Vạn Giới Các] §fMua thành công §e" + itemName + " §fx" + amount + " §f(§c-" + eco.formatMoney(price) + "§f)");
             player.sendMessage("§7Số dư: §a" + eco.formatMoney(eco.getBalance(player)));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 2f);
+            openSubShop(player, catKey);
         } else {
             player.sendMessage("§c[Vạn Giới Các] §fKhông đủ tiền! Cần §e" + eco.formatMoney(price) + " §f- Có: §e" + eco.formatMoney(eco.getBalance(player)));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);

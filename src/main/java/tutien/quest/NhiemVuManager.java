@@ -1,5 +1,6 @@
 package tutien.quest;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import tutien.core.PlayerDataManager;
 
@@ -7,16 +8,19 @@ import java.util.*;
 
 /**
  * Quản lý hệ thống nhiệm vụ hàng ngày.
- * SPRINT 3: Daily Quest giúp người chơi duy trì engagement hàng ngày.
+ * v2.2 Skyblock Edition:
+ *   - Thêm nhiệm vụ "Khai Thác Linh Khoáng" (Đào đá/quặng tại máy Generator Skyblock).
+ *   - Thưởng thêm Đạo Niệm và Khoáng Thạch khi hoàn thành nhiệm vụ hàng ngày.
  */
 public class NhiemVuManager {
 
     public enum NhiemVu {
-        TU_LUYEN("Tu Luyện Cơ Bản",    "§7Tọa thiền §e30 phút §7liên tục",       30,  1,  "beqDiem"),
-        LUYEN_DAN("Thợ Luyện Đan",       "§7Luyện §e20 viên đan §7trong ngày",      20,  2,  "danCount"),
-        CHE_TAC("Rèn Trang Bị",          "§7Chế tác §e5 món trang bị",               5,  3,  "cheCount"),
-        XAY_DUNG("Tu Bổ Tông Môn",       "§7Đặt §e30 khối §7trong Tông Môn",       30,  1,  "buildCount"),
-        DANH_QUAI("Hàng Ngày Giết Quái", "§7Tiêu diệt §e50 quái vật §7bất kỳ",     50,  2,  "killCount");
+        TU_LUYEN ("Tu Luyện Cơ Bản",     "§7Tọa thiền §e30 phút §7trong ngày",       30,  1, "beqDiem"),
+        LUYEN_DAN("Thợ Luyện Đan",        "§7Luyện §e20 viên đan §7trong ngày",       20,  2, "danCount"),
+        CHE_TAC  ("Rèn Trang Bị",         "§7Chế tác §e5 món trang bị",               5,   3, "cheCount"),
+        XAY_DUNG ("Kiến Thiết Đảo Tiên",  "§7Đặt §e30 khối §7trên đảo / Tông Môn",   30,  1, "buildCount"),
+        DANH_QUAI("Trừ Ma Vệ Đạo",        "§7Tiêu diệt §e50 quái vật §7bất kỳ",      50,  2, "killCount"),
+        KHAI_MO  ("Khai Thác Linh Khoáng","§7Đào §e100 khối đá/quặng §7tại Generator", 100, 2, "mineCount");
 
         public final String tenHienThi;
         public final String moTa;
@@ -25,12 +29,14 @@ public class NhiemVuManager {
         public final String trackKey;
 
         NhiemVu(String ten, String moTa, int mucTieu, int mult, String key) {
-            this.tenHienThi = ten; this.moTa = moTa; this.mucTieu = mucTieu;
-            this.rewardMultiplier = mult; this.trackKey = key;
+            this.tenHienThi = ten;
+            this.moTa = moTa;
+            this.mucTieu = mucTieu;
+            this.rewardMultiplier = mult;
+            this.trackKey = key;
         }
     }
 
-    // Lưu tiến độ nhiệm vụ hàng ngày: UUID -> (NhiemVu -> progress)
     private final Map<UUID, Map<NhiemVu, Integer>> progress = new HashMap<>();
     private final Map<UUID, Set<NhiemVu>> completed = new HashMap<>();
     private final Map<UUID, Long> lastResetDate = new HashMap<>();
@@ -47,7 +53,6 @@ public class NhiemVuManager {
         completed.computeIfAbsent(uuid, k -> new HashSet<>());
     }
 
-    /** Reset nhiệm vụ nếu sang ngày mới */
     private void checkReset(UUID uuid) {
         long today = getTodayDay();
         if (lastResetDate.getOrDefault(uuid, 0L) < today) {
@@ -58,14 +63,13 @@ public class NhiemVuManager {
     }
 
     private long getTodayDay() {
-        return System.currentTimeMillis() / (1000 * 60 * 60 * 24);
+        return System.currentTimeMillis() / (1000L * 60 * 60 * 24);
     }
 
-    /** Tăng tiến độ nhiệm vụ */
     public void addProgress(Player player, NhiemVu nv, int amount) {
         UUID uuid = player.getUniqueId();
         initPlayer(uuid);
-        if (completed.get(uuid).contains(nv)) return; // Đã xong
+        if (completed.get(uuid).contains(nv)) return;
 
         Map<NhiemVu, Integer> prog = progress.get(uuid);
         int current = prog.getOrDefault(nv, 0) + amount;
@@ -78,14 +82,19 @@ public class NhiemVuManager {
     }
 
     private void giveReward(Player player, NhiemVu nv) {
-        // Thưởng Bế Quan điểm
-        dataManager.addBeQuanDiem(player, nv.rewardMultiplier * 50L);
-        // Thưởng Tu Vi
-        dataManager.addTuVi(player, nv.rewardMultiplier * 200);
+        long bqReward = nv.rewardMultiplier * 50L;
+        int tuViReward = nv.rewardMultiplier * 200;
+        long daoNiemReward = nv.rewardMultiplier * 5L;
+        long khoangThachReward = nv.rewardMultiplier * 2L;
+
+        dataManager.addBeQuanDiem(player, bqReward);
+        dataManager.addTuVi(player, tuViReward);
+        dataManager.addDaoNiem(player, daoNiemReward);
+        dataManager.addKhoangThach(player, khoangThachReward);
 
         player.sendMessage("§6§l[Nhiệm Vụ] §fHoàn thành: §e" + nv.tenHienThi + "§f!");
-        player.sendMessage("§7Phần thưởng: §e" + (nv.rewardMultiplier * 50) + " §7Điểm Bế Quan + §e" + (nv.rewardMultiplier * 200) + " §7Tu Vi");
-        player.playSound(player.getLocation(), org.bukkit.Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
+        player.sendMessage("§7Phần thưởng: §e+" + bqReward + " Điểm Bế Quan §7| §e+" + tuViReward + " Tu Vi §7| §b+" + daoNiemReward + " Đạo Niệm §7| §6+" + khoangThachReward + " Khoáng Thạch");
+        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
     }
 
     public int getProgress(Player player, NhiemVu nv) {
@@ -99,6 +108,8 @@ public class NhiemVuManager {
     }
 
     public void cleanupPlayer(UUID uuid) {
-        progress.remove(uuid); completed.remove(uuid); lastResetDate.remove(uuid);
+        progress.remove(uuid);
+        completed.remove(uuid);
+        lastResetDate.remove(uuid);
     }
 }

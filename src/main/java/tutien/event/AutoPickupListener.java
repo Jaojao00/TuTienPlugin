@@ -28,9 +28,8 @@ public class AutoPickupListener implements Listener {
         if (tuiDoManager.isAutoPickup(player)) {
             ItemStack item = event.getItem().getItemStack();
 
-            // Điều kiện để phân biệt Đồ Tu Tiên và Đồ Rác Vani (Đất, Đá):
-            // Đồ tu tiên chắc chắn sẽ có Tên Hiển Thị (DisplayName) hoặc Custom Model Data
-            if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+            // Chỉ tự động nhặt vật phẩm Tu Tiên chuẩn (có PDC hoặc Lore Tu Tiên), chống đổi tên Đất/Đá bằng Đe (Anvil) để farm tiền
+            if (tutien.core.ItemKeys.isTuTienItem(item)) {
                 int added = tuiDoManager.addItem(player, item, item.getAmount());
 
                 if (added > 0) {

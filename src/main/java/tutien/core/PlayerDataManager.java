@@ -1,53 +1,59 @@
 package tutien.core;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Lớp quản lý toàn bộ dữ liệu cốt lõi: Tu Vi, Cảnh Giới, Linh Căn, Linh Lực, Hệ Tu Luyện.
- * ĐÃ NÂNG CẤP: Thêm hệ thống Luyện Đan (cấp lò, số lần luyện, chỉ số đan dược vĩnh viễn).
+ * v2.2 Skyblock Edition:
+ * - Chuyển toàn bộ bộ nhớ đệm sang ConcurrentHashMap để an toàn đa luồng (Async AutoSave & Leaderboard).
+ * - Lưu trữ bền vững Cấp Lò Rèn, Số Lần Chế Tác, Pity Gacha và Đan Dược chọn tự động luyện.
+ * - Hỗ trợ lấy dữ liệu trực tiếp từ RAM cho người chơi đang Online khi tính Bảng Xếp Hạng.
  */
 public class PlayerDataManager {
 
     private final TuTienPlugin plugin;
 
-    // Các bản đồ (HashMap) lưu trữ dữ liệu trên RAM
-    private final HashMap<UUID, Integer> tuViMap = new HashMap<>();
-    private final HashMap<UUID, CanhGioi> canhGioiMap = new HashMap<>();
-    private final HashMap<UUID, LinhCan> linhCanMap = new HashMap<>();
-    private final HashMap<UUID, Integer> linhLucMap = new HashMap<>();
-    private final HashMap<UUID, HeTuLuyen> heTuLuyenMap = new HashMap<>();
+    // Các bản đồ (ConcurrentHashMap) lưu trữ dữ liệu trên RAM an toàn đa luồng
+    private final Map<UUID, Integer> tuViMap = new ConcurrentHashMap<>();
+    private final Map<UUID, CanhGioi> canhGioiMap = new ConcurrentHashMap<>();
+    private final Map<UUID, LinhCan> linhCanMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> linhLucMap = new ConcurrentHashMap<>();
+    private final Map<UUID, HeTuLuyen> heTuLuyenMap = new ConcurrentHashMap<>();
 
-    // [THÊM MỚI]: Quản lý trạng thái Tọa Thiền và Kho dược lực (Digestion Buffer)
-    private final HashMap<UUID, Boolean> tuLuyenMode = new HashMap<>();
-    private final HashMap<UUID, Integer> digestionBuffer = new HashMap<>();
-
-    // =============================================
-    // [HỆ THỐNG LUYỆN ĐAN] - Dữ liệu mới
-    // =============================================
-    private final HashMap<UUID, Integer> danLoCapDo = new HashMap<>();
-    private final HashMap<UUID, Integer> soLanLuyenDan = new HashMap<>();
-    private final HashMap<UUID, Double> bonusDamage = new HashMap<>();
-    private final HashMap<UUID, Double> bonusHealth = new HashMap<>();
-    private final HashMap<UUID, Integer> bonusTuVi = new HashMap<>();
-    private final HashMap<UUID, Boolean> autoLuyenDan = new HashMap<>();
-    private final HashMap<UUID, Boolean> autoUseDan = new HashMap<>();
+    // Quản lý trạng thái Tọa Thiền và Kho dược lực (Digestion Buffer)
+    private final Map<UUID, Boolean> tuLuyenMode = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> digestionBuffer = new ConcurrentHashMap<>();
 
     // =============================================
-    // [SPRINT 2] - Bế Quan điểm + Độ Kiếp cooldown
+    // [HỆ THỐNG LUYỆN ĐAN]
     // =============================================
-    private final HashMap<UUID, Long> beQuanDiem = new HashMap<>();      // Tổng điểm bế quan tích lũy
-    private final HashMap<UUID, Long> dokiepCooldown = new HashMap<>();   // Timestamp lần độ kiếp gần nhất
+    private final Map<UUID, Integer> danLoCapDo = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> soLanLuyenDan = new ConcurrentHashMap<>();
+    private final Map<UUID, Double> bonusDamage = new ConcurrentHashMap<>();
+    private final Map<UUID, Double> bonusHealth = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> bonusTuVi = new ConcurrentHashMap<>();
+    private final Map<UUID, Boolean> autoLuyenDan = new ConcurrentHashMap<>();
+    private final Map<UUID, Boolean> autoUseDan = new ConcurrentHashMap<>();
+    private final Map<UUID, String> lastSelectedPill = new ConcurrentHashMap<>();
 
-    // v2.1: Khoáng Thạch & Đạo Niệm (tiền tệ ảo)
-    private final HashMap<UUID, Long> khoangThachMap = new HashMap<>();
-    private final HashMap<UUID, Long> daoNiemMap = new HashMap<>();
+    // =============================================
+    // [SPRINT 2-4 & v2.2] - Bế Quan, Chế Tác, Gacha, Tiền tệ
+    // =============================================
+    private final Map<UUID, Long> beQuanDiem = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> dokiepCooldown = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> khoangThachMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> daoNiemMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> capCheMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> soLanCheMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> gachaPityMap = new ConcurrentHashMap<>();
 
     public PlayerDataManager(TuTienPlugin plugin) {
         this.plugin = plugin;
@@ -68,8 +74,6 @@ public class PlayerDataManager {
 
             tuViMap.put(uuid, config.getInt("TuVi", 0));
             linhLucMap.put(uuid, config.getInt("LinhLuc", 100));
-
-            // Tải lượng dược lực đang tiêu hóa dở từ file
             digestionBuffer.put(uuid, config.getInt("DigestionBuffer", 0));
 
             try { canhGioiMap.put(uuid, CanhGioi.valueOf(config.getString("CanhGioi", CanhGioi.PHAM_NHAN.name()))); }
@@ -89,12 +93,16 @@ public class PlayerDataManager {
             bonusTuVi.put(uuid, config.getInt("DanLo.BonusTuVi", 0));
             autoLuyenDan.put(uuid, config.getBoolean("DanLo.AutoLuyen", false));
             autoUseDan.put(uuid, config.getBoolean("DanLo.AutoUse", false));
+            lastSelectedPill.put(uuid, config.getString("DanLo.LastPill", "TICH_COC_DAN"));
 
-            // Tải Sprints 2 - Bế Quan & Cooldown
+            // Tải Bế Quan, Tiền tệ, Chế Tác, Gacha
             beQuanDiem.put(uuid, config.getLong("BeQuan.Diem", 0L));
-            dokiepCooldown.put(uuid, 0L); // Không lưu cooldown vào file (reset mỗi lần vào)
+            dokiepCooldown.put(uuid, 0L);
             khoangThachMap.put(uuid, config.getLong("KhoangThach", 0L));
             daoNiemMap.put(uuid, config.getLong("DaoNiem", 0L));
+            capCheMap.put(uuid, config.getInt("CheTac.CapDo", 1));
+            soLanCheMap.put(uuid, config.getInt("CheTac.SoLanChe", 0));
+            gachaPityMap.put(uuid, config.getInt("Gacha.Pity", 0));
 
         } else {
             // Khởi tạo cho người chơi mới
@@ -104,7 +112,6 @@ public class PlayerDataManager {
             heTuLuyenMap.put(uuid, HeTuLuyen.CHUA_CHON);
             digestionBuffer.put(uuid, 0);
 
-            // Khởi tạo Luyện Đan mặc định
             danLoCapDo.put(uuid, 1);
             soLanLuyenDan.put(uuid, 0);
             bonusDamage.put(uuid, 0.0);
@@ -112,10 +119,15 @@ public class PlayerDataManager {
             bonusTuVi.put(uuid, 0);
             autoLuyenDan.put(uuid, false);
             autoUseDan.put(uuid, false);
+            lastSelectedPill.put(uuid, "TICH_COC_DAN");
+
             beQuanDiem.put(uuid, 0L);
             dokiepCooldown.put(uuid, 0L);
             khoangThachMap.put(uuid, 0L);
             daoNiemMap.put(uuid, 0L);
+            capCheMap.put(uuid, 1);
+            soLanCheMap.put(uuid, 0);
+            gachaPityMap.put(uuid, 0);
 
             LinhCan randomLC = LinhCan.randomLinhCan();
             linhCanMap.put(uuid, randomLC);
@@ -140,23 +152,20 @@ public class PlayerDataManager {
 
     /**
      * Lưu dữ liệu KHÔNG xóa RAM — dùng cho AutoSave định kỳ.
-     * Gọi trên async thread để không block main thread.
      */
     public void savePlayerAsync(Player player) {
         UUID uuid = player.getUniqueId();
-        if (!tuViMap.containsKey(uuid)) return; // Chưa load, bỏ qua
+        if (!tuViMap.containsKey(uuid)) return;
 
         File file = getPlayerFile(uuid);
-        FileConfiguration config = new org.bukkit.configuration.file.YamlConfiguration();
+        FileConfiguration config = new YamlConfiguration();
 
-        // Snapshot data an toàn (tránh race condition)
         synchronized (this) {
             writeDataToConfig(player, config);
         }
 
         try { config.save(file); }
         catch (IOException e) { plugin.getLogger().warning("[AutoSave] Không thể lưu " + player.getName()); }
-        // KHÔNG xóa RAM — player vẫn đang online
     }
 
     private void writeDataToConfig(Player player, FileConfiguration config) {
@@ -174,10 +183,13 @@ public class PlayerDataManager {
         config.set("DanLo.BonusTuVi", getBonusTuVi(player));
         config.set("DanLo.AutoLuyen", isAutoLuyenDan(player));
         config.set("DanLo.AutoUse", isAutoUseDan(player));
-        // Sprint 2: Bế Quan
+        config.set("DanLo.LastPill", getLastSelectedPill(player));
         config.set("BeQuan.Diem", getBeQuanDiem(player));
         config.set("KhoangThach", khoangThachMap.getOrDefault(uuid, 0L));
         config.set("DaoNiem", daoNiemMap.getOrDefault(uuid, 0L));
+        config.set("CheTac.CapDo", getCapChe(player));
+        config.set("CheTac.SoLanChe", getSoLanChe(player));
+        config.set("Gacha.Pity", getGachaPity(player));
         config.set("TenNguoiChoi", player.getName());
     }
 
@@ -196,29 +208,35 @@ public class PlayerDataManager {
         bonusTuVi.remove(uuid);
         autoLuyenDan.remove(uuid);
         autoUseDan.remove(uuid);
+        lastSelectedPill.remove(uuid);
         beQuanDiem.remove(uuid);
         dokiepCooldown.remove(uuid);
-        khoangThachMap.remove(uuid); daoNiemMap.remove(uuid);
+        khoangThachMap.remove(uuid);
+        daoNiemMap.remove(uuid);
+        capCheMap.remove(uuid);
+        soLanCheMap.remove(uuid);
+        gachaPityMap.remove(uuid);
     }
 
     public void addTuVi(Player player, int amount) {
         UUID uuid = player.getUniqueId();
-        int currentTuVi = getTuVi(player) + amount;
-        tuViMap.put(uuid, Math.max(0, currentTuVi));
+        int prevTuVi = getTuVi(player);
+        int currentTuVi = Math.max(0, prevTuVi + amount);
+        tuViMap.put(uuid, currentTuVi);
 
         player.spigot().sendMessage(net.md_5.bungee.api.ChatMessageType.ACTION_BAR,
-                new net.md_5.bungee.api.chat.TextComponent("§a" + (amount >= 0 ? "+" : "") + amount + " Tu Vi §8| §eTổng: " + getTuVi(player)));
+                new net.md_5.bungee.api.chat.TextComponent("§a" + (amount >= 0 ? "+" : "") + amount + " Tu Vi §8| §eTổng: " + currentTuVi));
 
-        kiemTraSanSangDoKiep(player);
+        kiemTraSanSangDoKiep(player, prevTuVi, currentTuVi);
     }
 
-    private void kiemTraSanSangDoKiep(Player player) {
+    private void kiemTraSanSangDoKiep(Player player, int prevTuVi, int currentTuVi) {
         CanhGioi hienTai = getCanhGioi(player);
         CanhGioi tiepTheo = hienTai.getCanhGioiTiepTheo();
-        int currentTuVi = getTuVi(player);
 
-        if (tiepTheo != null && currentTuVi >= tiepTheo.getTuViYeuCau()) {
-            player.sendMessage("§e§l[Thiên Đạo] §fTu vi của bạn đã đạt bình cảnh! Hãy tìm nơi an toàn và dùng lệnh §c/tutien dokiep §fđể đột phá!");
+        // Chỉ thông báo khi vừa cán mốc bình cảnh (tránh spam mỗi giây)
+        if (tiepTheo != null && prevTuVi < tiepTheo.getTuViYeuCau() && currentTuVi >= tiepTheo.getTuViYeuCau()) {
+            player.sendMessage("§e§l[Thiên Đạo] §fTu vi của bạn đã đạt bình cảnh! Hãy chuẩn bị đan dược và dùng §c/tutien dokiep §fđể đột phá!");
         }
     }
 
@@ -269,6 +287,9 @@ public class PlayerDataManager {
     public boolean isAutoUseDan(Player p) { return autoUseDan.getOrDefault(p.getUniqueId(), false); }
     public void toggleAutoUseDan(Player p) { autoUseDan.put(p.getUniqueId(), !isAutoUseDan(p)); }
 
+    public String getLastSelectedPill(Player p) { return lastSelectedPill.getOrDefault(p.getUniqueId(), "TICH_COC_DAN"); }
+    public void setLastSelectedPill(Player p, String pillKey) { if (pillKey != null) lastSelectedPill.put(p.getUniqueId(), pillKey); }
+
     // --- CÁC HÀM GETTER / SETTER QUAN TRỌNG ---
 
     public CanhGioi getCanhGioi(Player player) {
@@ -287,7 +308,7 @@ public class PlayerDataManager {
     public void setLinhCan(Player player, LinhCan lc) { linhCanMap.put(player.getUniqueId(), lc); }
 
     public int getLinhLuc(Player player) { return linhLucMap.getOrDefault(player.getUniqueId(), 100); }
-    public void setLinhLuc(Player player, int amount) { linhLucMap.put(player.getUniqueId(), amount); }
+    public void setLinhLuc(Player player, int amount) { linhLucMap.put(player.getUniqueId(), Math.max(0, amount)); }
 
     public HeTuLuyen getHeTuLuyen(Player player) { return heTuLuyenMap.getOrDefault(player.getUniqueId(), HeTuLuyen.CHUA_CHON); }
     public void setHeTuLuyen(Player player, HeTuLuyen he) {
@@ -296,24 +317,18 @@ public class PlayerDataManager {
     }
 
     // =============================================
-    // [SPRINT 2] BẾ QUAN ĐIỂM
+    // BẾ QUAN ĐIỂM & ĐỘ KIẾP COOLDOWN
     // =============================================
     public long getBeQuanDiem(Player p) { return beQuanDiem.getOrDefault(p.getUniqueId(), 0L); }
     public void addBeQuanDiem(Player p, long amount) { beQuanDiem.put(p.getUniqueId(), getBeQuanDiem(p) + amount); }
     public void setBeQuanDiem(Player p, long amount) { beQuanDiem.put(p.getUniqueId(), Math.max(0, amount)); }
 
-    // =============================================
-    // [SPRINT 2] ĐỘ KIẾP COOLDOWN
-    // =============================================
     public long getDokiepCooldown(Player p) { return dokiepCooldown.getOrDefault(p.getUniqueId(), 0L); }
     public void setDokiepCooldown(Player p, long timestamp) { dokiepCooldown.put(p.getUniqueId(), timestamp); }
     public boolean isDokiepOnCooldown(Player p) {
-        return (System.currentTimeMillis() - getDokiepCooldown(p)) < 30_000L; // 30 giây
+        return (System.currentTimeMillis() - getDokiepCooldown(p)) < 30_000L;
     }
 
-    // =============================================
-    // [SPRINT 2] PHÁP TU: Lấy Max Linh Lực có bonus +30%
-    // =============================================
     public int getMaxLinhLucEffective(Player p) {
         int base = getCanhGioi(p).getMaxLinhLuc();
         if (getHeTuLuyen(p) == HeTuLuyen.PHAP_TU) {
@@ -322,36 +337,67 @@ public class PlayerDataManager {
         return base;
     }
 
-    // v2.1: Khoáng Thạch
+    // =============================================
+    // KHOÁNG THẠCH & ĐẠO NIỆM
+    // =============================================
     public long getKhoangThach(Player p) { return khoangThachMap.getOrDefault(p.getUniqueId(), 0L); }
-    public void addKhoangThach(Player p, long amount) { khoangThachMap.put(p.getUniqueId(), getKhoangThach(p) + amount); }
+    public void addKhoangThach(Player p, long amount) { khoangThachMap.put(p.getUniqueId(), Math.max(0, getKhoangThach(p) + amount)); }
     public void setKhoangThach(Player p, long amount) { khoangThachMap.put(p.getUniqueId(), Math.max(0, amount)); }
 
-    // v2.1: Đạo Niệm
     public long getDaoNiem(Player p) { return daoNiemMap.getOrDefault(p.getUniqueId(), 0L); }
-    public void addDaoNiem(Player p, long amount) { daoNiemMap.put(p.getUniqueId(), getDaoNiem(p) + amount); }
+    public void addDaoNiem(Player p, long amount) { daoNiemMap.put(p.getUniqueId(), Math.max(0, getDaoNiem(p) + amount)); }
     public void setDaoNiem(Player p, long amount) { daoNiemMap.put(p.getUniqueId(), Math.max(0, amount)); }
 
-    // v2.1: Lấy tất cả UUID đã lưu (dùng cho Leaderboard)
-    public java.util.Set<UUID> getAllStoredUUIDs() {
+    // =============================================
+    // CHẾ TÁC & GACHA PITY (PERSISTENT)
+    // =============================================
+    public int getCapChe(Player p) { return capCheMap.getOrDefault(p.getUniqueId(), 1); }
+    public void setCapChe(Player p, int cap) { capCheMap.put(p.getUniqueId(), Math.max(1, cap)); }
+    public int getSoLanChe(Player p) { return soLanCheMap.getOrDefault(p.getUniqueId(), 0); }
+    public void addSoLanChe(Player p, int n) { soLanCheMap.put(p.getUniqueId(), getSoLanChe(p) + n); }
+
+    public int getGachaPity(Player p) { return gachaPityMap.getOrDefault(p.getUniqueId(), 0); }
+    public void setGachaPity(Player p, int pity) { gachaPityMap.put(p.getUniqueId(), Math.max(0, pity)); }
+
+    // =============================================
+    // HỖ TRỢ LEADERBOARD (ƯU TIÊN DỮ LIỆU RAM CHO PLAYER ONLINE)
+    // =============================================
+    public Set<UUID> getAllStoredUUIDs() {
+        Set<UUID> result = new HashSet<>(tuViMap.keySet());
         File folder = new File(plugin.getDataFolder(), "playerdata");
-        if (!folder.exists()) return java.util.Collections.emptySet();
-        java.util.Set<UUID> result = new java.util.HashSet<>();
-        for (File f : folder.listFiles()) {
-            if (f.getName().endsWith(".yml")) {
-                try { result.add(UUID.fromString(f.getName().replace(".yml", ""))); }
-                catch (Exception ignored) {}
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.getName().endsWith(".yml")) {
+                        try { result.add(UUID.fromString(f.getName().replace(".yml", ""))); }
+                        catch (Exception ignored) {}
+                    }
+                }
             }
         }
         return result;
     }
 
-    // v2.1: Đọc data offline player (cho Leaderboard)
-    public java.util.Map<String, Object> readOfflineData(UUID uuid) {
+    public Map<String, Object> readOfflineData(UUID uuid) {
+        // Nếu người chơi đang online trên RAM -> lấy trực tiếp số liệu mới nhất trên RAM
+        if (tuViMap.containsKey(uuid)) {
+            Player online = Bukkit.getPlayer(uuid);
+            Map<String, Object> data = new HashMap<>();
+            data.put("TenNguoiChoi", online != null ? online.getName() : "???");
+            data.put("TuVi", tuViMap.getOrDefault(uuid, 0));
+            CanhGioi cg = canhGioiMap.getOrDefault(uuid, CanhGioi.PHAM_NHAN);
+            data.put("CanhGioi", cg.name());
+            data.put("KhoangThach", khoangThachMap.getOrDefault(uuid, 0L));
+            data.put("DaoNiem", daoNiemMap.getOrDefault(uuid, 0L));
+            data.put("BeQuanDiem", beQuanDiem.getOrDefault(uuid, 0L));
+            return data;
+        }
+
         File file = getPlayerFile(uuid);
-        if (!file.exists()) return java.util.Collections.emptyMap();
-        org.bukkit.configuration.file.FileConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(file);
-        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        if (!file.exists()) return Collections.emptyMap();
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        Map<String, Object> data = new HashMap<>();
         data.put("TenNguoiChoi", config.getString("TenNguoiChoi", "???"));
         data.put("TuVi", config.getInt("TuVi", 0));
         data.put("CanhGioi", config.getString("CanhGioi", "PHAM_NHAN"));

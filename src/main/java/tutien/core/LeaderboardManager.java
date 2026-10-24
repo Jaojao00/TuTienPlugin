@@ -91,6 +91,26 @@ public class LeaderboardManager {
     public List<LeaderEntry> getTopBeQuanDiem()  { return topBeQuanDiem; }
 
     /**
+     * Lấy thứ hạng hiện tại của một người chơi trong hạng mục.
+     */
+    public int getPlayerRank(String category, UUID uuid) {
+        List<LeaderEntry> list = switch (category.toLowerCase()) {
+            case "canhgioi" -> topCanhGioi;
+            case "tuvi" -> topTuVi;
+            case "khoangthach" -> topKhoangThach;
+            case "daoniem" -> topDaoNiem;
+            case "bequandiem" -> topBeQuanDiem;
+            default -> Collections.emptyList();
+        };
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).uuid().equals(uuid)) {
+                return i + 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Lấy entry top N cho 1 hạng mục.
      * @param category: canhgioi, tuvi, khoangthach, daoniem, bequandiem
      * @param rank: 1-10

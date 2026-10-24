@@ -301,12 +301,10 @@ public class TuiDoGUI implements Listener {
                 }
                 // --- RÚT 1 CÁI (Chuột Phải) ---
                 else if (event.getClick() == ClickType.RIGHT) {
+                    ItemStack original = stored.sample.clone();
+                    original.setAmount(1);
                     if (tuiDoManager.removeItem(player, id, 1)) {
-                        // Lấy bản mẫu gốc không có lore hướng dẫn
-                        ItemStack original = playerItems.containsKey(id) ?
-                                playerItems.get(id).sample.clone() :
-                                new ItemStack(clicked.getType());
-                        player.getInventory().addItem(original);
+                        tutien.core.ItemKeys.giveItemSafe(player, original);
                         player.sendMessage("§a[Túi Đồ] §fĐã rút 1 vật phẩm ra túi đồ.");
                         player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.5f, 1.2f);
                         openCategory(player, tuiDoManager, currentCat);
@@ -338,13 +336,19 @@ public class TuiDoGUI implements Listener {
     }
 
     /**
-     * Phát Linh Thạch (Emerald) cho người chơi
+     * Cộng tiền bán đồ qua Vault Economy (Linh Thạch) hoặc phát Khoáng Thạch + Ngọc Lục Bảo an toàn nếu chưa cài Vault.
      */
     private static void giveEmerald(Player player, int amount) {
-        while (amount > 0) {
-            int stackSize = Math.min(64, amount);
-            player.getInventory().addItem(new ItemStack(Material.EMERALD, stackSize));
-            amount -= stackSize;
+        tutien.core.TuTienPlugin plugin = tutien.core.TuTienPlugin.getPlugin(tutien.core.TuTienPlugin.class);
+        if (plugin.getEconomyManager() != null && plugin.getEconomyManager().isVaultEnabled()) {
+            plugin.getEconomyManager().giveMoney(player, amount);
+            return;
+        }
+        int remaining = amount;
+        while (remaining > 0) {
+            int stackSize = Math.min(64, remaining);
+            tutien.core.ItemKeys.giveItemSafe(player, new ItemStack(Material.EMERALD, stackSize));
+            remaining -= stackSize;
         }
     }
 

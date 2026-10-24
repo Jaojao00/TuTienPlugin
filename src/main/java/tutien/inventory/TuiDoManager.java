@@ -22,8 +22,8 @@ public class TuiDoManager {
 
     private final TuTienPlugin plugin;
     // Cấu trúc: UUID -> (Chuỗi ID tự tạo -> StoredItem chứa vật phẩm mẫu và số lượng)
-    private final Map<UUID, Map<String, StoredItem>> storageMap = new HashMap<>();
-    private final Map<UUID, Boolean> autoPickupMap = new HashMap<>();
+    private final Map<UUID, Map<String, StoredItem>> storageMap = new java.util.concurrent.ConcurrentHashMap<>();
+    private final Map<UUID, Boolean> autoPickupMap = new java.util.concurrent.ConcurrentHashMap<>();
 
     // Giới hạn số lượng tối đa mỗi ô chứa
     public static final int MAX_STACK_SIZE = 300;
@@ -158,15 +158,17 @@ public class TuiDoManager {
     // ==========================================
 
     /**
-     * Hàm Lõi: Tự động tạo ID từ Tên hiển thị của vật phẩm
+     * Hàm Lõi: Tự động tạo ID từ Tên hiển thị của vật phẩm (Chuẩn hóa tiếng Việt có dấu để không bị trùng ID)
      */
     public static String generateId(ItemStack item) {
         if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
             return item != null ? item.getType().name().toLowerCase() : "air";
         }
-        // Xóa màu và các ký tự đặc biệt để làm key lưu vào YML
-        return ChatColor.stripColor(item.getItemMeta().getDisplayName())
-                .replaceAll("[^a-zA-Z0-9]", "_").toLowerCase();
+        String raw = ChatColor.stripColor(item.getItemMeta().getDisplayName()).trim();
+        String normalized = java.text.Normalizer.normalize(raw, java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .replace('đ', 'd').replace('Đ', 'D');
+        return item.getType().name().toLowerCase() + "_" + normalized.replaceAll("[^a-zA-Z0-9]+", "_").toLowerCase();
     }
 
     private File getFile(UUID uuid) {

@@ -2,8 +2,6 @@ package tutien.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,7 +24,9 @@ import java.util.UUID;
 
 /**
  * Lớp này xử lý lệnh /tutien trong game.
- * Đã cập nhật: Bổ sung lệnh /tutien tongmon ve (Truyền tống về tông).
+ * v2.2 Skyblock Edition:
+ *   - Sửa /tutien laptong lưu vị trí hiện tại trên đảo Skyblock (không dịch chuyển ra tọa độ 10000, 10000 hay đặt hàng rào phá đảo).
+ *   - Bổ sung /tutien tongmon sethome và /tutien doikhoang.
  */
 public class TuTienCommand implements CommandExecutor, TabCompleter {
 
@@ -43,20 +43,23 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("§e=== §6§lHệ Thống Tu Tiên §e===");
+            sender.sendMessage("§e=== §6§lHệ Thống Tu Tiên (Skyblock Edition) §e===");
             sender.sendMessage("§f/tutien menu §7- Mở giao diện chính");
-            sender.sendMessage("§f/tutien tuluyen §7- Tọa thiền (AFK)");
+            sender.sendMessage("§f/tutien tuluyen §7- Tọa thiền tại chỗ (AFK)");
             sender.sendMessage("§f/tutien dokiep §7- Đột phá cảnh giới");
-            sender.sendMessage("§f/tutien ngukiem §7- Ngự kiếm phi hành (Kiếm Đan+, tiêu Linh Lực)");
-            sender.sendMessage("§f/tutien luyendan §7- Lượng đan luyện");
-            sender.sendMessage("§f/tutien chetac §7- Chế tác trang bị (Sprint 3)");
-            sender.sendMessage("§f/tutien nhiemvu §7- Nhiệm vụ hàng ngày (Sprint 3)");
-            sender.sendMessage("§f/tutien bequan §7- Cửa hàng điểm Bế Quan (Sprint 2)");
-            sender.sendMessage("§f/tutien linhthuvien §7- Linh Thú Viên phụ bản (Sprint 4)");
-            sender.sendMessage("§f/tutien gacha §7- Triệu hồi Linh Thú (Sprint 4)");
+            sender.sendMessage("§f/tutien ngukiem §7- Ngự kiếm phi hành (Kim Đan+, tiêu Linh Lực)");
+            sender.sendMessage("§f/tutien luyendan §7- Lò luyện đan dược (47+ loại đan)");
+            sender.sendMessage("§f/tutien chetac §7- Lò rèn trang bị (8 phẩm cấp)");
+            sender.sendMessage("§f/tutien doikhoang §7- Quy đổi Khoáng Thạch");
+            sender.sendMessage("§f/tutien nhiemvu §7- Nhiệm vụ hàng ngày");
+            sender.sendMessage("§f/tutien bequan §7- Cửa hàng điểm Bế Quan");
+            sender.sendMessage("§f/tutien linhthuvien §7- Linh Thú Viên & Phụ bản");
+            sender.sendMessage("§f/tutien gacha §7- Triệu hồi Linh Thú");
+            sender.sendMessage("§f/tutien vangioi §7- Vạn Giới Các (Cửa hàng)");
+            sender.sendMessage("§f/tutien xephang §7- Bảng xếp hạng Top 10");
             sender.sendMessage("§f/tutien tongmon §7- Quản lý Tông Môn");
             sender.sendMessage("§f/tutien tuido §7- Túi Đồ Hư Không");
-            sender.sendMessage("§f/tutien xem [tên] §7- Xem thông tin");
+            sender.sendMessage("§f/tutien xem [tên] §7- Xem thông tin đạo hữu");
 
             if (sender.hasPermission("tutien.admin")) {
                 sender.sendMessage("§c=== §4§lQuyền Lực Thiên Đạo (Admin) §c===");
@@ -69,23 +72,20 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
         String subCmd = args[0].toLowerCase();
 
         if (subCmd.equals("tuluyen")) {
-            if (!(sender instanceof Player)) return true;
-            Player p = (Player) sender;
+            if (!(sender instanceof Player p)) return true;
             boolean isMeditating = dataManager.isDangTuLuyen(p);
 
             if (!isMeditating) {
                 dataManager.setTuLuyenMode(p, true);
                 Location loc = p.getLocation();
-                // Chỉ căn giữa block, không nâng Y lên nữa để tránh lơ lửng/giật
                 loc.setX(loc.getBlockX() + 0.5);
                 loc.setZ(loc.getBlockZ() + 0.5);
                 p.teleport(loc);
 
-                p.sendMessage("§a§l[Tu Tiên] §fNgươi đã nhập định tọa thiền. Linh khí thiên địa đang hội tụ...");
+                p.sendMessage("§a§l[Tu Tiên] §fNgươi đã nhập định tọa thiền tại chỗ. Linh khí thiên địa đang hội tụ...");
                 p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
             } else {
                 dataManager.setTuLuyenMode(p, false);
-
                 p.sendMessage("§e§l[Tu Tiên] §fNgươi đã xuất định, kết thúc quá trình tu luyện.");
                 p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1f, 1f);
             }
@@ -105,41 +105,39 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
             int tuVi = dataManager.getTuVi(target);
             CanhGioi canhGioi = dataManager.getCanhGioi(target);
             CanhGioi tiepTheo = canhGioi.getCanhGioiTiepTheo();
-            sender.sendMessage("§eCảnh giới của §b" + target.getName() + "§e: §b" + canhGioi.getTenHienThi() + " §e| Tu vi: §a" + tuVi + (tiepTheo != null ? "/" + tiepTheo.getTuViYeuCau() : ""));
+            sender.sendMessage("§eCảnh giới của §b" + target.getName() + "§e: §b" + canhGioi.getTenHienThi()
+                    + " §e| Tu vi: §a" + tuVi + (tiepTheo != null ? "/" + tiepTheo.getTuViYeuCau() : "")
+                    + " §e| Khoáng thạch: §6" + dataManager.getKhoangThach(target)
+                    + " §e| Đạo niệm: §b" + dataManager.getDaoNiem(target));
             return true;
         }
 
         if (subCmd.equals("menu")) {
-            if (sender instanceof Player) MainMenu.open((Player) sender, dataManager);
+            if (sender instanceof Player p) MainMenu.open(p, dataManager);
             else sender.sendMessage("§cLệnh này chỉ dùng trong game.");
             return true;
         }
 
-        // --- LỆNH LUYỆN ĐAN ---
         if (subCmd.equals("luyendan")) {
-            if (sender instanceof Player) LuyenDanGUI.open((Player) sender, dataManager);
+            if (sender instanceof Player p) LuyenDanGUI.open(p, dataManager);
             else sender.sendMessage("§cLệnh này chỉ dùng trong game.");
             return true;
         }
 
-        // --- LỆNH TÚI ĐỒ HƯ KHÔNG ---
         if (subCmd.equals("tuido")) {
-            if (!(sender instanceof Player)) return true;
-            TuiDoGUI.open((Player) sender, plugin.getTuiDoManager());
+            if (!(sender instanceof Player p)) return true;
+            TuiDoGUI.open(p, plugin.getTuiDoManager());
             return true;
         }
 
-        // --- LỆNH ĐỘ KIẾP ---
-        if (subCmd.equals("dokiep")) {
-            if (!(sender instanceof Player)) return true;
-            DotPhaGUI.open((Player) sender, plugin);
+        if (subCmd.equals("dokiep") || subCmd.equals("dotpha")) {
+            if (!(sender instanceof Player p)) return true;
+            DotPhaGUI.open(p, plugin);
             return true;
         }
 
-        // --- LỆNH NGỰ KIẾM (SPRINT 2 UPGRADE: tiêu Linh Lực) ---
         if (subCmd.equals("ngukiem")) {
-            if (!(sender instanceof Player)) return true;
-            Player player = (Player) sender;
+            if (!(sender instanceof Player player)) return true;
             CanhGioi cg = dataManager.getCanhGioi(player);
 
             if (cg.ordinal() < CanhGioi.KIM_DAN.ordinal()) {
@@ -150,67 +148,66 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
             if (tutien.task.NguKiemTask.isFlying(player)) {
                 tutien.task.NguKiemTask.stopFlight(player);
             } else {
-                if (dataManager.getLinhLuc(player) < 50) {
-                    player.sendMessage("§c[Ngự Kiếm] §fCần §e50 Linh Lực §fđể xuất kiếm!");
+                int cost = tutien.task.NguKiemTask.getCost(player, dataManager);
+                if (dataManager.getLinhLuc(player) < cost) {
+                    player.sendMessage("§c[Ngự Kiếm] §fCần §e" + cost + " Linh Lực §fđể xuất kiếm!");
                     return true;
                 }
-                tutien.task.NguKiemTask.startFlight(player);
+                tutien.task.NguKiemTask.startFlight(player, dataManager);
             }
             return true;
         }
 
-        // --- LỆNH BẾ QUAN SHOP (SPRINT 2) ---
         if (subCmd.equals("bequan")) {
-            if (!(sender instanceof Player)) return true;
-            tutien.tutien.gui.BeQuanShopGUI.open((Player) sender, dataManager);
+            if (!(sender instanceof Player p)) return true;
+            tutien.tutien.gui.BeQuanShopGUI.open(p, dataManager);
             return true;
         }
 
-        // --- LỆNH CHẾ TÁC (SPRINT 3) ---
         if (subCmd.equals("chetac")) {
-            if (!(sender instanceof Player)) return true;
-            tutien.tutien.gui.CheGUI.open((Player) sender, dataManager, plugin.getCheManager());
+            if (!(sender instanceof Player p)) return true;
+            tutien.tutien.gui.CheGUI.open(p, dataManager, plugin.getCheManager());
             return true;
         }
 
-        // --- LỆNH NHIỆM VỤ (SPRINT 3) ---
+        if (subCmd.equals("doikhoang") || subCmd.equals("khoangthach")) {
+            if (!(sender instanceof Player p)) return true;
+            tutien.tutien.gui.KhoangThachGUI.open(p, dataManager);
+            return true;
+        }
+
         if (subCmd.equals("nhiemvu")) {
-            if (!(sender instanceof Player)) return true;
-            tutien.tutien.gui.NhiemVuGUI.open((Player) sender, plugin.getNhiemVuManager());
+            if (!(sender instanceof Player p)) return true;
+            tutien.tutien.gui.NhiemVuGUI.open(p, plugin.getNhiemVuManager());
             return true;
         }
 
-        // --- LỆNH LINH THÚ VIÊN (SPRINT 4) ---
         if (subCmd.equals("linhthuvien")) {
-            if (!(sender instanceof Player)) return true;
-            tutien.tutien.gui.LinhThuVienGUI.open((Player) sender, dataManager, plugin.getLinhThuVienManager());
+            if (!(sender instanceof Player p)) return true;
+            tutien.tutien.gui.LinhThuVienGUI.open(p, dataManager, plugin.getLinhThuVienManager());
             return true;
         }
 
-        // --- LỆNH GACHA (SPRINT 4) ---
         if (subCmd.equals("gacha")) {
-            if (!(sender instanceof Player)) return true;
-            tutien.tutien.gui.GachaGUI.open((Player) sender, dataManager, plugin.getGachaGUI());
+            if (!(sender instanceof Player p)) return true;
+            tutien.tutien.gui.GachaGUI.open(p, dataManager, plugin.getGachaGUI());
             return true;
         }
 
-        // --- LỆNH VẠN GIỚI CÁC (v2.1) ---
         if (subCmd.equals("vangioi")) {
-            if (!(sender instanceof Player)) return true;
-            tutien.tutien.gui.VanGioiCacGUI.open((Player) sender);
+            if (!(sender instanceof Player p)) return true;
+            tutien.tutien.gui.VanGioiCacGUI.open(p);
             return true;
         }
 
-        // --- LỆNH XẾP HẠNG (v2.1) ---
         if (subCmd.equals("xephang")) {
-            if (!(sender instanceof Player)) return true;
-            tutien.tutien.gui.XepHangGUI.open((Player) sender, plugin);
+            if (!(sender instanceof Player p)) return true;
+            tutien.tutien.gui.XepHangGUI.open(p, plugin);
             return true;
         }
 
         if (subCmd.equals("laptong")) {
-            if (!(sender instanceof Player)) return true;
-            Player player = (Player) sender;
+            if (!(sender instanceof Player player)) return true;
 
             if (args.length < 2) {
                 player.sendMessage("§cSử dụng: /tutien laptong <Tên_Tông_Môn>");
@@ -228,36 +225,26 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
+            Location loc = player.getLocation();
+            if (!loc.clone().subtract(0, 1, 0).getBlock().getType().isSolid()) {
+                player.sendMessage("§c[Tông Môn] §fHãy đứng trên mặt đất vững chắc trên đảo của bạn để lập Đại Điện Tông Môn!");
+                return true;
+            }
+
             String tenTongMon = args[1];
-            int nth = tongMonManager.getTongMonCount();
-            int centerX = 10000 + (nth * 500);
-            int centerZ = 10000;
+            int centerX = loc.getBlockX();
+            int centerZ = loc.getBlockZ();
             int radius = 25;
 
-            World world = player.getWorld();
-            int highestY = world.getHighestBlockYAt(centerX, centerZ);
-            Location tpLoc = new Location(world, centerX + 0.5, highestY + 1, centerZ + 0.5);
-
-            player.teleport(tpLoc);
-            player.sendMessage("§6§l[Tông Môn] §eĐang khai tông lập phái, dẫn động địa mạch tạo kết giới...");
-
-            for (int x = centerX - radius; x <= centerX + radius; x++) {
-                world.getHighestBlockAt(x, centerZ - radius).getLocation().add(0, 1, 0).getBlock().setType(Material.SPRUCE_FENCE);
-                world.getHighestBlockAt(x, centerZ + radius).getLocation().add(0, 1, 0).getBlock().setType(Material.SPRUCE_FENCE);
-            }
-            for (int z = centerZ - radius; z <= centerZ + radius; z++) {
-                world.getHighestBlockAt(centerX - radius, z).getLocation().add(0, 1, 0).getBlock().setType(Material.SPRUCE_FENCE);
-                world.getHighestBlockAt(centerX + radius, z).getLocation().add(0, 1, 0).getBlock().setType(Material.SPRUCE_FENCE);
-            }
-
+            player.sendMessage("§6§l[Tông Môn] §eĐang khai tông lập phái ngay tại vị trí hiện tại, dẫn động địa mạch tạo kết giới (Bán kính 25 block)...");
             tongMonManager.createTongMon(player, tenTongMon, centerX, centerZ, radius);
+            player.playSound(loc, org.bukkit.Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
             Bukkit.broadcastMessage("§6§l[Thiên Hạ Truyền Âm] §c" + player.getName() + " §fđã tu thành chính quả, thành lập §b§l" + tenTongMon + "§f!");
             return true;
         }
 
         if (subCmd.equals("tongmon")) {
-            if (!(sender instanceof Player)) return true;
-            Player player = (Player) sender;
+            if (!(sender instanceof Player player)) return true;
 
             if (args.length < 2) {
                 player.sendMessage("§e=== §6§lQuản Lý Tông Môn §e===");
@@ -265,10 +252,26 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("§f/tutien tongmon duoi <tên> §7- Trục xuất đệ tử");
                 player.sendMessage("§f/tutien tongmon roi §7- Trở thành Tán Tu (Rời tông)");
                 player.sendMessage("§f/tutien tongmon ve §7- Truyền tống về Tông Môn");
+                player.sendMessage("§f/tutien tongmon sethome §7- Đặt lại điểm truyền tống Tông Môn");
                 return true;
             }
 
             String action = args[1];
+
+            if (action.equalsIgnoreCase("sethome")) {
+                if (!tongMonManager.hasTongMon(player)) {
+                    player.sendMessage("§cNgươi không phải là Tông Chủ!");
+                    return true;
+                }
+                if (!player.getLocation().clone().subtract(0, 1, 0).getBlock().getType().isSolid()) {
+                    player.sendMessage("§cHãy đứng trên mặt đất an toàn để đặt điểm truyền tống!");
+                    return true;
+                }
+                tongMonManager.setTongMonHome(player, player.getLocation());
+                player.sendMessage("§a§l[Tông Môn] §fĐã cập nhật vị trí Đại Điện Tông Môn tại tọa độ hiện tại!");
+                player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_BEACON_POWER_SELECT, 1f, 1.2f);
+                return true;
+            }
 
             if (action.equalsIgnoreCase("ve")) {
                 UUID myTongMonId = tongMonManager.getTongMonIdOfPlayer(player);
@@ -282,7 +285,7 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
                     player.teleport(loc);
                     player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 1f);
                 } else {
-                    player.sendMessage("§cKhông thể tìm thấy vị trí Tông Môn!");
+                    player.sendMessage("§cVị trí Tông Môn không an toàn hoặc chưa có mặt đất! Hãy báo Tông Chủ dùng /tutien tongmon sethome.");
                 }
                 return true;
             }
@@ -408,7 +411,7 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
                 try {
                     int amount = Integer.parseInt(args[4]);
                     int current = dataManager.getLinhLuc(target);
-                    int maxLinhLuc = dataManager.getCanhGioi(target).getMaxLinhLuc();
+                    int maxLinhLuc = dataManager.getMaxLinhLucEffective(target);
 
                     if (action.equals("add")) {
                         dataManager.setLinhLuc(target, Math.min(maxLinhLuc, current + amount));
@@ -433,6 +436,7 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
                 if (type.equals("canhgioi")) {
                     CanhGioi cg = CanhGioi.valueOf(value);
                     dataManager.setCanhGioi(target, cg);
+                    tutien.combat.StatsManager.applyStats(target, dataManager);
                     sender.sendMessage("§aĐã cưỡng ép nâng/hạ cảnh giới của §b" + target.getName() + " §athành §e" + cg.getTenHienThi());
                     target.sendMessage("§c§l[Thiên Đạo] §fCảnh giới của ngươi bị Thiên Đạo cưỡng chế biến đổi thành §b" + cg.getTenHienThi());
                 }
@@ -445,6 +449,7 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
                 else if (type.equals("he")) {
                     HeTuLuyen he = HeTuLuyen.valueOf(value);
                     dataManager.setHeTuLuyen(target, he);
+                    tutien.combat.StatsManager.applyStats(target, dataManager);
                     sender.sendMessage("§aĐã ép §b" + target.getName() + " §atu luyện hệ §e" + he.getTenHienThi());
                 } else {
                     sender.sendMessage("§cLoại dữ liệu không hợp lệ! Dùng: tuvi, linhluc, canhgioi, linhcan, he");
@@ -467,16 +472,16 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
             completions.add("menu"); completions.add("tuluyen"); completions.add("xem");
             completions.add("dokiep"); completions.add("ngukiem"); completions.add("luyendan");
             completions.add("laptong"); completions.add("tongmon"); completions.add("tuido");
-            completions.add("bequan"); completions.add("chetac"); completions.add("nhiemvu");
-            completions.add("linhthuvien"); completions.add("gacha"); completions.add("vangioi");
-            completions.add("xephang");
+            completions.add("bequan"); completions.add("chetac"); completions.add("doikhoang");
+            completions.add("nhiemvu"); completions.add("linhthuvien"); completions.add("gacha");
+            completions.add("vangioi"); completions.add("xephang");
             if (sender.hasPermission("tutien.admin")) completions.add("admin");
         }
         else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("xem")) {
                 for (Player p : Bukkit.getOnlinePlayers()) completions.add(p.getName());
             } else if (args[0].equalsIgnoreCase("tongmon")) {
-                completions.add("moi"); completions.add("duoi"); completions.add("roi"); completions.add("ve");
+                completions.add("moi"); completions.add("duoi"); completions.add("roi"); completions.add("ve"); completions.add("sethome");
             } else if (args[0].equalsIgnoreCase("admin") && sender.hasPermission("tutien.admin")) {
                 completions.add("tuvi"); completions.add("linhluc"); completions.add("canhgioi"); completions.add("linhcan"); completions.add("he");
             }
