@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">TNHoppers — Hệ Thống Phễu Không Dây & Hút Đồ Tối Tân | Team Jao MC</title>
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0f1c',
+                        darker: '#05080f',
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            glow: 'rgba(34, 211, 238, 0.5)'
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05080f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass-nav {
+            background: rgba(10, 15, 28, 0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(34, 211, 238, 0.12);
+        }
+        
+        .panel-glass {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            color: #22d3ee;
+            border-bottom-color: #22d3ee;
+            background: rgba(34, 211, 238, 0.08);
+        }
+
+        .code-box {
+            font-family: 'JetBrains Mono', monospace;
+            background: #080d1a;
+            border: 1px solid rgba(34, 211, 238, 0.15);
+        }
+
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #22d3ee 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col bg-[#05080f] text-gray-100">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-cyan-950/90 border border-cyan-400 text-cyan-50 px-6 py-4 rounded-full flex items-center space-x-3 backdrop-blur-md shadow-[0_0_25px_rgba(34,211,238,0.4)] opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cyan-500 rounded-full w-8 h-8 flex items-center justify-center">
+            <i class="fa-solid fa-check text-white"></i>
+        </div>
+        <div>
+            <p class="font-bold text-sm">Đã sao chép IP!</p>
+            <p class="text-xs text-cyan-200">stardust.pikamc.vn:25306</p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand / Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="tutienlogo.jpg" alt="Logo" class="w-11 h-11 rounded-xl object-cover border border-cyan-400/40 shadow-[0_0_15px_rgba(34,211,238,0.5)] group-hover:scale-105 transition-all">
+                    <span class="font-extrabold text-2xl tracking-widest text-white title-font">TEAM JAO<span class="text-cyan-400">MC</span></span>
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-7 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Trang Chủ</a>
+                    <a href="index.html#how-to-play" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Hướng Dẫn</a>
+                    <a href="index.html#features" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Tính Năng</a>
+                    <a href="index.html#leaderboards" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Bảng Xếp Hạng</a>
+                    <a href="index.html#store" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Cửa Hàng</a>
+                    <a href="plugins.html" class="text-cyan-400 font-bold flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 border border-cyan-400/50 shadow-[0_0_15px_rgba(34,211,238,0.25)]">
+                        <i class="fa-solid fa-puzzle-piece text-cyan-400 text-sm"></i>
+                        <span>Plugin Server</span>
+                    </a>
+                    
+                    <button onclick="copyIP()" class="ml-4 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/50 text-cyan-400 px-5 py-2 rounded-full font-bold transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] flex items-center space-x-2 group text-sm">
+                        <i class="fa-solid fa-copy group-hover:scale-110 transition-transform"></i>
+                        <span>Copy IP</span>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-toggle" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 bg-[#0a0f1c]/95 border-b border-cyan-400/20 space-y-3">
+            <a href="index.html" class="block text-gray-300 hover:text-cyan-400 py-1">Trang Chủ</a>
+            <a href="plugins.html" class="block text-cyan-400 font-bold py-1">← Quay Lại Danh Mục Plugin</a>
+        </div>
+    </nav>
+
+    <!-- Main Container (Bố cục Ảnh số 5) -->
+    <main class="flex-grow pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+
+        <!-- Breadcrumb (Ảnh số 5) -->
+        <div class="flex items-center space-x-2 text-xs md:text-sm text-gray-400 mb-4">
+            <a href="index.html" class="hover:text-cyan-400 transition-colors flex items-center space-x-1">
+                <i class="fa-solid fa-house"></i>
+                <span>Trang chủ</span>
+            </a>
+            <span class="text-gray-600">›</span>
+            <a href="plugins.html" class="hover:text-cyan-400 transition-colors">Tài nguyên</a>
+            <span class="text-gray-600">›</span>
+            <span class="text-gray-400">Minecraft</span>
+            <span class="text-gray-600">›</span>
+            <a href="plugins.html" class="hover:text-cyan-400 transition-colors">Plugin Minecraft</a>
+            <span class="text-gray-600">›</span>
+            <span id="breadcrumb-plugin" class="text-cyan-400 font-medium truncate max-w-xs md:max-w-md">
+                TNHoppers - Hệ Thống Phễu Không Dây v1.0.0
+            </span>
+        </div>
+
+        <!-- Plugin Header Title & Tagline (Ảnh số 5) -->
+        <div class="mb-6">
+            <div class="flex flex-wrap items-center gap-3">
+                <h1 id="plugin-title" class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">
+                    TNHoppers — Hệ Thống Phễu Không Dây & Hút Đồ <span class="text-cyan-400 text-xl font-mono">v1.0.0</span>
+                </h1>
+                <span class="px-2.5 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/30 text-xs font-semibold">
+                    ✓ Đã kiểm định Folia & Paper
+                </span>
+            </div>
+            <p id="plugin-tagline" class="text-sm md:text-base text-gray-300 mt-2 leading-relaxed">
+                Giải pháp phễu không dây thế hệ mới, chống lag cực đoan (Zero-Lag), lọc đồ NBT chuẩn xác từng rương cho Skyblock & Survival.
+            </p>
+        </div>
+
+        <!-- Navigation Tabs Bar (Ảnh số 5) -->
+        <div class="flex items-center space-x-1 md:space-x-3 border-b border-white/10 mb-8 overflow-x-auto text-sm font-medium">
+            <button onclick="switchTab('overview')" id="tab-btn-overview" class="tab-btn active px-4 py-3 rounded-t-lg flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>Tổng quan</span>
+            </button>
+            <button onclick="switchTab('dependencies')" id="tab-btn-dependencies" class="tab-btn px-4 py-3 text-gray-400 hover:text-cyan-400 rounded-t-lg flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-puzzle-piece"></i>
+                <span>Sự phụ thuộc</span>
+            </button>
+            <button onclick="switchTab('updates')" id="tab-btn-updates" class="tab-btn px-4 py-3 text-gray-400 hover:text-cyan-400 rounded-t-lg flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>Cập nhật (1)</span>
+            </button>
+            <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="tab-btn px-4 py-3 text-gray-400 hover:text-cyan-400 rounded-t-lg flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-star text-amber-400"></i>
+                <span>Đánh giá (12)</span>
+            </button>
+            <button onclick="switchTab('history')" id="tab-btn-history" class="tab-btn px-4 py-3 text-gray-400 hover:text-cyan-400 rounded-t-lg flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-list-check"></i>
+                <span>Lịch sử</span>
+            </button>
+        </div>
+
+        <!-- 2-Column Content Layout (Ảnh số 5) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+            <!-- LEFT COLUMN: Main Showcase & Tab Content (2/3 Width) -->
+            <div class="lg:col-span-2 space-y-8">
+
+                <!-- 1. Showcase Big Banner (Ảnh 5) -->
+                <div class="relative rounded-2xl overflow-hidden panel-glass border-2 border-cyan-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] group">
+                    <img id="plugin-banner" src="tnhoppers.jpg" alt="Showcase Banner" class="w-full h-auto max-h-[440px] object-cover">
+                    <!-- Overlay Glow -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1c] via-transparent to-transparent opacity-80"></div>
+                    
+                    <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-cyan-400/40 text-cyan-300 text-xs font-bold flex items-center space-x-1.5">
+                                <i class="fa-solid fa-bolt text-yellow-400"></i>
+                                <span>Zero Memory Leak</span>
+                            </span>
+                            <span class="px-3 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-blue-400/40 text-blue-300 text-xs font-bold">
+                                Java 21+ Ready
+                            </span>
+                        </div>
+                        <a href="https://github.com/Jaojao00/TNHoppers" target="_blank" class="px-3 py-1 rounded-lg bg-cyan-500 text-black text-xs font-bold hover:bg-cyan-400 transition-all flex items-center space-x-1.5 shadow-lg">
+                            <i class="fa-brands fa-github"></i>
+                            <span>Xem GitHub</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT 1: TỔNG QUAN (OVERVIEW) -->
+                <div id="tab-content-overview" class="panel-glass p-6 md:p-8 rounded-2xl space-y-8 leading-relaxed">
+                    
+                    <!-- Giới thiệu cốt lõi -->
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                            <i class="fa-solid fa-tornado text-cyan-400"></i>
+                            <span>I. Giới Thiệu Tổng Quan & Triết Lý Chống Lag</span>
+                        </h2>
+                        <div class="mt-4 text-sm text-gray-300 space-y-3">
+                            <p>
+                                Trong các cụm máy chủ Minecraft sinh tồn hiện đại (đặc biệt là <strong>Skyblock</strong>, <strong>Survival</strong>, <strong>Towny</strong>), hệ thống đường ống phễu truyền thống (vanilla hoppers) luôn là thủ phạm số 1 gây sụt giảm TPS trầm trọng do hàng nghìn phễu liên tục quét và đẩy item mỗi tick.
+                            </p>
+                            <p>
+                                <strong>TNHoppers</strong> được kiến trúc hoàn toàn mới trên nền tảng <strong>Java 21</strong> và <strong>Paper / Folia 1.21.x</strong> bởi <strong>Tài Nguyễn (TN)</strong> nhằm thay thế triệt để các phễu truyền thống:
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                <div class="p-3 rounded-xl bg-black/40 border border-cyan-500/20">
+                                    <div class="font-bold text-cyan-400 text-sm mb-1 flex items-center space-x-2">
+                                        <i class="fa-solid fa-microchip"></i>
+                                        <span>Chống lag tuyệt đối (Zero-Lag)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-400">Kiểm soát chu kỳ chuyển đồ (budgeted ticks), loại bỏ chuỗi phễu vanilla kéo dài.</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-black/40 border border-cyan-500/20">
+                                    <div class="font-bold text-cyan-400 text-sm mb-1 flex items-center space-x-2">
+                                        <i class="fa-solid fa-memory"></i>
+                                        <span>Không rò rỉ RAM (Zero Memory Leak)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-400">Bộ đệm Chunk Cache chỉ lưu tọa độ bất biến BlockPosition, không giữ object nặng.</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-black/40 border border-cyan-500/20">
+                                    <div class="font-bold text-cyan-400 text-sm mb-1 flex items-center space-x-2">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                        <span>An toàn giao dịch (Atomic Safe)</span>
+                                    </div>
+                                    <p class="text-xs text-gray-400">Chống nguy cơ nhân bản (duplication) hoặc mất vật phẩm khi rương đầy.</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-black/40 border border-cyan-500/20">
+                                    <div class="font-bold text-cyan-400 text-sm mb-1 flex items-center space-x-2">
+                                        <i class="fa-solid fa-cubes"></i>
+                                        <span>Tích hợp SuperiorSkyblock2</span>
+                                    </div>
+                                    <p class="text-xs text-gray-400">Kiểm tra quyền đảo nghiêm ngặt, ngăn chặn hành vi hút trộm xuyên đảo.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2 Dòng phễu -->
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                            <i class="fa-solid fa-layer-group text-cyan-400"></i>
+                            <span>II. Phân Loại 2 Dòng Phễu Chuyên Biệt</span>
+                        </h2>
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Phễu Thường -->
+                            <div class="p-4 rounded-xl bg-gradient-to-br from-cyan-950/40 to-black/60 border border-cyan-500/30">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-bold text-cyan-400 text-base">🔸 Normal Hopper (Phễu Thường)</span>
+                                    <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded font-mono">Bán kính 3-16m</span>
+                                </div>
+                                <p class="text-xs text-gray-300 leading-relaxed mb-3">
+                                    Hút vật phẩm rơi tự do theo bán kính hình cầu. Bán kính nâng cấp lên tới 16 blocks. Phù hợp cho xưởng chế tạo, máy farm khoáng sản nhỏ lẻ.
+                                </p>
+                                <span class="text-xs font-mono text-cyan-300 bg-black/50 px-2 py-1 rounded block">Lệnh nhận: /tnhoppers get normal</span>
+                            </div>
+
+                            <!-- Phễu Chunk -->
+                            <div class="p-4 rounded-xl bg-gradient-to-br from-indigo-950/40 to-black/60 border border-indigo-500/30">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-bold text-indigo-400 text-base">🔹 Chunk Hopper (Phễu Chunk)</span>
+                                    <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded font-mono">Toàn Chunk 16x16</span>
+                                </div>
+                                <p class="text-xs text-gray-300 leading-relaxed mb-3">
+                                    Hút <strong>TOÀN BỘ</strong> vật phẩm rơi tự do trong phạm vi 1 Chunk (từ Bedrock lên nóc thế giới). Thích hợp cho máy farm mob quy mô lớn.
+                                </p>
+                                <span class="text-xs font-mono text-indigo-300 bg-black/50 px-2 py-1 rounded block">Lệnh nhận: /tnhoppers get chunk</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200">
+                            <strong>✨ Bảo toàn cấp độ (PDC NBT):</strong> Khi đập vỡ phễu bằng cúp (Sneak + Chuột trái) hoặc bị TNT nổ, vật phẩm rơi ra sẽ lưu nguyên vẹn mọi cấp độ nâng cấp!
+                        </div>
+                    </div>
+
+                    <!-- Liên kết Link Wand & Bộ lọc từng rương -->
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                            <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+                            <span>III. Link Wand & Bộ Lọc Từng Rương (Per-Link Filter)</span>
+                        </h2>
+                        <div class="mt-4 text-xs md:text-sm text-gray-300 space-y-3">
+                            <p>Tạo đường truyền không dây đơn giản và nhanh gọn:</p>
+                            <ol class="list-decimal list-inside space-y-1.5 text-gray-300 pl-2">
+                                <li>Dùng lệnh <code class="text-cyan-400 bg-black/50 px-1.5 py-0.5 rounded font-mono">/tnhoppers wand</code> để nhận gậy liên kết Link Wand.</li>
+                                <li><strong>Chuột phải</strong> vào phễu TNHoppers cần tạo liên kết.</li>
+                                <li>Đi tới thùng chứa đích (Rương, Shulker, Thùng gỗ...) và <strong>Chuột phải</strong> vào đó để hoàn tất kết nối.</li>
+                            </ol>
+
+                            <div class="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2 mt-3">
+                                <h4 class="font-bold text-white text-xs uppercase tracking-wider text-cyan-400">Tính năng lọc thông minh:</h4>
+                                <ul class="list-disc list-inside space-y-1 text-xs text-gray-300">
+                                    <li><strong>Whitelist / Blacklist:</strong> Cài đặt từng rương chỉ nhận vật phẩm nhất định hoặc chặn vật phẩm.</li>
+                                    <li><strong>Lọc nghiêm ngặt (Strict NBT):</strong> So khớp chính xác tên tùy biến, enchantments, bình thuốc.</li>
+                                    <li><strong>Sao chép & Dán (Copy/Paste Filter):</strong> Copy bộ lọc từ rương này sang rương khác chỉ bằng 1 cú click!</li>
+                                    <li><strong>Tự hủy rác không khớp (Auto-Void Unmatched):</strong> Tự xóa bỏ xương, thịt thối thừa để tránh kẹt rương.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bảng Nâng Cấp GUI -->
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                            <i class="fa-solid fa-sliders text-cyan-400"></i>
+                            <span>IV. Bảng Nâng Cấp Tương Tác Trực Quan</span>
+                        </h2>
+                        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                            <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                                <i class="fa-solid fa-bolt text-yellow-400 text-xl mb-1"></i>
+                                <h5 class="text-xs font-bold text-white">Tốc độ (Speed)</h5>
+                                <p class="text-[11px] text-gray-400 mt-1">Từ 20 ticks xuống 2 ticks/lần</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                                <i class="fa-solid fa-boxes-stacked text-blue-400 text-xl mb-1"></i>
+                                <h5 class="text-xs font-bold text-white">Số lượng (Amount)</h5>
+                                <p class="text-[11px] text-gray-400 mt-1">Từ 1 lên 64 item/chu kỳ</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                                <i class="fa-solid fa-link text-cyan-400 text-xl mb-1"></i>
+                                <h5 class="text-xs font-bold text-white">Số liên kết (Links)</h5>
+                                <p class="text-[11px] text-gray-400 mt-1">Từ 1 rương lên 15 rương</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                                <i class="fa-solid fa-ruler-combined text-green-400 text-xl mb-1"></i>
+                                <h5 class="text-xs font-bold text-white">Khoảng cách & Bán kính</h5>
+                                <p class="text-[11px] text-gray-400 mt-1">Hút tới 16m, truyền tới 250m</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bảng Lệnh & Quyền Hạn -->
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                            <i class="fa-solid fa-terminal text-cyan-400"></i>
+                            <span>V. Danh Sách Lệnh & Quyền Hạn (Commands & Permissions)</span>
+                        </h2>
+                        <div class="mt-4 overflow-x-auto">
+                            <table class="w-full text-left text-xs border border-white/10 rounded-xl overflow-hidden">
+                                <thead class="bg-black/60 text-cyan-300 border-b border-white/10">
+                                    <tr>
+                                        <th class="p-3">Lệnh</th>
+                                        <th class="p-3">Quyền hạn (Permission)</th>
+                                        <th class="p-3">Mô tả</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-white/5 bg-black/20 text-gray-300">
+                                    <tr>
+                                        <td class="p-3 font-mono text-cyan-400">/tnhoppers menu</td>
+                                        <td class="p-3 font-mono text-gray-400">tnhoppers.use</td>
+                                        <td class="p-3">Mở bảng điều khiển tổng quan và quản lý phễu</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-mono text-cyan-400">/tnhoppers wand</td>
+                                        <td class="p-3 font-mono text-gray-400">tnhoppers.wand</td>
+                                        <td class="p-3">Nhận gậy Link Wand liên kết phễu với rương</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-mono text-cyan-400">/tnhoppers get &lt;normal|chunk&gt;</td>
+                                        <td class="p-3 font-mono text-gray-400">tnhoppers.admin</td>
+                                        <td class="p-3">Lấy phễu Thường hoặc phễu Chunk vào túi đồ</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-mono text-cyan-400">/tnhoppers reload</td>
+                                        <td class="p-3 font-mono text-gray-400">tnhoppers.admin</td>
+                                        <td class="p-3">Nạp lại cấu hình config.yml mà không cần restart server</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TAB CONTENT 2: SỰ PHỤ THUỘC (DEPENDENCIES) -->
+                <div id="tab-content-dependencies" class="hidden panel-glass p-6 md:p-8 rounded-2xl space-y-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-puzzle-piece text-cyan-400"></i>
+                        <span>Yêu Cầu Môi Trường & Sự Phụ Thuộc</span>
+                    </h2>
+                    
+                    <div class="space-y-4 text-sm text-gray-300">
+                        <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-green-500/30">
+                            <i class="fa-solid fa-circle-check text-green-400 text-xl mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white">Nền tảng Minecraft Server (Bắt buộc)</h4>
+                                <p class="text-xs text-gray-400 mt-1">Paper, Purpur hoặc Folia 1.20+ / 1.21.x (Khuyên dùng Paper/Purpur 1.21.1).</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-green-500/30">
+                            <i class="fa-solid fa-circle-check text-green-400 text-xl mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white">Môi trường Java Runtime (Bắt buộc)</h4>
+                                <p class="text-xs text-gray-400 mt-1">Java 21 trở lên (Tận dụng Virtual Threads & tối ưu Garbage Collection).</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-blue-500/30">
+                            <i class="fa-solid fa-circle-info text-blue-400 text-xl mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white">Vault + Plugin Tiền Tệ (Tùy chọn)</h4>
+                                <p class="text-xs text-gray-400 mt-1">Nếu bạn muốn người chơi nâng cấp phễu bằng tiền trong server thay vì cấp độ kinh nghiệm (XP).</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-blue-500/30">
+                            <i class="fa-solid fa-circle-info text-blue-400 text-xl mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white">SuperiorSkyblock2 (Tùy chọn)</h4>
+                                <p class="text-xs text-gray-400 mt-1">Tự động kích hoạt cơ chế kiểm soát quyền đảo và chống nhặt đồ đảo láng giềng nếu server chạy Skyblock.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT 3: CẬP NHẬT (UPDATES) -->
+                <div id="tab-content-updates" class="hidden panel-glass p-6 md:p-8 rounded-2xl space-y-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-code-compare text-cyan-400"></i>
+                        <span>Nhật Ký Cập Nhật (Changelogs)</span>
+                    </h2>
+                    
+                    <div class="p-5 rounded-xl bg-black/40 border border-cyan-500/30 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-cyan-400 text-base">Bản phát hành chính thức v1.0.0</span>
+                            <span class="text-xs text-gray-400">27 Tháng 10, 2026</span>
+                        </div>
+                        <ul class="list-disc list-inside text-xs text-gray-300 space-y-1.5">
+                            <li>Ra mắt toàn diện hệ thống phễu không dây thế hệ mới (Normal & Chunk Hopper).</li>
+                            <li>Tích hợp cơ chế bộ đệm Chunk Cache nhẹ, không rò rỉ RAM (Zero Memory Leak).</li>
+                            <li>Lọc đồ NBT nghiêm ngặt từng rương nhận đồ + tính năng Copy/Paste Filter nhanh.</li>
+                            <li>Bảo toàn cấp độ phễu khi đập vỡ qua PersistentDataContainer (PDC).</li>
+                            <li>Hỗ trợ tương thích đồng thời Paper 1.20+ và máy chủ phân cụm đa luồng Folia.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT 4: ĐÁNH GIÁ (REVIEWS) -->
+                <div id="tab-content-reviews" class="hidden panel-glass p-6 md:p-8 rounded-2xl space-y-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <span>Đánh Giá Từ Cộng Đồng (5.0 / 5.0)</span>
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center text-xs">
+                                        JM
+                                    </div>
+                                    <span class="font-bold text-white text-xs">Admin JaoMC</span>
+                                    <span class="text-[10px] text-gray-500">• Đã xác minh</span>
+                                </div>
+                                <div class="flex text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Plugin chạy cực kỳ mượt trên server Skyblock của mình, TPS giữ vững 20.0 dù người chơi đặt hàng trăm Chunk Hopper. Hệ thống lọc rương rất tiện lợi!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT 5: LỊCH SỬ (HISTORY) -->
+                <div id="tab-content-history" class="hidden panel-glass p-6 md:p-8 rounded-2xl space-y-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i>
+                        <span>Lịch Sử Phiên Bản</span>
+                    </h2>
+                    <div class="space-y-3 text-xs text-gray-300">
+                        <div class="p-3.5 rounded-lg bg-black/40 border border-white/10 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white">v1.0.0</span> — Phiên bản phát hành chính thức
+                            </div>
+                            <span class="text-gray-400">27/10/2026</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Purchase / Download & Meta Box (Khung phải như Ảnh 5) -->
+            <div class="lg:col-span-1 space-y-6">
+
+                <!-- BOX 1: Mua giấy phép / Tải xuống ngay (Bám sát thiết kế Ảnh 5) -->
+                <div class="panel-glass p-6 rounded-2xl border-2 border-cyan-500/30 space-y-5">
+                    
+                    <!-- Header Box -->
+                    <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Tải Plugin Ngay</span>
+                        <span class="text-base font-extrabold text-cyan-400">Miễn phí (Free)</span>
+                    </div>
+
+                    <!-- Thỏa thuận người dùng cuối (EULA) -->
+                    <div>
+                        <div class="flex items-center justify-between text-xs text-gray-300 font-bold mb-1.5">
+                            <span>Thỏa thuận người dùng cuối (EULA)</span>
+                            <i class="fa-solid fa-circle-info text-cyan-400 text-xs" title="Quy định sử dụng tài nguyên"></i>
+                        </div>
+                        <div class="p-3 rounded-lg bg-black/50 border border-white/10 text-[11px] text-gray-400 leading-relaxed">
+                            Thỏa thuận cấp phép tiêu chuẩn mã nguồn mở (Standard Open-Source EULA). Sử dụng tự do trong bất kỳ dự án nào bạn sở hữu, kèm theo ghi nguồn tác giả <strong>Tài Nguyễn (TN)</strong>.
+                        </div>
+                    </div>
+
+                    <!-- Gói Hỗ trợ -->
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Hỗ trợ đi kèm</h4>
+                        <div class="p-3.5 rounded-xl bg-black/40 border border-cyan-500/20 space-y-2 text-xs">
+                            <div class="text-cyan-300 font-semibold mb-1">Gói Tiêu Chuẩn</div>
+                            <div class="text-gray-300 space-y-1.5">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fa-solid fa-check text-cyan-400 text-xs"></i>
+                                    <span>Tải xuống tài nguyên (.jar)</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fa-solid fa-check text-cyan-400 text-xs"></i>
+                                    <span>Truy cập toàn bộ mã nguồn & bản cập nhật mới</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fa-solid fa-check text-cyan-400 text-xs"></i>
+                                    <span>Hỗ trợ kỹ thuật qua Discord Server</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thời gian hỗ trợ -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-1">Thời gian hỗ trợ</label>
+                        <div class="w-full px-3 py-2 bg-black/50 border border-white/10 rounded-lg text-xs font-semibold text-green-400 flex items-center justify-between">
+                            <span>Trọn đời (Lifetime)</span>
+                            <i class="fa-solid fa-infinity"></i>
+                        </div>
+                    </div>
+
+                    <!-- Nút Tải / Thêm vào giỏ hàng (Ảnh 5) -->
+                    <div class="space-y-3 pt-2">
+                        <a id="btn-download" href="https://github.com/Jaojao00/TNHoppers" target="_blank" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(34,211,238,0.35)] flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5">
+                            <i class="fa-brands fa-github text-base"></i>
+                            <span>Tải Về Từ GitHub</span>
+                        </a>
+
+                        <a href="https://discord.gg/kwqU3N4nkH" target="_blank" class="w-full py-2.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-400/40 text-indigo-300 font-semibold text-xs flex items-center justify-center space-x-2 transition-all">
+                            <i class="fa-brands fa-discord text-sm"></i>
+                            <span>Tham Gia Discord Hỗ Trợ</span>
+                        </a>
+                    </div>
+
+                    <!-- Payment & Platform Badges (Ảnh 5) -->
+                    <div class="pt-3 border-t border-white/10 flex items-center justify-center space-x-4 text-gray-400 text-lg">
+                        <i class="fa-brands fa-github hover:text-white transition-colors" title="GitHub"></i>
+                        <i class="fa-brands fa-discord hover:text-[#5865F2] transition-colors" title="Discord"></i>
+                        <i class="fa-brands fa-java hover:text-orange-400 transition-colors" title="Java 21+"></i>
+                        <i class="fa-brands fa-paypal hover:text-blue-400 transition-colors" title="PayPal"></i>
+                    </div>
+
+                </div>
+
+                <!-- BOX 2: Thông tin tài nguyên (Metadata Box) -->
+                <div class="panel-glass p-6 rounded-2xl space-y-4 text-xs">
+                    <h3 class="font-bold text-sm text-gray-200 flex items-center space-x-2 pb-2 border-b border-white/10">
+                        <i class="fa-solid fa-circle-info text-cyan-400"></i>
+                        <span>Thông Tin Tài Nguyên</span>
+                    </h3>
+
+                    <div class="space-y-2.5 text-gray-300">
+                        <div class="flex justify-between py-1 border-b border-white/5">
+                            <span class="text-gray-400">Tác giả</span>
+                            <span id="meta-author" class="font-semibold text-purple-300">Tài Nguyễn (TN)</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-white/5">
+                            <span class="text-gray-400">Ngày phát hành</span>
+                            <span>27/10/2026</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-white/5">
+                            <span class="text-gray-400">Phiên bản hiện tại</span>
+                            <span class="font-mono text-cyan-400">1.0.0</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-white/5">
+                            <span class="text-gray-400">Hỗ trợ Minecraft</span>
+                            <span>1.20.6 - 1.21.x</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-white/5">
+                            <span class="text-gray-400">Nền tảng</span>
+                            <span>Paper, Purpur, Folia</span>
+                        </div>
+                        <div class="flex justify-between py-1">
+                            <span class="text-gray-400">Tổng lượt tải</span>
+                            <span class="font-semibold text-cyan-400">258 lượt</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOX 3: Plugin Liên Quan / Gói Tiết Kiệm (Ảnh 5) -->
+                <div class="panel-glass p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between text-xs font-bold text-gray-300">
+                        <span class="flex items-center space-x-1.5 text-amber-400">
+                            <i class="fa-solid fa-gift"></i>
+                            <span>Plugin Nổi Bật Khác</span>
+                        </span>
+                        <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded">Khuyên Dùng</span>
+                    </div>
+
+                    <a href="plugin-detail.html?id=tutien" class="block p-3 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-400/40 transition-all group">
+                        <div class="flex items-center space-x-3">
+                            <img src="tutienlogo.jpg" alt="Tu Tiên" class="w-12 h-12 rounded-lg object-cover">
+                            <div>
+                                <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TN-TuTienPlugin</h5>
+                                <p class="text-[11px] text-gray-400">Hệ thống tu tiên RPG v2.2 Skyblock</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#05080f] border-t border-white/10 py-10 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-gray-500">
+            <div class="flex items-center space-x-3">
+                <img src="tutienlogo.jpg" alt="Logo" class="w-8 h-8 rounded-lg object-cover">
+                <p>© 2026 Team Jao MC & Tài Nguyễn (TN). Toàn bộ bản quyền thuộc về tác giả.</p>
+            </div>
+            <div class="flex items-center space-x-6 text-sm text-gray-400">
+                <a href="index.html" class="hover:text-cyan-400 transition-colors">Trang Chủ</a>
+                <a href="plugins.html" class="hover:text-cyan-400 transition-colors">Plugin Server</a>
+                <a href="https://github.com/Jaojao00/TNHoppers" target="_blank" class="hover:text-cyan-400 transition-colors">GitHub TNHoppers</a>
+                <a href="https://discord.gg/kwqU3N4nkH" target="_blank" class="hover:text-cyan-400 transition-colors">Discord Hỗ Trợ</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        function copyIP() {
+            navigator.clipboard.writeText("stardust.pikamc.vn:25306").then(() => {
+                const toast = document.getElementById("toast");
+                toast.classList.remove("opacity-0", "pointer-events-none");
+                toast.classList.add("opacity-100");
+                setTimeout(() => {
+                    toast.classList.remove("opacity-100");
+                    toast.classList.add("opacity-0", "pointer-events-none");
+                }, 3000);
+            });
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            const tabs = ['overview', 'dependencies', 'updates', 'reviews', 'history'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                const content = document.getElementById(`tab-content-${t}`);
+                if (btn && content) {
+                    if (t === tabName) {
+                        btn.classList.add('active', 'text-cyan-400');
+                        btn.classList.remove('text-gray-400');
+                        content.classList.remove('hidden');
+                    } else {
+                        btn.classList.remove('active', 'text-cyan-400');
+                        btn.classList.add('text-gray-400');
+                        content.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        // Mobile Menu Toggle
+        const toggleBtn = document.getElementById("mobile-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        if (toggleBtn && mobileMenu) {
+            toggleBtn.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+            });
+        }
+
+        // Query param handler for ?id=tutien
+        const urlParams = new URLSearchParams(window.location.search);
+        const pluginId = urlParams.get('id');
+
+        if (pluginId === 'tutien') {
+            document.getElementById('page-title').innerText = "TN-TuTienPlugin — Hệ Thống Tu Tiên Minecraft (Skyblock Edition)";
+            document.getElementById('breadcrumb-plugin').innerText = "TN-TuTienPlugin v2.2 Skyblock";
+            document.getElementById('plugin-title').innerHTML = `TN-TuTienPlugin — Hệ Thống Tu Tiên Chuyên Sâu <span class="text-amber-400 text-xl font-mono">v2.2</span>`;
+            document.getElementById('plugin-tagline').innerText = "Plugin RPG mô phỏng thế giới tu tiên toàn diện: 17 cảnh giới, 7 đại đạo, 50+ đan dược phân trang, thiên kiếp an toàn cho đảo Skyblock, rèn đồ 8 phẩm cấp và Gacha linh thú.";
+            document.getElementById('plugin-banner').src = "tutienlogo.jpg";
+            document.getElementById('meta-author').innerText = "JaoMC & Tài Nguyễn";
+            document.getElementById('btn-download').href = "https://github.com/Jaojao00/TuTienPlugin";
+            document.getElementById('btn-download').innerHTML = `<i class="fa-brands fa-github text-base"></i><span>Xem GitHub TuTienPlugin</span>`;
+        }
+    </script>
+</body>
+</html>

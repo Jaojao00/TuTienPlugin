@@ -1,9 +1,18 @@
-# ⛩ TN-TuTienPlugin — Hệ Thống Tu Tiên Minecraft (v2.2 Skyblock Edition)
+<div align="center">
 
-![Minecraft](https://img.shields.io/badge/Minecraft-1.20.6+-brightgreen?style=flat-square&logo=minecraft)
-![Java](https://img.shields.io/badge/Java-21-orange?style=flat-square&logo=openjdk)
-![Spigot](https://img.shields.io/badge/API-Spigot%2FPaper-yellow?style=flat-square)
-![Version](https://img.shields.io/badge/Version-2.2_Skyblock-blue?style=flat-square)
+  <img src="tutienlogo.jpg" alt="TN-TuTienPlugin Banner" width="480" style="border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);" />
+
+  # ⛩ TN-TuTienPlugin — Hệ Thống Tu Tiên Minecraft
+  ### ⚡ v2.2 Skyblock Edition ⚡
+
+  <p>
+    <img src="https://img.shields.io/badge/Minecraft-1.20.6+-brightgreen?style=flat-square&logo=minecraft" alt="Minecraft" />
+    <img src="https://img.shields.io/badge/Java-21-orange?style=flat-square&logo=openjdk" alt="Java" />
+    <img src="https://img.shields.io/badge/API-Spigot%2FPaper-yellow?style=flat-square" alt="Spigot" />
+    <img src="https://img.shields.io/badge/Version-2.2_Skyblock-blue?style=flat-square" alt="Version" />
+  </p>
+
+</div>
 
 > Plugin Minecraft RPG mô phỏng thế giới tu tiên chuyên sâu (tối ưu hóa hoàn hảo cho máy chủ **Skyblock** & **Survival**) — 17 cảnh giới, 7 đại đạo, 50+ công thức luyện đan phân trang, đột phá Cửu Đạo Thiên Kiếp an toàn cho đảo, chế tác trang bị 8 phẩm cấp cộng chỉ số thật, phụ bản Linh Thú Viên tích hợp máy đào đá (Cobblestone Generator), Gacha Linh Thú trợ chiến, Bảng Xếp Hạng Top 10 & Vạn Giới Các.
 

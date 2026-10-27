@@ -299,6 +299,13 @@ public class PlayerDataManager {
     public void setCanhGioi(Player player, CanhGioi cg) {
         canhGioiMap.put(player.getUniqueId(), cg);
         tutien.combat.StatsManager.applyStats(player, this);
+        if (player != null && player.isOnline() && cg != null) {
+            String group = cg.getGroupName();
+            org.bukkit.Bukkit.dispatchCommand(
+                org.bukkit.Bukkit.getConsoleSender(),
+                "lp user " + player.getName() + " parent set " + group
+            );
+        }
     }
 
     public int getTuVi(Player player) { return tuViMap.getOrDefault(player.getUniqueId(), 0); }

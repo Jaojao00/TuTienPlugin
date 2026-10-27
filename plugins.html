@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Server Minecraft | Kho Tài Nguyên Plugin Đỉnh Cao - Team Jao MC</title>
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0f1c',
+                        darker: '#05080f',
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            glow: 'rgba(34, 211, 238, 0.5)'
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05080f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass-nav {
+            background: rgba(10, 15, 28, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(34, 211, 238, 0.12);
+        }
+        
+        .card-plugin {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(34, 211, 238, 0.12);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-plugin:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 36px rgba(34, 211, 238, 0.18);
+            border-color: rgba(34, 211, 238, 0.45);
+            background: rgba(15, 23, 42, 0.85);
+        }
+
+        .sidebar-box {
+            background: rgba(11, 18, 33, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #22d3ee 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05080f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col bg-[#05080f] text-gray-100">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-cyan-950/90 border border-cyan-400 text-cyan-50 px-6 py-4 rounded-full flex items-center space-x-3 backdrop-blur-md shadow-[0_0_25px_rgba(34,211,238,0.4)] opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cyan-500 rounded-full w-8 h-8 flex items-center justify-center">
+            <i class="fa-solid fa-check text-white"></i>
+        </div>
+        <div>
+            <p class="font-bold text-sm">Đã sao chép IP!</p>
+            <p class="text-xs text-cyan-200">stardust.pikamc.vn:25306</p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand / Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="tutienlogo.jpg" alt="Logo" class="w-11 h-11 rounded-xl object-cover border border-cyan-400/40 shadow-[0_0_15px_rgba(34,211,238,0.5)] group-hover:scale-105 transition-all">
+                    <span class="font-extrabold text-2xl tracking-widest text-white title-font">TEAM JAO<span class="text-cyan-400">MC</span></span>
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-7 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Trang Chủ</a>
+                    <a href="index.html#how-to-play" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Hướng Dẫn</a>
+                    <a href="index.html#features" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Tính Năng</a>
+                    <a href="index.html#leaderboards" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Bảng Xếp Hạng</a>
+                    <a href="index.html#store" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Cửa Hàng</a>
+                    <!-- Active Page -->
+                    <a href="plugins.html" class="text-cyan-400 font-bold flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 border border-cyan-400/50 shadow-[0_0_15px_rgba(34,211,238,0.25)]">
+                        <i class="fa-solid fa-puzzle-piece text-cyan-400 text-sm"></i>
+                        <span>Plugin Server</span>
+                    </a>
+                    
+                    <button onclick="copyIP()" class="ml-4 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/50 text-cyan-400 px-5 py-2 rounded-full font-bold transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] flex items-center space-x-2 group text-sm">
+                        <i class="fa-solid fa-copy group-hover:scale-110 transition-transform"></i>
+                        <span>Copy IP</span>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-toggle" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 bg-[#0a0f1c]/95 border-b border-cyan-400/20 space-y-3">
+            <a href="index.html" class="block text-gray-300 hover:text-cyan-400 py-1">Trang Chủ</a>
+            <a href="index.html#how-to-play" class="block text-gray-300 hover:text-cyan-400 py-1">Hướng Dẫn</a>
+            <a href="index.html#features" class="block text-gray-300 hover:text-cyan-400 py-1">Tính Năng</a>
+            <a href="index.html#leaderboards" class="block text-gray-300 hover:text-cyan-400 py-1">Bảng Xếp Hạng</a>
+            <a href="index.html#store" class="block text-gray-300 hover:text-cyan-400 py-1">Cửa Hàng</a>
+            <a href="plugins.html" class="block text-cyan-400 font-bold py-1">Plugin Server (Đang xem)</a>
+            <button onclick="copyIP()" class="w-full mt-2 bg-cyan-500/20 border border-cyan-400 text-cyan-300 py-2 rounded-lg font-bold">Copy IP Server</button>
+        </div>
+    </nav>
+
+    <!-- Page Body -->
+    <main class="flex-grow pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+
+        <!-- Breadcrumb (Ảnh 4) -->
+        <div class="flex items-center space-x-2 text-xs md:text-sm text-gray-400 mb-6">
+            <a href="index.html" class="hover:text-cyan-400 transition-colors flex items-center space-x-1">
+                <i class="fa-solid fa-house"></i>
+                <span>Trang chủ</span>
+            </a>
+            <span class="text-gray-600">›</span>
+            <span class="text-gray-400">Tài nguyên</span>
+            <span class="text-gray-600">›</span>
+            <span class="text-gray-400">Minecraft</span>
+            <span class="text-gray-600">›</span>
+            <span class="text-cyan-400 font-medium">Plugin Minecraft</span>
+        </div>
+
+        <!-- Section Header (Ảnh 4) -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-white flex items-center space-x-3">
+                    <span class="text-gradient-cyan title-font">Plugin Minecraft Server</span>
+                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-400/30">Official Releases</span>
+                </h1>
+                <p id="resource-count" class="text-xs md:text-sm text-gray-400 mt-1">
+                    Hiển thị <span class="text-cyan-400 font-bold">2</span> trong số <span class="text-cyan-400 font-bold">2</span> tài nguyên plugin tuyển chọn
+                </p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <a href="https://github.com/Jaojao00" target="_blank" class="px-4 py-2 rounded-lg bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-400/40 text-cyan-300 text-sm font-semibold flex items-center space-x-2 transition-all">
+                    <i class="fa-brands fa-github text-base"></i>
+                    <span>GitHub Dev</span>
+                </a>
+                <a href="https://discord.gg/kwqU3N4nkH" target="_blank" class="px-4 py-2 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/40 border border-indigo-400/40 text-indigo-200 text-sm font-semibold flex items-center space-x-2 transition-all">
+                    <i class="fa-brands fa-discord text-base"></i>
+                    <span>Yêu cầu Plugin</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Big Search Bar (Khung đỏ to trong Ảnh 4) -->
+        <div class="mb-8">
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass text-cyan-400 text-lg"></i>
+                </div>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="Tìm kiếm tài nguyên plugin Minecraft (TNHoppers, Tu Tiên, Skyblock, Phễu, Luyện đan...)" 
+                    class="w-full pl-12 pr-28 py-3.5 bg-[#0d1527] border-2 border-cyan-500/30 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_20px_rgba(34,211,238,0.25)] transition-all text-sm md:text-base"
+                    onkeyup="filterPlugins()"
+                >
+                <div class="absolute inset-y-0 right-2 flex items-center">
+                    <span class="text-xs px-2.5 py-1 rounded bg-white/5 border border-white/10 text-gray-400 font-mono">ESC để xóa</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area: Grid + Sidebar (Bố cục Ảnh 4) -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+            
+            <!-- Left / Center: Plugin Cards List (3/4 Width) -->
+            <div class="lg:col-span-3 space-y-6">
+
+                <!-- Alert bar / Tip -->
+                <div class="p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-500/20 text-xs md:text-sm text-cyan-200 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-info text-cyan-400 text-base"></i>
+                        <span>Mọi plugin được tối ưu <strong>Zero-Lag</strong>, tương thích Paper, Purpur, Folia 1.20 - 1.21.x và mở mã nguồn GitHub.</span>
+                    </div>
+                    <span class="hidden sm:inline-block text-[11px] text-cyan-400/70">Cập nhật 2026</span>
+                </div>
+
+                <!-- Grid of Plugin Cards (Minh họa Ảnh 3 & Bố cục Ảnh 4) -->
+                <div id="plugin-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- CARD 1: TNHoppers (PLUGIN MỤC TIÊU - Ảnh số 2 & 3) -->
+                    <div class="card-plugin rounded-2xl overflow-hidden flex flex-col group cursor-pointer" 
+                         data-name="tnhoppers pheu khong day hut do chunk hopper superior skyblock" 
+                         data-category="gameplay tps automation"
+                         data-gamemode="skyblock survival towny"
+                         onclick="window.location.href='plugin-detail.html?id=tnhoppers'">
+                        
+                        <!-- Thumbnail with Price Tag Badge -->
+                        <div class="relative h-52 sm:h-56 w-full overflow-hidden bg-black/40">
+                            <img src="tnhoppers.jpg" alt="TNHoppers Banner" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <!-- Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-black/20"></div>
+                            
+                            <!-- Badges -->
+                            <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                                <span class="bg-cyan-500/90 text-black text-xs font-black px-2.5 py-1 rounded-md shadow-md uppercase tracking-wide">
+                                    Mới Ra Mắt
+                                </span>
+                                <span class="bg-blue-600/80 text-white text-[11px] font-semibold px-2 py-0.5 rounded backdrop-blur-sm">
+                                    Paper / Folia
+                                </span>
+                            </div>
+
+                            <!-- Price / Download Badge (Góc dưới phải giống Ảnh 3) -->
+                            <div class="absolute bottom-3 right-3 bg-black/80 border border-cyan-400/40 text-cyan-300 text-xs font-bold px-3 py-1.5 rounded-lg backdrop-blur-md shadow-lg flex items-center space-x-1.5">
+                                <i class="fa-brands fa-github text-sm"></i>
+                                <span>Miễn phí (Free)</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <!-- Title (Màu xanh dương/cyan như ảnh 3) -->
+                                <h3 class="text-lg font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors line-clamp-1 mb-1">
+                                    TNHoppers — Hệ Thống Phễu Không Dây & Hút Đồ
+                                </h3>
+                                
+                                <!-- Author (Tím & ghim như ảnh 3) -->
+                                <div class="flex items-center space-x-1.5 text-xs text-purple-400 font-medium mb-3">
+                                    <span class="hover:underline">Tài Nguyễn (TN)</span>
+                                    <i class="fa-solid fa-thumbtack text-[10px] text-purple-300"></i>
+                                </div>
+
+                                <!-- Description (2-3 dòng như ảnh 3) -->
+                                <p class="text-xs md:text-sm text-gray-300 leading-relaxed line-clamp-3 mb-4">
+                                    Phễu không dây thế hệ mới cho Skyblock & Survival. Hút vật phẩm toàn Chunk hoặc Bán kính, cơ chế chống lag cực đoan (Zero-Lag), lọc đồ NBT chính xác từng rương, Link Wand và bảng nâng cấp trực quan.
+                                </p>
+                            </div>
+
+                            <!-- Card Footer: Ratings & Downloads (Giống ảnh 3) -->
+                            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
+                                <!-- Star Rating -->
+                                <div class="flex items-center space-x-1.5">
+                                    <div class="flex text-amber-400 text-xs">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <span class="text-gray-300 font-semibold">5.0</span>
+                                    <span class="text-gray-500">(12 đánh giá)</span>
+                                </div>
+
+                                <!-- Downloads / Purchases -->
+                                <div class="flex items-center space-x-1 text-cyan-400 font-medium">
+                                    <i class="fa-solid fa-download text-[11px]"></i>
+                                    <span>258 lượt tải</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: TN-TuTienPlugin (PLUGIN THỨ HAI ĐI KÈM) -->
+                    <div class="card-plugin rounded-2xl overflow-hidden flex flex-col group cursor-pointer" 
+                         data-name="tutien tu tien plugin rpg skyblock luyen dan canh gioi do kiep linh thu" 
+                         data-category="gameplay rpg economy"
+                         data-gamemode="skyblock survival"
+                         onclick="window.location.href='plugin-detail.html?id=tutien'">
+                        
+                        <!-- Thumbnail with Price Tag Badge -->
+                        <div class="relative h-52 sm:h-56 w-full overflow-hidden bg-black/40">
+                            <img src="tutienlogo.jpg" alt="TN-TuTienPlugin Banner" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <!-- Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-black/20"></div>
+                            
+                            <!-- Badges -->
+                            <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                                <span class="bg-amber-500/90 text-black text-xs font-black px-2.5 py-1 rounded-md shadow-md uppercase tracking-wide">
+                                    v2.2 Skyblock
+                                </span>
+                                <span class="bg-purple-600/80 text-white text-[11px] font-semibold px-2 py-0.5 rounded backdrop-blur-sm">
+                                    Spigot / Paper
+                                </span>
+                            </div>
+
+                            <!-- Price / Download Badge -->
+                            <div class="absolute bottom-3 right-3 bg-black/80 border border-amber-400/40 text-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg backdrop-blur-md shadow-lg flex items-center space-x-1.5">
+                                <i class="fa-brands fa-github text-sm"></i>
+                                <span>Mã nguồn mở</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <!-- Title -->
+                                <h3 class="text-lg font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors line-clamp-1 mb-1">
+                                    TN-TuTienPlugin — Hệ Thống Tu Tiên Chuyên Sâu
+                                </h3>
+                                
+                                <!-- Author -->
+                                <div class="flex items-center space-x-1.5 text-xs text-purple-400 font-medium mb-3">
+                                    <span class="hover:underline">JaoMC & Tài Nguyễn</span>
+                                    <i class="fa-solid fa-thumbtack text-[10px] text-purple-300"></i>
+                                </div>
+
+                                <!-- Description -->
+                                <p class="text-xs md:text-sm text-gray-300 leading-relaxed line-clamp-3 mb-4">
+                                    Mô phỏng thế giới tu tiên toàn diện: 17 cảnh giới, 7 đại đạo, 50+ đan dược phân trang lò luyện, thiên kiếp an toàn không cháy đảo Skyblock, rèn đồ 8 phẩm cấp và Gacha linh thú trợ chiến.
+                                </p>
+                            </div>
+
+                            <!-- Card Footer: Ratings & Downloads -->
+                            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
+                                <!-- Star Rating -->
+                                <div class="flex items-center space-x-1.5">
+                                    <div class="flex text-amber-400 text-xs">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <span class="text-gray-300 font-semibold">5.0</span>
+                                    <span class="text-gray-500">(48 đánh giá)</span>
+                                </div>
+
+                                <!-- Downloads / Purchases -->
+                                <div class="flex items-center space-x-1 text-cyan-400 font-medium">
+                                    <i class="fa-solid fa-download text-[11px]"></i>
+                                    <span>1,024 lượt tải</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Empty State (Khi tìm kiếm không có kết quả) -->
+                <div id="no-results" class="hidden text-center py-16 px-4 sidebar-box rounded-2xl">
+                    <i class="fa-solid fa-box-open text-5xl text-gray-600 mb-4"></i>
+                    <h3 class="text-lg font-bold text-gray-300 mb-1">Không tìm thấy plugin phù hợp</h3>
+                    <p class="text-sm text-gray-500 mb-4">Thử thay đổi từ khóa hoặc bỏ bớt các bộ lọc bên phải.</p>
+                    <button onclick="resetFilters()" class="px-4 py-2 bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 rounded-lg text-sm font-semibold hover:bg-cyan-500/30">
+                        Đặt lại bộ lọc
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar: Filters & Categories (Khung đỏ bên phải trong Ảnh 4) -->
+            <div class="lg:col-span-1 space-y-6">
+                
+                <!-- Box 1: Thẻ tìm kiếm (Tags) -->
+                <div class="sidebar-box p-5 rounded-2xl">
+                    <div class="flex items-center justify-between mb-3 text-sm font-bold text-gray-200">
+                        <span class="flex items-center space-x-2">
+                            <i class="fa-solid fa-tag text-cyan-400"></i>
+                            <span>Thẻ</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-up text-xs text-gray-500"></i>
+                    </div>
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="tag-search" 
+                            placeholder="Từ khóa tìm kiếm..." 
+                            class="w-full px-3 py-2 bg-black/40 border border-white/10 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"
+                            onkeyup="filterPlugins()"
+                        >
+                    </div>
+                </div>
+
+                <!-- Box 2: Kiểu / Thể loại (Style / Type) -->
+                <div class="sidebar-box p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between text-sm font-bold text-gray-200">
+                        <span class="flex items-center space-x-2">
+                            <i class="fa-solid fa-layer-group text-cyan-400"></i>
+                            <span>Kiểu / Phân loại</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-up text-xs text-gray-500"></i>
+                    </div>
+                    
+                    <div class="space-y-2.5 text-xs text-gray-300 pt-1">
+                        <label class="flex items-center space-x-2.5 cursor-pointer hover:text-cyan-400 transition-colors">
+                            <input type="checkbox" value="gameplay" class="category-check form-checkbox rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-0" onchange="filterPlugins()">
+                            <span>Lối chơi (Gameplay)</span>
+                        </label>
+                        <label class="flex items-center space-x-2.5 cursor-pointer hover:text-cyan-400 transition-colors">
+                            <input type="checkbox" value="tps" class="category-check form-checkbox rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-0" onchange="filterPlugins()">
+                            <span>Tối ưu TPS & Hiệu năng</span>
+                        </label>
+                        <label class="flex items-center space-x-2.5 cursor-pointer hover:text-cyan-400 transition-colors">
+                            <input type="checkbox" value="automation" class="category-check form-checkbox rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-0" onchange="filterPlugins()">
+                            <span>Tự động hóa (Automation)</span>
+                        </label>
+                        <label class="flex items-center space-x-2.5 cursor-pointer hover:text-cyan-400 transition-colors">
+                            <input type="checkbox" value="rpg" class="category-check form-checkbox rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-0" onchange="filterPlugins()">
+                            <span>RPG & Tu Tiên</span>
+                        </label>
+                        <label class="flex items-center space-x-2.5 cursor-pointer hover:text-cyan-400 transition-colors">
+                            <input type="checkbox" value="economy" class="category-check form-checkbox rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-0" onchange="filterPlugins()">
+                            <span>Kinh tế & Kho đồ</span>
+                        </label>
+                    </div>
+
+                    <a href="javascript:void(0)" onclick="resetFilters()" class="inline-block text-[11px] text-cyan-400 hover:underline pt-2">
+                        Xem tất cả kiểu ▸
+                    </a>
+                </div>
+
+                <!-- Box 3: Chế độ chơi (Game Modes) -->
+                <div class="sidebar-box p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between text-sm font-bold text-gray-200">
+                        <span class="flex items-center space-x-2">
+                            <i class="fa-solid fa-gamepad text-cyan-400"></i>
+                            <span>Chế độ chơi</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-up text-xs text-gray-500"></i>
+                    </div>
+                    
+                    <div class="space-y-2.5 text-xs text-gray-300 pt-1">
+                        <label class="flex items-center space-x-2.5 cursor-pointer hover:text-cyan-400 transition-colors">
+                            <input type="checkbox" value="skyblock" class="gamemode-check form-checkbox rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-0" onchange="filterPlugins()">
+                            <span>Skyblock (Ưu tiên)</span>
+                        </label>
+                        <label class="flex items-center space-x-2.5 cursor-pointer hover:text-cyan-400 transition-colors">
+                            <input type="checkbox" value="survival" class="gamemode-check form-checkbox rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-0" onchange="filterPlugins()">
+                            <span>Sống sót (Survival)</span>
+                        </label>
+                        <label class="flex items-center space-x-2.5 cursor-pointer hover:text-cyan-400 transition-colors">
+                            <input type="checkbox" value="towny" class="gamemode-check form-checkbox rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-0" onchange="filterPlugins()">
+                            <span>Thị trấn (Towny)</span>
+                        </label>
+                    </div>
+
+                    <a href="javascript:void(0)" onclick="resetFilters()" class="inline-block text-[11px] text-cyan-400 hover:underline pt-2">
+                        Xem thêm chế độ ▸
+                    </a>
+                </div>
+
+                <!-- Box 4: Nền tảng & Phiên bản hỗ trợ -->
+                <div class="sidebar-box p-5 rounded-2xl space-y-4">
+                    <div class="text-sm font-bold text-gray-200 flex items-center space-x-2">
+                        <i class="fa-solid fa-server text-cyan-400"></i>
+                        <span>Nền tảng hỗ trợ</span>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-300">Paper 1.20+</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-300">Purpur</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-300">Folia</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-300">Spigot</span>
+                    </div>
+
+                    <div class="pt-2 border-t border-white/10">
+                        <div class="text-sm font-bold text-gray-200 mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-code-branch text-cyan-400"></i>
+                            <span>Phiên bản Minecraft</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-[11px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-400/30">1.21.x</span>
+                            <span class="text-[11px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-400/30">1.20.6</span>
+                            <span class="text-[11px] px-2 py-0.5 rounded bg-white/5 text-gray-400 border border-white/10">1.20.4</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#05080f] border-t border-white/10 py-10 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-gray-500">
+            <div class="flex items-center space-x-3">
+                <img src="tutienlogo.jpg" alt="Logo" class="w-8 h-8 rounded-lg object-cover">
+                <p>© 2026 Team Jao MC & Tài Nguyễn (TN). Toàn bộ bản quyền plugin thuộc về tác giả.</p>
+            </div>
+            <div class="flex items-center space-x-6 text-sm text-gray-400">
+                <a href="index.html" class="hover:text-cyan-400 transition-colors">Trang Chủ</a>
+                <a href="plugins.html" class="hover:text-cyan-400 transition-colors">Plugin Server</a>
+                <a href="https://github.com/Jaojao00/TNHoppers" target="_blank" class="hover:text-cyan-400 transition-colors">GitHub TNHoppers</a>
+                <a href="https://discord.gg/kwqU3N4nkH" target="_blank" class="hover:text-cyan-400 transition-colors">Discord Hỗ Trợ</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        // Copy IP Notification
+        function copyIP() {
+            navigator.clipboard.writeText("stardust.pikamc.vn:25306").then(() => {
+                const toast = document.getElementById("toast");
+                toast.classList.remove("opacity-0", "pointer-events-none");
+                toast.classList.add("opacity-100");
+                setTimeout(() => {
+                    toast.classList.remove("opacity-100");
+                    toast.classList.add("opacity-0", "pointer-events-none");
+                }, 3000);
+            });
+        }
+
+        // Mobile Menu Toggle
+        const toggleBtn = document.getElementById("mobile-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        if (toggleBtn && mobileMenu) {
+            toggleBtn.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+            });
+        }
+
+        // Live Filter Function (Tìm kiếm & Checkbox)
+        function filterPlugins() {
+            const query = (document.getElementById("search-input").value || "").toLowerCase().trim();
+            const tagQuery = (document.getElementById("tag-search").value || "").toLowerCase().trim();
+            
+            const selectedCategories = Array.from(document.querySelectorAll(".category-check:checked")).map(cb => cb.value);
+            const selectedModes = Array.from(document.querySelectorAll(".gamemode-check:checked")).map(cb => cb.value);
+            
+            const cards = document.querySelectorAll(".card-plugin");
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const name = card.getAttribute("data-name") || "";
+                const categories = (card.getAttribute("data-category") || "").split(" ");
+                const modes = (card.getAttribute("data-gamemode") || "").split(" ");
+
+                const matchesQuery = !query || name.includes(query);
+                const matchesTag = !tagQuery || name.includes(tagQuery);
+                
+                const matchesCategory = selectedCategories.length === 0 || selectedCategories.some(c => categories.includes(c));
+                const matchesMode = selectedModes.length === 0 || selectedModes.some(m => modes.includes(m));
+
+                if (matchesQuery && matchesTag && matchesCategory && matchesMode) {
+                    card.classList.remove("hidden");
+                    visibleCount++;
+                } else {
+                    card.classList.add("hidden");
+                }
+            });
+
+            // Update Count
+            const countEl = document.getElementById("resource-count");
+            if (countEl) {
+                countEl.innerHTML = `Hiển thị <span class="text-cyan-400 font-bold">${visibleCount}</span> trong số <span class="text-cyan-400 font-bold">${cards.length}</span> tài nguyên plugin tuyển chọn`;
+            }
+
+            // No results message
+            const noResults = document.getElementById("no-results");
+            if (noResults) {
+                if (visibleCount === 0) {
+                    noResults.classList.remove("hidden");
+                } else {
+                    noResults.classList.add("hidden");
+                }
+            }
+        }
+
+        function resetFilters() {
+            document.getElementById("search-input").value = "";
+            document.getElementById("tag-search").value = "";
+            document.querySelectorAll(".category-check").forEach(cb => cb.checked = false);
+            document.querySelectorAll(".gamemode-check").forEach(cb => cb.checked = false);
+            filterPlugins();
+        }
+
+        // ESC key clears search
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                resetFilters();
+            }
+        });
+    </script>
+</body>
+</html>

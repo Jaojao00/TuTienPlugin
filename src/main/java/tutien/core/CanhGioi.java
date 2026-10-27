@@ -45,6 +45,10 @@ public enum CanhGioi {
     public int getMaxLinhLuc() { return maxLinhLuc; }
     public double getBaseDamage() { return baseDamage; }
 
+        public String getGroupName() {
+        return this.name().toLowerCase().replace("_", "");
+    }
+
     public CanhGioi getCanhGioiTiepTheo() {
         int nextOrdinal = this.ordinal() + 1;
         return (nextOrdinal < values().length) ? values()[nextOrdinal] : null;

@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Jao MC | Kiến Tạo Động Phủ - Phi Thăng Tiên Giới</title>
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0f1c',
+                        darker: '#05080f',
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            glow: 'rgba(34, 211, 238, 0.5)'
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        // Using an abstract mystical background from Unsplash for the aesthetic
+                        'hero-pattern': "url('https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
+                        'mystic-gradient': 'linear-gradient(to bottom right, #05080f, #0a0f1c, #0d1b2a)'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05080f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-nav {
+            background: rgba(10, 15, 28, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(34, 211, 238, 0.1);
+        }
+        
+        .card-glass {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-glass:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(34, 211, 238, 0.15);
+            border-color: rgba(34, 211, 238, 0.4);
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        /* Gradients for Text */
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #22d3ee 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Overlays */
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(5, 8, 15, 0.4) 0%, #05080f 100%);
+        }
+        
+        /* Toast Animation */
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transform: translate(-50%, -20px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+        
+        /* Floating Spiritual Particles Animation */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(34, 211, 238, 0.8);
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.9), 0 0 20px rgba(34, 211, 238, 0.4);
+            animation: float 12s infinite linear;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) scale(0); opacity: 0; }
+            10% { opacity: 1; transform: translateY(-10vh) scale(1); }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+        }
+
+        /* Pulse glow for button */
+        .btn-glow {
+            position: relative;
+        }
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #22d3ee, #3b82f6, #22d3ee);
+            z-index: -1;
+            border-radius: 9999px;
+            background-size: 400%;
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .btn-glow:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+    </style>
+</head>
+<body class="antialiased relative">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-24 left-1/2 z-50 bg-cyan-900/80 border border-cyan-400 text-cyan-50 px-6 py-4 rounded-full flex items-center space-x-3 backdrop-blur-md shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+        <div class="bg-cyan-500 rounded-full w-8 h-8 flex items-center justify-center">
+            <i class="fa-solid fa-check text-white"></i>
+        </div>
+        <div>
+            <p class="font-bold text-sm">Đã sao chép IP!</p>
+            <p class="text-xs text-cyan-200">stardust.pikamc.vn:25306</p>
+        </div>
+    </div>
+
+    <!-- Spiritual Particles Container -->
+    <div id="particles-container" class="fixed inset-0 z-0 pointer-events-none"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer group">
+                    <img src="tutienlogo.jpg" alt="Logo Tu Tiên" class="w-11 h-11 rounded-xl object-cover border border-cyan-400/40 shadow-[0_0_15px_rgba(34,211,238,0.5)] group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(34,211,238,0.7)] transition-all">
+                    <span class="font-extrabold text-2xl tracking-widest text-white title-font">TEAM JAO<span class="text-cyan-400">MC</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-7 items-center">
+                    <a href="#" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Trang Chủ</a>
+                    <a href="#how-to-play" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Hướng Dẫn</a>
+                    <a href="#features" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Tính Năng</a>
+                    <a href="#leaderboards" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Bảng Xếp Hạng</a>
+                    <a href="#store" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">Cửa Hàng</a>
+                    <a href="plugins.html" class="text-cyan-400 hover:text-cyan-300 transition-colors font-semibold flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-400/30 hover:border-cyan-400/60 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
+                        <i class="fa-solid fa-cube text-xs"></i>
+                        <span>Plugin Server</span>
+                    </a>
+                    
+                    <button onclick="copyIP()" class="ml-6 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/50 text-cyan-400 px-6 py-2.5 rounded-full font-bold transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] flex items-center space-x-2 group">
+                        <i class="fa-solid fa-copy group-hover:scale-110 transition-transform"></i>
+                        <span>Copy IP</span>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-mystic-gradient">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 bg-hero-pattern bg-cover bg-center bg-no-repeat opacity-20 mix-blend-luminosity"></div>
+        <div class="absolute inset-0 hero-overlay"></div>
+        
+        <!-- Mystical Ambient Glowing Orbs -->
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500 rounded-full mix-blend-screen filter blur-[120px] opacity-30 animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-400 rounded-full mix-blend-screen filter blur-[180px] opacity-10"></div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <!-- Hero Artwork / Logo -->
+            <div class="flex justify-center mb-6">
+                <div class="relative group">
+                    <div class="absolute -inset-1.5 bg-gradient-to-r from-cyan-400 via-yellow-400 to-purple-600 rounded-3xl blur-xl opacity-50 group-hover:opacity-85 transition duration-700 animate-pulse"></div>
+                    <img src="tutienlogo.jpg" alt="Tu Tiên Logo" class="relative w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 object-cover rounded-2xl shadow-[0_0_35px_rgba(34,211,238,0.5)] border-2 border-cyan-400/40 transform group-hover:scale-105 transition-all duration-500">
+                </div>
+            </div>
+
+            <!-- Badge -->
+            <div class="inline-flex items-center space-x-2 mb-6 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 text-sm font-semibold tracking-wider uppercase backdrop-blur-sm shadow-[0_0_10px_rgba(34,211,238,0.2)]">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                </span>
+                <span>Season 1: Khởi Nguyên</span>
+            </div>
+            
+            <!-- Main Typography -->
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 leading-tight title-font drop-shadow-2xl">
+                Kiến Tạo Động Phủ <br />
+                <span class="text-gradient-gold">Phi Thăng Tiên Giới</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+                Trải nghiệm sự kết hợp chưa từng có giữa sinh tồn <span class="text-cyan-400 font-bold">Skyblock</span> khắc nghiệt và thế giới <span class="text-cyan-400 font-bold">Tu Tiên</span> kỳ ảo. Khai phá thiên địa, tu luyện độ kiếp, ngự kiếm phi hành và vươn tới đỉnh cao Đại Đạo ngay hôm nay.
+            </p>
+            <!-- Countdown Timer -->
+            <div class="mb-12">
+                <div class="inline-block bg-black/40 border border-gold-500/30 p-4 md:p-6 rounded-2xl backdrop-blur-md">
+                    <h3 id="countdown-title" class="text-gold-400 font-bold uppercase tracking-widest mb-4 text-xs md:text-sm">Thời Gian Khai Mở (01/06 - 30/07)</h3>
+                    <div class="flex justify-center gap-3 md:gap-4 text-center" id="countdown-timer">
+                        <div class="flex flex-col">
+                            <span class="text-3xl md:text-4xl font-bold text-white bg-white/5 border border-white/10 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center shadow-inner" id="cd-days">00</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 mt-2 uppercase">Ngày</span>
+                        </div>
+                        <span class="text-2xl md:text-3xl font-bold text-gold-400 mt-2 md:mt-3">:</span>
+                        <div class="flex flex-col">
+                            <span class="text-3xl md:text-4xl font-bold text-white bg-white/5 border border-white/10 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center shadow-inner" id="cd-hours">00</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 mt-2 uppercase">Giờ</span>
+                        </div>
+                        <span class="text-2xl md:text-3xl font-bold text-gold-400 mt-2 md:mt-3">:</span>
+                        <div class="flex flex-col">
+                            <span class="text-3xl md:text-4xl font-bold text-white bg-white/5 border border-white/10 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center shadow-inner" id="cd-mins">00</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 mt-2 uppercase">Phút</span>
+                        </div>
+                        <span class="text-2xl md:text-3xl font-bold text-gold-400 mt-2 md:mt-3">:</span>
+                        <div class="flex flex-col">
+                            <span class="text-3xl md:text-4xl font-bold text-white bg-white/5 border border-white/10 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center shadow-inner" id="cd-secs">00</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 mt-2 uppercase">Giây</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <button onclick="copyIP()" class="btn-glow w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-10 py-4 rounded-full font-bold text-lg transition-all transform hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(34,211,238,0.4)] flex items-center justify-center space-x-3">
+                    <i class="fa-solid fa-play text-xl"></i>
+                    <span>Chơi Ngay (Copy IP)</span>
+                </button>
+                <a href="https://discord.gg/j79BS655Ty" target="_blank" class="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/10 text-white px-10 py-4 rounded-full font-bold text-lg transition-all transform hover:-translate-y-1 hover:border-white/30 backdrop-blur-md flex items-center justify-center space-x-3">
+                    <i class="fa-brands fa-discord text-[#5865F2] text-xl"></i>
+                    <span>Cộng Đồng Discord</span>
+                </a>
+            </div>
+            
+            <div class="mt-14 flex flex-col items-center justify-center space-y-3 bg-white/5 p-4 rounded-2xl border border-white/10 backdrop-blur-sm max-w-2xl mx-auto">
+                <div class="flex items-center space-x-3 text-sm md:text-base text-gray-300 font-medium tracking-wide">
+                    <i class="fa-brands fa-java text-orange-400 text-xl"></i>
+                    <span>JAVA EDITION: <span class="text-white font-bold text-cyan-400">1.21.1</span> <span class="text-gray-400 text-xs">(Hỗ trợ mọi phiên bản nhờ ViaVersion)</span></span>
+                </div>
+                <div class="w-full h-px bg-white/10"></div>
+                <div class="flex items-center space-x-3 text-sm md:text-base text-gray-300 font-medium tracking-wide">
+                    <i class="fa-solid fa-mobile-screen-button text-green-400 text-xl"></i>
+                    <span>BEDROCK / PE: <span class="text-white font-bold text-cyan-400">Vào bằng IP trên</span> <span class="text-gray-400 text-xs">(Port mặc định 19132 - Powered by Geyser)</span></span>
+                </div>
+            </div>
+            
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <a href="#features" class="text-gray-500 hover:text-cyan-400 transition-colors">
+                    <i class="fa-solid fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-32 relative z-10 bg-darker">
+        <!-- Decoration -->
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-1xl text-cyan-400 font-bold tracking-widest uppercase mb-3">Tính Năng Độc Quyền</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-white title-font mb-6">Đại Đạo Tại <span class="text-gradient-cyan">Skyblock</span></h3>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                
+                <!-- Feature 1 -->
+                <div class="card-glass rounded-3xl p-10 group relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+                            <i class="fa-solid fa-om text-3xl text-cyan-400"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4 text-white title-font">Tọa Thiền Cày Cuốc</h4>
+                        <p class="text-gray-400 leading-relaxed text-lg">
+                            Nhập định tĩnh tâm, hấp thụ tinh hoa thiên địa. Cấp độ đảo Skyblock càng cao, linh khí càng nồng đậm. Nhận kinh nghiệm tu vi ngay cả khi treo máy (AFK), bức phá cảnh giới một cách nhàn nhã.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="card-glass rounded-3xl p-10 group relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-400/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                            <i class="fa-solid fa-khanda text-3xl text-blue-400"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4 text-white title-font">Ngự Kiếm Phi Hành</h4>
+                        <p class="text-gray-400 leading-relaxed text-lg">
+                            Thoát khỏi trói buộc trọng lực! Triệu hồi 5 thanh phi kiếm bao quanh, tiêu hao linh lực để bay lượn tự do. Hệ thống rơi an toàn thông minh giúp bạn không bị tử vong khi cạn kiệt pháp lực giữa không trung.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="card-glass rounded-3xl p-10 group relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-gold-500/10 rounded-full blur-3xl group-hover:bg-gold-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold-500/20 to-yellow-500/20 border border-gold-400/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(251,191,36,0.2)]">
+                            <i class="fa-solid fa-bolt text-3xl text-gold-400"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4 text-white title-font">Độ Kiếp Thăng Cấp</h4>
+                        <p class="text-gray-400 leading-relaxed text-lg">
+                            Nghịch thiên nhi hành, ắt chịu thiên phạt. Chống chịu những đợt lôi kiếp cuồng nộ giáng xuống động phủ của bạn để đột phá bình cảnh, mở khóa cảnh giới mới và chỉ số sức mạnh cường hãn.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="card-glass rounded-3xl p-10 group relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-400/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                            <i class="fa-solid fa-boxes-stacked text-3xl text-purple-400"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4 text-white title-font">Túi Đồ Hư Không</h4>
+                        <p class="text-gray-400 leading-relaxed text-lg">
+                            Tích hợp hệ thống JaomcStorage độc quyền. Không gian lưu trữ vô hạn chứa đựng hàng triệu tài nguyên khoáng sản. Khai thác liên tục không lo đầy túi, tiện lợi tuyệt đối cho việc xây dựng.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- How To Play Section -->
+    <section id="how-to-play" class="py-24 relative z-10 bg-[#0a0f1c]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-1xl text-cyan-400 font-bold tracking-widest uppercase mb-3">Bắt Đầu Con Đường</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-white title-font mb-6">Hướng Dẫn <span class="text-gradient-cyan">Tân Thủ</span></h3>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+            </div>
+
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-cyan-900/50 rounded-full"></div>
+
+                <div class="space-y-12">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                        <div class="md:w-5/12 text-center md:text-right mb-6 md:mb-0 pr-0 md:pr-8">
+                            <h4 class="text-2xl font-bold text-white mb-2">Bước 1: Nhận Động Phủ</h4>
+                            <p class="text-gray-400">Sử dụng lệnh <kbd class="bg-gray-800 text-cyan-400 px-2 py-1 rounded border border-gray-700">/is</kbd> để khởi tạo hòn đảo Skyblock của riêng bạn. Đây sẽ là nơi bạn bắt đầu con đường tu tiên.</p>
+                        </div>
+                        <div class="md:w-2/12 flex justify-center relative z-10">
+                            <div class="w-14 h-14 rounded-full bg-cyan-500 border-4 border-[#0a0f1c] flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.6)]">
+                                <span class="text-white font-bold text-xl">1</span>
+                            </div>
+                        </div>
+                        <div class="md:w-5/12 pl-0 md:pl-8"></div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                        <div class="md:w-5/12 pr-0 md:pr-8 md:order-1 order-3"></div>
+                        <div class="md:w-2/12 flex justify-center relative z-10 md:order-2 order-2 mb-6 md:mb-0">
+                            <div class="w-14 h-14 rounded-full bg-blue-500 border-4 border-[#0a0f1c] flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.6)]">
+                                <span class="text-white font-bold text-xl">2</span>
+                            </div>
+                        </div>
+                        <div class="md:w-5/12 text-center md:text-left pl-0 md:pl-8 md:order-3 order-1 mb-6 md:mb-0">
+                            <h4 class="text-2xl font-bold text-white mb-2">Bước 2: Tọa Thiền & Đào Quáng</h4>
+                            <p class="text-gray-400">Đứng trên đảo, gõ <kbd class="bg-gray-800 text-blue-400 px-2 py-1 rounded border border-gray-700">/tutien tuluyen</kbd> để treo máy (AFK) nhận Tu Vi. Song song, hãy khai thác máy đào quáng để khoáng sản tự động vào Túi Đồ Hư Không.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                        <div class="md:w-5/12 text-center md:text-right mb-6 md:mb-0 pr-0 md:pr-8">
+                            <h4 class="text-2xl font-bold text-white mb-2">Bước 3: Nâng Cấp Đảo</h4>
+                            <p class="text-gray-400">Sử dụng tiền bán khoáng sản để nâng cấp Đảo. Cấp độ Đảo (Island Level) càng cao, tốc độ nhận Tu Vi khi Tọa Thiền càng nhanh.</p>
+                        </div>
+                        <div class="md:w-2/12 flex justify-center relative z-10">
+                            <div class="w-14 h-14 rounded-full bg-purple-500 border-4 border-[#0a0f1c] flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+                                <span class="text-white font-bold text-xl">3</span>
+                            </div>
+                        </div>
+                        <div class="md:w-5/12 pl-0 md:pl-8"></div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                        <div class="md:w-5/12 pr-0 md:pr-8 md:order-1 order-3"></div>
+                        <div class="md:w-2/12 flex justify-center relative z-10 md:order-2 order-2 mb-6 md:mb-0">
+                            <div class="w-14 h-14 rounded-full bg-gold-500 border-4 border-[#0a0f1c] flex items-center justify-center shadow-[0_0_15px_rgba(251,191,36,0.6)]">
+                                <span class="text-white font-bold text-xl">4</span>
+                            </div>
+                        </div>
+                        <div class="md:w-5/12 text-center md:text-left pl-0 md:pl-8 md:order-3 order-1 mb-6 md:mb-0">
+                            <h4 class="text-2xl font-bold text-white mb-2">Bước 4: Đột Phá Lôi Kiếp</h4>
+                            <p class="text-gray-400">Mua Đan Dược đột phá. Chống chịu và sống sót qua những đợt Lôi Kiếp giáng xuống Đảo để thăng cấp cảnh giới, nhận lấy sức mạnh mới.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beginner Gifts Section -->
+    <section id="gifts" class="py-24 relative z-10 bg-darker">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="card-glass rounded-3xl p-10 lg:p-16 relative overflow-hidden bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border-cyan-500/30">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/20 rounded-full blur-[100px]"></div>
+                
+                <div class="flex flex-col lg:flex-row items-center gap-12 relative z-10">
+                    <div class="lg:w-1/3 text-center">
+                        <i class="fa-solid fa-gift text-8xl text-cyan-400 drop-shadow-[0_0_25px_rgba(34,211,238,0.6)] mb-6 hover:scale-110 transition-transform duration-300"></i>
+                        <h3 class="text-3xl font-bold text-white title-font mb-2">Quà Tân Thủ</h3>
+                        <p class="text-cyan-200">Nhận ngay khi lần đầu tham gia</p>
+                    </div>
+                    
+                    <div class="lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-cyan-500/20 p-3 rounded-lg min-w-[3rem] text-center"><i class="fa-solid fa-hammer text-cyan-400 text-xl"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Bộ Dụng Cụ Khởi Đạo</h4>
+                                <p class="text-sm text-gray-400">Đầy đủ cúp, rìu, kiếm và thức ăn để sinh tồn vượt qua những ngày tháng cơ hàn đầu tiên.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-blue-500/20 p-3 rounded-lg min-w-[3rem] text-center"><i class="fa-solid fa-pills text-blue-400 text-xl"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Đan Dược Tân Thủ</h4>
+                                <p class="text-sm text-gray-400">Tặng 5x Tụ Khí Đan. Cắn thuốc vào tăng vọt tốc độ tu luyện, nhanh chóng Đột Phá.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-green-500/20 p-3 rounded-lg min-w-[3rem] text-center"><i class="fa-solid fa-tree text-green-400 text-xl"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Đảo Nổi Tiêu Chuẩn</h4>
+                                <p class="text-sm text-gray-400">Một hòn đảo Skyblock thơ mộng với máy tạo khoáng sản (Ore Generator) cơ bản.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-gold-500/20 p-3 rounded-lg min-w-[3rem] text-center"><i class="fa-solid fa-tag text-gold-400 text-xl"></i></div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Danh Hiệu Khởi Đầu</h4>
+                                <p class="text-sm text-gray-400">Được phong danh hiệu "Kẻ Ngoại Đạo" - Bắt đầu hành trình nghịch thiên cải mệnh.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaderboards Section -->
+    <section id="leaderboards" class="py-24 relative z-10 bg-[#0a0f1c]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-1xl text-gold-400 font-bold tracking-widest uppercase mb-3">Vinh Danh Cường Giả</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-white title-font mb-6">Hệ Thống <span class="text-gradient-gold">Đua Top</span></h3>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-gold-400 to-yellow-600 mx-auto rounded-full shadow-[0_0_15px_rgba(251,191,36,0.5)]"></div>
+                <p class="mt-6 text-gray-400 max-w-2xl mx-auto">Phần thưởng Season hàng tháng cực kỳ giá trị dành cho những người đứng đầu Tam Giới.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Top 1 Tu Vi -->
+                <div class="card-glass rounded-3xl p-8 text-center relative border-gold-500/30">
+                    <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
+                    <div class="w-20 h-20 mx-auto rounded-full bg-cyan-900/50 border-2 border-cyan-400 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                        <i class="fa-solid fa-yin-yang text-4xl text-cyan-400"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-2">Top 1 Tu Vi</h4>
+                    <p class="text-cyan-200 text-sm mb-6">Cảnh Giới Cao Nhất</p>
+                    <div class="bg-black/30 rounded-xl p-4 text-left border border-white/5">
+                        <div class="text-white font-bold mb-2 flex items-center"><i class="fa-solid fa-crown text-gold-400 mr-2"></i> Phần Thưởng:</div>
+                        <ul class="text-gray-400 text-sm space-y-2">
+                            <li>• Danh hiệu độc quyền <span class="text-cyan-400 font-bold">"Tiên Tôn"</span></li>
+                            <li>• Vũ khí Thần Khí (Custom Weapon) thiết kế riêng biệt.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Top 1 Cấp Đảo -->
+                <div class="card-glass rounded-3xl p-8 text-center relative border-gold-500/30 transform md:-translate-y-4">
+                    <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent"></div>
+                    <div class="w-20 h-20 mx-auto rounded-full bg-gold-900/50 border-2 border-gold-400 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(251,191,36,0.4)]">
+                        <i class="fa-solid fa-chess-rook text-4xl text-gold-400"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-2">Top 1 Cấp Đảo</h4>
+                    <p class="text-gold-200 text-sm mb-6">Island Level Cao Nhất</p>
+                    <div class="bg-black/30 rounded-xl p-4 text-left border border-white/5">
+                        <div class="text-white font-bold mb-2 flex items-center"><i class="fa-solid fa-crown text-gold-400 mr-2"></i> Phần Thưởng:</div>
+                        <ul class="text-gray-400 text-sm space-y-2">
+                            <li>• Danh hiệu <span class="text-gold-400 font-bold">"Đảo Chủ"</span></li>
+                            <li>• Thưởng 1,000,000 Xu.</li>
+                            <li>• Khối sinh vật (Rare Spawner) hiếm.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Top 1 Tài Phú -->
+                <div class="card-glass rounded-3xl p-8 text-center relative border-gold-500/30">
+                    <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent"></div>
+                    <div class="w-20 h-20 mx-auto rounded-full bg-green-900/50 border-2 border-green-400 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(74,222,128,0.4)]">
+                        <i class="fa-solid fa-coins text-4xl text-green-400"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-2">Top 1 Tài Phú</h4>
+                    <p class="text-green-200 text-sm mb-6">Sở Hữu Nhiều Xu Nhất</p>
+                    <div class="bg-black/30 rounded-xl p-4 text-left border border-white/5">
+                        <div class="text-white font-bold mb-2 flex items-center"><i class="fa-solid fa-crown text-gold-400 mr-2"></i> Phần Thưởng:</div>
+                        <ul class="text-gray-400 text-sm space-y-2">
+                            <li>• Phát sáng Prefix tên (Glowing Prefix).</li>
+                            <li>• Đặc quyền VIP miễn phí trong tháng tiếp theo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store / Ranks Section -->
+    <section id="store" class="py-24 relative z-10 bg-[#0a0f1c]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-1xl text-cyan-400 font-bold tracking-widest uppercase mb-3">Ủng Hộ Tông Môn</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-white title-font mb-6">Đặc Quyền <span class="text-gradient-cyan">Địa Vị</span></h3>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-600 mx-auto rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
+                <p class="mt-6 text-gray-400 max-w-2xl mx-auto">Sở hữu những đặc quyền vượt trội để con đường tu tiên thêm phần thuận lợi. <br/><span class="text-gold-400 font-bold">Hệ thống Rank hoạt động theo cơ chế thừa kế (Rank cao tự động có quyền của rank thấp).</span></p>
+                <div class="mt-6 inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-sm md:text-base">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Để mua gói Đặc Quyền, vui lòng liên hệ trực tiếp với <a href="https://web.facebook.com/profile.php?id=61582154261026" target="_blank" class="font-bold underline hover:text-red-300">Admin</a> hoặc mở Ticket trên <a href="https://discord.gg/j79BS655Ty" target="_blank" class="font-bold underline hover:text-red-300">Discord</a>.</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Rank VIP -->
+                <div class="card-glass rounded-3xl p-8 relative border-gray-500/30 flex flex-col group overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-gray-500/10 rounded-full blur-2xl group-hover:bg-gray-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10 flex-grow">
+                        <div class="inline-block px-4 py-1.5 rounded-full bg-gray-900/50 border border-gray-400/30 text-gray-400 font-bold text-sm tracking-widest mb-4">TIỂU THỪA</div>
+                        <h4 class="text-3xl font-bold text-white mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-medal text-gray-400"></i>
+                            <span>GÓI [ VIP ]</span>
+                        </h4>
+                        <div class="text-2xl font-bold text-cyan-400 mb-6">40.000đ <span class="text-sm font-normal text-gray-400">/tháng</span></div>
+                        <div class="w-full h-px bg-white/10 mb-6"></div>
+                        <ul class="text-gray-300 text-sm space-y-3 mb-8">
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Đặc quyền chen chân khi Server đã đầy.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Tăng giới hạn đặt Khôi Lỗi (Minions).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Bán tối đa 5 vật phẩm trên Hắc Thị (Chợ Đen).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Sử dụng Biểu tượng (Icon) độc quyền trên Bảng Tên.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Viết chữ có màu sắc trên Biển báo & Đe.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Nhận Lễ Bao Cứu Trợ (Kit) VIP mỗi ngày.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Lưu tối đa 4 tọa độ Truyền Tống (Homes).</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rank VIP+ -->
+                <div class="card-glass rounded-3xl p-8 relative border-green-500/30 flex flex-col group overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-green-500/10 rounded-full blur-2xl group-hover:bg-green-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10 flex-grow">
+                        <div class="inline-block px-4 py-1.5 rounded-full bg-green-900/50 border border-green-400/30 text-green-400 font-bold text-sm tracking-widest mb-4">ĐẠI THỪA</div>
+                        <h4 class="text-3xl font-bold text-white mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-medal text-green-400"></i>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-green-300">GÓI [ VIP+ ]</span>
+                        </h4>
+                        <div class="text-2xl font-bold text-cyan-400 mb-6">80.000đ <span class="text-sm font-normal text-gray-400">/tháng</span></div>
+                        <div class="w-full h-px bg-white/10 mb-6"></div>
+                        <ul class="text-gray-300 text-sm space-y-3 mb-8">
+                            <li class="flex items-start text-green-300 font-medium"><i class="fa-solid fa-arrow-up-right-dots text-green-400 mt-1 mr-3"></i><span>Kế thừa toàn bộ đặc quyền gói VIP.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Bán tối đa 7 vật phẩm trên Hắc Thị.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Được dùng màu sắc, in đậm, in nghiêng khi Truyền Âm (/msg).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Nhận Lễ Bao Cứu Trợ VIP+.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Lưu tối đa 5 tọa độ Truyền Tống (Homes).</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rank MVP -->
+                <div class="card-glass rounded-3xl p-8 relative border-blue-500/30 flex flex-col group overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10 flex-grow">
+                        <div class="inline-block px-4 py-1.5 rounded-full bg-blue-900/50 border border-blue-400/30 text-blue-400 font-bold text-sm tracking-widest mb-4">KIM ĐAN</div>
+                        <h4 class="text-3xl font-bold text-white mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-award text-blue-400"></i>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-400">GÓI [ MVP ]</span>
+                        </h4>
+                        <div class="text-2xl font-bold text-cyan-400 mb-6">150.000đ <span class="text-sm font-normal text-gray-400">/tháng</span></div>
+                        <div class="w-full h-px bg-white/10 mb-6"></div>
+                        <ul class="text-gray-300 text-sm space-y-3 mb-8">
+                            <li class="flex items-start text-blue-300 font-medium"><i class="fa-solid fa-arrow-up-right-dots text-blue-400 mt-1 mr-3"></i><span>Kế thừa toàn bộ đặc quyền gói VIP+.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Kích hoạt Ngự Không Phi Hành (Lệnh bay /fly).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Bán tối đa 10 vật phẩm trên Hắc Thị.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Sở hữu hiệu ứng thông báo đăng nhập cực ngầu.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Nhận Lễ Bao Cứu Trợ MVP.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Lưu tối đa 6 tọa độ Truyền Tống (Homes).</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rank MVP+ -->
+                <div class="card-glass rounded-3xl p-8 relative border-purple-500/30 flex flex-col group overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10 flex-grow">
+                        <div class="inline-block px-4 py-1.5 rounded-full bg-purple-900/50 border border-purple-400/30 text-purple-400 font-bold text-sm tracking-widest mb-4">NGUYÊN ANH</div>
+                        <h4 class="text-3xl font-bold text-white mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-award text-purple-400"></i>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-400">GÓI [ MVP+ ]</span>
+                        </h4>
+                        <div class="text-2xl font-bold text-cyan-400 mb-6">250.000đ <span class="text-sm font-normal text-gray-400">/tháng</span></div>
+                        <div class="w-full h-px bg-white/10 mb-6"></div>
+                        <ul class="text-gray-300 text-sm space-y-3 mb-8">
+                            <li class="flex items-start text-purple-300 font-medium"><i class="fa-solid fa-arrow-up-right-dots text-purple-400 mt-1 mr-3"></i><span>Kế thừa toàn bộ đặc quyền gói MVP.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Được phép thay đổi Đạo Hiệu (Lệnh /nick).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Viết chữ có màu sắc trên Kênh Chat tổng và Đạo Hiệu.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Bán tối đa 15 vật phẩm trên Hắc Thị.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Nhận Lễ Bao Cứu Trợ MVP+.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Lưu tối đa 7 tọa độ Truyền Tống (Homes).</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rank PREMIUM -->
+                <div class="card-glass rounded-3xl p-8 relative border-pink-500/30 flex flex-col group overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl group-hover:bg-pink-500/20 transition-all duration-500"></div>
+                    <div class="relative z-10 flex-grow">
+                        <div class="inline-block px-4 py-1.5 rounded-full bg-pink-900/50 border border-pink-400/30 text-pink-400 font-bold text-sm tracking-widest mb-4">HÓA THẦN</div>
+                        <h4 class="text-3xl font-bold text-white mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-gem text-pink-400"></i>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-pink-400">GÓI [ PREMIUM ]</span>
+                        </h4>
+                        <div class="text-2xl font-bold text-cyan-400 mb-6">400.000đ <span class="text-sm font-normal text-gray-400">/tháng</span></div>
+                        <div class="w-full h-px bg-white/10 mb-6"></div>
+                        <ul class="text-gray-300 text-sm space-y-3 mb-8">
+                            <li class="flex items-start text-pink-300 font-medium"><i class="fa-solid fa-arrow-up-right-dots text-pink-400 mt-1 mr-3"></i><span>Kế thừa toàn bộ đặc quyền gói MVP+.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Hồi phục thể lực (độ đói) tức thời (Lệnh /feed).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Đội vật phẩm bất kỳ lên đầu (Lệnh /hat).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Dùng chữ in đậm, in nghiêng trên Kênh Chat tổng.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Bán tối đa 20 vật phẩm trên Hắc Thị.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Nhận Lễ Bao Cứu Trợ PREMIUM.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Lưu tối đa 8 tọa độ Truyền Tống (Homes).</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rank PLATINUM -->
+                <div class="card-glass rounded-3xl p-8 relative border-cyan-400/30 flex flex-col group overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-cyan-400/10 rounded-full blur-2xl group-hover:bg-cyan-400/20 transition-all duration-500"></div>
+                    <div class="relative z-10 flex-grow">
+                        <div class="inline-block px-4 py-1.5 rounded-full bg-cyan-900/50 border border-cyan-300/30 text-cyan-300 font-bold text-sm tracking-widest mb-4">ĐỘ KIẾP</div>
+                        <h4 class="text-3xl font-bold text-white mb-2 flex items-center space-x-2">
+                            <i class="fa-solid fa-diamond text-cyan-400"></i>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-300">GÓI [ PLATINUM ]</span>
+                        </h4>
+                        <div class="text-2xl font-bold text-cyan-400 mb-6">650.000đ <span class="text-sm font-normal text-gray-400">/tháng</span></div>
+                        <div class="w-full h-px bg-white/10 mb-6"></div>
+                        <ul class="text-gray-300 text-sm space-y-3 mb-8">
+                            <li class="flex items-start text-cyan-200 font-medium"><i class="fa-solid fa-arrow-up-right-dots text-cyan-300 mt-1 mr-3"></i><span>Kế thừa toàn bộ đặc quyền gói PREMIUM.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Trị thương sinh lực (hồi máu) tức thời (Lệnh /heal).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Mở Túi Càn Khôn (Enderchest) từ xa mọi lúc mọi nơi (Lệnh /ec).</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Bán tối đa 25 vật phẩm trên Hắc Thị.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Nhận Lễ Bao Cứu Trợ PLATINUM.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-cyan-400 mt-1 mr-3"></i><span>Lưu tối đa 9 tọa độ Truyền Tống (Homes).</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rank ULTIMATE -->
+                <div class="card-glass rounded-3xl p-8 relative border-gold-500/50 flex flex-col group overflow-hidden md:col-span-2 lg:col-span-3">
+                    <div class="absolute inset-0 bg-gradient-to-r from-gold-500/5 via-yellow-500/5 to-gold-500/5"></div>
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-gold-500/10 rounded-full blur-[80px] group-hover:bg-gold-500/20 transition-all duration-700"></div>
+                    <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-yellow-500/10 rounded-full blur-[80px] group-hover:bg-yellow-500/20 transition-all duration-700"></div>
+                    
+                    <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
+                        <div class="md:w-1/3 text-center md:text-left md:border-r border-white/10 md:pr-8">
+                            <div class="inline-block px-4 py-1.5 rounded-full bg-gold-900/50 border border-gold-400/30 text-gold-400 font-bold text-sm tracking-widest mb-4 shadow-[0_0_15px_rgba(251,191,36,0.3)]">Chân Tiên</div>
+                            <h4 class="text-4xl font-black text-white mb-2 flex justify-center md:justify-start items-center space-x-3">
+                                <i class="fa-solid fa-crown text-gold-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"></i>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-600">GÓI ULTIMATE</span>
+                            </h4>
+                            <div class="text-3xl font-bold text-gold-400 mb-4 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">1.000.000đ <span class="text-lg font-normal text-gold-200/70">/tháng</span></div>
+                            <p class="text-gold-200/80 mb-6 font-medium">Gói đặc quyền Tối Thượng dành cho những vị Tiên Tôn đứng đầu Tam Giới.</p>
+                            <a href="https://web.facebook.com/profile.php?id=61582154261026" target="_blank" class="inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-gold-500 to-yellow-600 text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(251,191,36,0.4)] hover:shadow-[0_0_30px_rgba(251,191,36,0.6)] transform hover:-translate-y-1 transition-all w-full md:w-auto">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Liên hệ Admin ngay</span>
+                            </a>
+                        </div>
+                        <div class="md:w-2/3">
+                            <ul class="text-gray-200 text-sm grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <li class="flex items-start text-gold-300 font-bold text-base md:col-span-2 mb-2"><i class="fa-solid fa-arrow-up-right-dots text-gold-400 mt-1 mr-3"></i><span>Kế thừa toàn bộ đặc quyền gói PLATINUM.</span></li>
+                                <li class="flex items-start bg-black/20 p-3 rounded-xl border border-white/5"><i class="fa-solid fa-bolt text-gold-400 mt-0.5 mr-3"></i><span>Phục hồi độ bền pháp bảo, công cụ (Lệnh /repair).</span></li>
+                                <li class="flex items-start bg-black/20 p-3 rounded-xl border border-white/5"><i class="fa-solid fa-bolt text-gold-400 mt-0.5 mr-3"></i><span>Ép buộc người khác truyền tống đến chỗ mình (Lệnh /tpahere).</span></li>
+                                <li class="flex items-start bg-black/20 p-3 rounded-xl border border-white/5"><i class="fa-solid fa-bolt text-gold-400 mt-0.5 mr-3"></i><span>Quyền phát thanh thông báo Bossbar toàn máy chủ.</span></li>
+                                <li class="flex items-start bg-black/20 p-3 rounded-xl border border-white/5"><i class="fa-solid fa-bolt text-gold-400 mt-0.5 mr-3"></i><span>Sở hữu hiệu ứng Hào Quang độc quyền.</span></li>
+                                <li class="flex items-start bg-black/20 p-3 rounded-xl border border-white/5"><i class="fa-solid fa-bolt text-gold-400 mt-0.5 mr-3"></i><span>Bán tối đa 30 vật phẩm trên Hắc Thị.</span></li>
+                                <li class="flex items-start bg-black/20 p-3 rounded-xl border border-white/5"><i class="fa-solid fa-bolt text-gold-400 mt-0.5 mr-3"></i><span>Lưu tối đa 10 tọa độ Truyền Tống (Homes).</span></li>
+                                <li class="flex items-start bg-black/20 p-3 rounded-xl border border-white/5 md:col-span-2"><i class="fa-solid fa-gift text-gold-400 mt-0.5 mr-3"></i><span>Nhận Lễ Bao Cứu Trợ ULTIMATE siêu cấp.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Server Rules Section -->
+    <section id="rules" class="py-24 relative z-10 bg-darker">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-1xl text-red-400 font-bold tracking-widest uppercase mb-3">Kỷ Cương Server</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-white title-font mb-6">Luật Lệ <span class="text-gradient-cyan">Tông Môn</span></h3>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full shadow-[0_0_15px_rgba(239,68,68,0.5)]"></div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-white/5 hover:bg-white/10 transition-colors border border-red-500/30 rounded-2xl p-6 flex items-start space-x-4">
+                    <div class="text-red-500 mt-1"><i class="fa-solid fa-ban text-2xl"></i></div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-1">1. Cấm sử dụng Tà Thuật (Hack/Cheat)</h4>
+                        <p class="text-gray-400">Mọi hành vi sử dụng Hack, X-Ray, Auto-Click bất hợp pháp, hay các Client gian lận đều bị cấm. Hình phạt: <span class="text-red-400 font-bold">Khóa tài khoản vĩnh viễn (Ban Permanently)</span>.</p>
+                    </div>
+                </div>
+                <div class="bg-white/5 hover:bg-white/10 transition-colors border border-orange-500/30 rounded-2xl p-6 flex items-start space-x-4">
+                    <div class="text-orange-500 mt-1"><i class="fa-solid fa-triangle-exclamation text-2xl"></i></div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-1">2. Cấm lừa đảo (Scamming)</h4>
+                        <p class="text-gray-400">Giao dịch phải thông qua hệ thống chính thức của máy chủ. Hành vi lừa đảo đạo hữu khác sẽ dẫn đến hình phạt: Xóa toàn bộ túi đồ, thậm chí ban IP.</p>
+                    </div>
+                </div>
+                <div class="bg-white/5 hover:bg-white/10 transition-colors border border-blue-500/30 rounded-2xl p-6 flex items-start space-x-4">
+                    <div class="text-blue-500 mt-1"><i class="fa-solid fa-users text-2xl"></i></div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-1">3. Tôn trọng Đạo Hữu</h4>
+                        <p class="text-gray-400">Không chửi thề, lăng mạ, xúc phạm danh dự, phân biệt vùng miền hay bàn luận chính trị trên kênh chat toàn cầu (Global Chat).</p>
+                    </div>
+                </div>
+                <div class="bg-white/5 hover:bg-white/10 transition-colors border border-purple-500/30 rounded-2xl p-6 flex items-start space-x-4">
+                    <div class="text-purple-500 mt-1"><i class="fa-solid fa-shield-halved text-2xl"></i></div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-1">4. Cấm phá hoại Đảo (Griefing)</h4>
+                        <p class="text-gray-400">Không được phép lợi dụng quyền thành viên để phá hoại, trộm cắp tài sản trên đảo Skyblock của người khác. Vi phạm sẽ bị cấm ngay lập tức.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack & Commands List -->
+    <section id="tech-stack" class="py-24 relative z-10 bg-[#0a0f1c]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-1xl text-cyan-400 font-bold tracking-widest uppercase mb-3">Hành Trang Đạo Hữu</h2>
+            <h3 class="text-3xl md:text-4xl font-bold text-white title-font mb-12">Lệnh Cơ Bản & <span class="text-gradient-cyan">Hệ Thống</span></h3>
+            
+            <!-- Commands Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-16 text-left">
+                <div class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 hover:border-cyan-500/30 transition-all flex items-center space-x-4">
+                    <kbd class="bg-gray-800 text-cyan-400 px-3 py-2 rounded border border-gray-700 font-mono text-sm shadow-inner min-w-[140px] text-center font-bold">/is</kbd>
+                    <span class="text-gray-300 text-sm">Mở giao diện / Quản lý đảo Skyblock.</span>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 hover:border-cyan-500/30 transition-all flex items-center space-x-4">
+                    <kbd class="bg-gray-800 text-cyan-400 px-3 py-2 rounded border border-gray-700 font-mono text-sm shadow-inner min-w-[140px] text-center font-bold">/tutien</kbd>
+                    <span class="text-gray-300 text-sm">Mở menu hệ thống Tu Tiên chính.</span>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 hover:border-blue-500/30 transition-all flex items-center space-x-4">
+                    <kbd class="bg-gray-800 text-blue-400 px-3 py-2 rounded border border-gray-700 font-mono text-sm shadow-inner min-w-[140px] text-center font-bold">/tutien tuluyen</kbd>
+                    <span class="text-gray-300 text-sm">Bắt đầu / Ngừng Tọa thiền để nhận Tu Vi.</span>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 hover:border-gold-500/30 transition-all flex items-center space-x-4">
+                    <kbd class="bg-gray-800 text-gold-400 px-3 py-2 rounded border border-gray-700 font-mono text-sm shadow-inner min-w-[140px] text-center font-bold">/tutien dokiep</kbd>
+                    <span class="text-gray-300 text-sm">Sử dụng Đan Dược để Đột phá cảnh giới.</span>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 hover:border-purple-500/30 transition-all flex items-center space-x-4">
+                    <kbd class="bg-gray-800 text-purple-400 px-3 py-2 rounded border border-gray-700 font-mono text-sm shadow-inner min-w-[140px] text-center font-bold">/tutien ngukiem</kbd>
+                    <span class="text-gray-300 text-sm">Bật/tắt Ngự Kiếm bay lượn (Yêu cầu Kim Đan).</span>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 hover:border-red-500/30 transition-all flex items-center space-x-4">
+                    <kbd class="bg-gray-800 text-red-400 px-3 py-2 rounded border border-gray-700 font-mono text-sm shadow-inner min-w-[140px] text-center font-bold">/kho</kbd>
+                    <span class="text-gray-300 text-sm">Mở Túi Đồ Hư Không (Chứa khoáng sản vô hạn).</span>
+                </div>
+            </div>
+
+            <div class="w-full h-px bg-white/10 max-w-4xl mx-auto mb-12"></div>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="bg-cyan-900/40 border border-cyan-500/30 text-cyan-100 px-4 py-2 rounded-full font-medium shadow-[0_0_10px_rgba(34,211,238,0.2)]"><i class="fa-solid fa-cloud mr-2"></i>SuperiorSkyblock2</span>
+                <span class="bg-blue-900/40 border border-blue-500/30 text-blue-100 px-4 py-2 rounded-full font-medium shadow-[0_0_10px_rgba(59,130,246,0.2)]"><i class="fa-solid fa-khanda mr-2"></i>Custom Antigravity Flying</span>
+                <span class="bg-purple-900/40 border border-purple-500/30 text-purple-100 px-4 py-2 rounded-full font-medium shadow-[0_0_10px_rgba(168,85,247,0.2)]"><i class="fa-solid fa-yin-yang mr-2"></i>Tu Tiên Cultivation</span>
+                <span class="bg-indigo-900/40 border border-indigo-500/30 text-indigo-100 px-4 py-2 rounded-full font-medium shadow-[0_0_10px_rgba(99,102,241,0.2)]"><i class="fa-solid fa-box mr-2"></i>JaomcStorage (Void Storage)</span>
+                <span class="bg-green-900/40 border border-green-500/30 text-green-100 px-4 py-2 rounded-full font-medium shadow-[0_0_10px_rgba(34,197,94,0.2)]"><i class="fa-solid fa-gem mr-2"></i>OreGen3 (Custom Ores)</span>
+                <span class="bg-red-900/40 border border-red-500/30 text-red-100 px-4 py-2 rounded-full font-medium shadow-[0_0_10px_rgba(239,68,68,0.2)]"><i class="fa-solid fa-dragon mr-2"></i>MMOItems & MythicMobs</span>
+                <span class="bg-yellow-900/40 border border-yellow-500/30 text-yellow-100 px-4 py-2 rounded-full font-medium shadow-[0_0_10px_rgba(234,179,8,0.2)]"><i class="fa-solid fa-layer-group mr-2"></i>DecentHolograms</span>
+                <span class="bg-orange-900/40 border border-orange-500/30 text-orange-100 px-4 py-2 rounded-full font-medium shadow-[0_0_10px_rgba(249,115,22,0.2)]"><i class="fa-solid fa-coins mr-2"></i>Economy by Vault</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-[#03050a] pt-16 pb-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                            <i class="fa-solid fa-yin-yang text-white text-xl"></i>
+                        </div>
+                        <span class="font-extrabold text-2xl tracking-wider text-white title-font">TEAM JAO</span>
+                    </div>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Máy chủ Minecraft thể loại Skyblock kết hợp Tu Tiên độc đáo số 1 Việt Nam. Nơi bạn thỏa sức sáng tạo và vươn tới đỉnh cao Đại Đạo.
+                    </p>
+                    <div class="flex space-x-5">
+                        <a href="https://discord.gg/j79BS655Ty" target="_blank" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#5865F2] hover:border-[#5865F2] transition-all hover:scale-110">
+                            <i class="fa-brands fa-discord text-xl"></i>
+                        </a>
+                        <a href="https://web.facebook.com/profile.php?id=61582154261026" target="_blank" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-blue-500 hover:border-blue-500 transition-all hover:scale-110">
+                            <i class="fa-brands fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@teamleader.project?_r=1&_t=ZS-96Lap3nkf5d" target="_blank" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-pink-500 hover:border-pink-500 transition-all hover:scale-110">
+                            <i class="fa-brands fa-tiktok text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div class="md:col-span-1">
+                    <h4 class="text-white font-bold text-lg mb-6">Liên Kết Nhanh</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-2 text-cyan-500"></i> Trang Chủ</a></li>
+                        <li><a href="#store" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-2 text-cyan-500"></i> Cửa Hàng (Nạp Thẻ)</a></li>
+                        <li><a href="#rules" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-2 text-cyan-500"></i> Luật Máy Chủ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-2 text-cyan-500"></i> Wiki Tu Tiên</a></li>
+                    </ul>
+                </div>
+                
+                <!-- IP -->
+                <div class="md:col-span-1">
+                    <h4 class="text-white font-bold text-lg mb-6">Trạng Thái Máy Chủ</h4>
+                    <div class="bg-white/5 border border-white/10 p-5 rounded-2xl backdrop-blur-sm">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="relative flex h-3 w-3">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                            <span class="text-green-400 font-medium">Server Online</span>
+                        </div>
+                        <div class="text-gray-400 text-sm mb-2">IP Máy chủ (Java & PE):</div>
+                        <div class="bg-black/50 p-3 rounded-lg flex justify-between items-center border border-white/5">
+                            <div class="flex flex-col">
+                                <span class="text-white font-mono text-lg text-cyan-400">stardust.pikamc.vn</span>
+                                <span class="text-xs text-gray-500">Bedrock Port: 25306</span>
+                            </div>
+                            <button onclick="copyIP()" class="text-gray-400 hover:text-white hover:scale-110 transition-all" title="Copy IP">
+                                <i class="fa-solid fa-copy text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2026 Team Jao MC. All rights reserved. Không liên kết chính thức với Mojang AB.</p>
+                <div class="mt-4 md:mt-0">
+                    <span class="flex items-center space-x-1">
+                        <span>Thiết kế với</span>
+                        <i class="fa-solid fa-heart text-red-500 text-xs mx-1"></i>
+                        <span>bởi Team Jao</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Copy IP Functionality
+        function copyIP() {
+            const ip = "stardust.pikamc.vn:25306";
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                // navigator.clipboard is available
+                navigator.clipboard.writeText(ip).then(() => {
+                    showToast();
+                }).catch(err => {
+                    console.error('Không thể copy IP: ', err);
+                    fallbackCopyTextToClipboard(ip);
+                });
+            } else {
+                // fallback
+                fallbackCopyTextToClipboard(ip);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+            
+            // Avoid scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                var successful = document.execCommand('copy');
+                if (successful) showToast();
+            } catch (err) {
+                console.error('Fallback copy failed', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // Toast Notification
+        let toastTimeout;
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            
+            // Clear existing timeout if multiple clicks
+            if (toastTimeout) clearTimeout(toastTimeout);
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
+        // Generate ambient floating spiritual particles
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 25; // number of particles
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Randomize properties
+                const size = Math.random() * 5 + 2; // 2px to 7px
+                const left = Math.random() * 100; // 0% to 100vw
+                const duration = Math.random() * 10 + 8; // 8s to 18s
+                const delay = Math.random() * 15; // 0s to 15s delay
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}vw`;
+                particle.style.bottom = `-20px`; // start below screen
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                // Random opacity to add depth
+                particle.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Navbar blur and shrink on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
+                nav.style.background = 'rgba(10, 15, 28, 0.85)';
+                nav.style.paddingTop = '0.25rem';
+                nav.style.paddingBottom = '0.25rem';
+            } else {
+                nav.classList.remove('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
+                nav.style.background = 'rgba(10, 15, 28, 0.6)';
+                nav.style.paddingTop = '0';
+                nav.style.paddingBottom = '0';
+            }
+        });
+
+        // Countdown Logic
+        function initCountdown() {
+            // Ngày khai mở: 01/06/2026 00:00:00
+            const openDate = new Date("2026-06-01T00:00:00+07:00").getTime();
+            // Ngày đóng cửa: 30/07/2026 23:59:59
+            const closeDate = new Date("2026-07-30T23:59:59+07:00").getTime();
+            
+            const titleEl = document.getElementById("countdown-title");
+            const daysEl = document.getElementById("cd-days");
+            const hoursEl = document.getElementById("cd-hours");
+            const minsEl = document.getElementById("cd-mins");
+            const secsEl = document.getElementById("cd-secs");
+
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                let targetDate = openDate;
+                
+                if (now >= openDate && now <= closeDate) {
+                    targetDate = closeDate;
+                    titleEl.innerText = "Thời Gian Đóng Server (30/07)";
+                    if(titleEl.classList.contains("text-gold-400")) {
+                        titleEl.classList.replace("text-gold-400", "text-red-400");
+                    }
+                } else if (now > closeDate) {
+                    clearInterval(timer);
+                    titleEl.innerText = "Server Đã Đóng Cửa";
+                    titleEl.classList.remove("text-gold-400", "text-red-400");
+                    titleEl.classList.add("text-gray-500");
+                    daysEl.innerText = "00"; hoursEl.innerText = "00"; minsEl.innerText = "00"; secsEl.innerText = "00";
+                    return;
+                } else {
+                    titleEl.innerText = "Đếm Ngược Khai Mở (01/06)";
+                }
+
+                const distance = targetDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                daysEl.innerText = days < 10 ? "0" + days : days;
+                hoursEl.innerText = hours < 10 ? "0" + hours : hours;
+                minsEl.innerText = minutes < 10 ? "0" + minutes : minutes;
+                secsEl.innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            }, 1000);
+        }
+
+        // Initialize on window load
+        window.onload = () => {
+            createParticles();
+            initCountdown();
+        };
+    </script>
+</body>
+</html>
