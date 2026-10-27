@@ -38,3 +38,11 @@ build/
 
 ### Mac OS ###
 .DS_Store
+### Closed source - KHONG push ma nguon ###
+src/
+pom.xml
+.github/
+Libs/
+.mvn/
+*.iml
+
