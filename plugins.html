@@ -44,72 +44,8 @@
         }
     </script>
     
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #05080f;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-        
-        .title-font {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .glass-nav {
-            background: rgba(10, 15, 28, 0.75);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(34, 211, 238, 0.12);
-        }
-        
-        .card-plugin {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(34, 211, 238, 0.12);
-            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .card-plugin:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 36px rgba(34, 211, 238, 0.18);
-            border-color: rgba(34, 211, 238, 0.45);
-            background: rgba(15, 23, 42, 0.85);
-        }
-
-        .sidebar-box {
-            background: rgba(11, 18, 33, 0.7);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .text-gradient-cyan {
-            background: linear-gradient(135deg, #22d3ee 0%, #818cf8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .text-gradient-gold {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #05080f;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #06b6d4;
-        }
-    </style>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="antialiased min-h-screen flex flex-col bg-[#05080f] text-gray-100">
 
@@ -120,7 +56,7 @@
         </div>
         <div>
             <p class="font-bold text-sm">Đã sao chép IP!</p>
-            <p class="text-xs text-cyan-200">stardust.pikamc.vn:25306</p>
+            <p class="text-xs text-cyan-200">tornado.pikamc.vn:25000</p>
         </div>
     </div>
 
@@ -274,10 +210,10 @@
                                 </span>
                             </div>
 
-                            <!-- Price / Download Badge (Góc dưới phải giống Ảnh 3) -->
-                            <div class="absolute bottom-3 right-3 bg-black/80 border border-cyan-400/40 text-cyan-300 text-xs font-bold px-3 py-1.5 rounded-lg backdrop-blur-md shadow-lg flex items-center space-x-1.5">
-                                <i class="fa-brands fa-github text-sm"></i>
-                                <span>Miễn phí (Free)</span>
+                            <!-- Price / Download Badge -->
+                            <div class="absolute bottom-3 right-3 bg-gradient-to-r from-amber-600 to-yellow-600 text-black text-xs font-black px-3 py-1.5 rounded-lg shadow-lg flex items-center space-x-1.5 border border-yellow-300/60">
+                                <i class="fa-solid fa-crown text-xs"></i>
+                                <span>Bản Quyền Riêng</span>
                             </div>
                         </div>
 
@@ -423,9 +359,9 @@
                             </div>
 
                             <!-- Price / Download Badge -->
-                            <div class="absolute bottom-3 right-3 bg-black/80 border border-emerald-400/40 text-emerald-300 text-xs font-bold px-3 py-1.5 rounded-lg backdrop-blur-md shadow-lg flex items-center space-x-1.5">
-                                <i class="fa-brands fa-github text-sm"></i>
-                                <span>Miễn phí (Free)</span>
+                            <div class="absolute bottom-3 right-3 bg-gradient-to-r from-amber-600 to-yellow-600 text-black text-xs font-black px-3 py-1.5 rounded-lg shadow-lg flex items-center space-x-1.5 border border-yellow-300/60">
+                                <i class="fa-solid fa-crown text-xs"></i>
+                                <span>Bản Quyền Riêng</span>
                             </div>
                         </div>
 
@@ -630,7 +566,7 @@
     <script>
         // Copy IP Notification
         function copyIP() {
-            navigator.clipboard.writeText("stardust.pikamc.vn:25306").then(() => {
+            navigator.clipboard.writeText("tornado.pikamc.vn:25000").then(() => {
                 const toast = document.getElementById("toast");
                 toast.classList.remove("opacity-0", "pointer-events-none");
                 toast.classList.add("opacity-100");
