@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
     <title id="page-title">TNHoppers — Hệ Thống Phễu Không Dây & Hút Đồ Tối Tân | Team Jao MC</title>
     
     <!-- Tailwind CSS (CDN) -->
@@ -234,7 +238,7 @@
                                 Java 21+ Ready
                             </span>
                         </div>
-                        <a href="https://github.com/Jaojao00/TNHoppers" target="_blank" class="px-3 py-1 rounded-lg bg-cyan-500 text-black text-xs font-bold hover:bg-cyan-400 transition-all flex items-center space-x-1.5 shadow-lg">
+                        <a href="https://github.com/Jaojao00/TNHoppers" target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded-lg bg-cyan-500 text-black text-xs font-bold hover:bg-cyan-400 transition-all flex items-center space-x-1.5 shadow-lg">
                             <i class="fa-brands fa-github"></i>
                             <span>Xem GitHub</span>
                         </a>
@@ -592,12 +596,12 @@
 
                     <!-- Nút Tải / Thêm vào giỏ hàng (Ảnh 5) -->
                     <div class="space-y-3 pt-2">
-                        <a id="btn-download" href="https://github.com/Jaojao00/TNHoppers" target="_blank" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(34,211,238,0.35)] flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5">
+                        <a id="btn-download" href="https://github.com/Jaojao00/TNHoppers" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(34,211,238,0.35)] flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5">
                             <i class="fa-brands fa-github text-base"></i>
                             <span>Tải Về Từ GitHub</span>
                         </a>
 
-                        <a href="https://discord.gg/kwqU3N4nkH" target="_blank" class="w-full py-2.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-400/40 text-indigo-300 font-semibold text-xs flex items-center justify-center space-x-2 transition-all">
+                        <a href="https://discord.gg/kwqU3N4nkH" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-400/40 text-indigo-300 font-semibold text-xs flex items-center justify-center space-x-2 transition-all">
                             <i class="fa-brands fa-discord text-sm"></i>
                             <span>Tham Gia Discord Hỗ Trợ</span>
                         </a>
@@ -673,7 +677,7 @@
                                 <img src="tutienlogo.jpg" alt="Tu Tiên" class="w-12 h-12 rounded-lg object-cover">
                                 <div>
                                     <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TN-TuTienPlugin</h5>
-                                    <p class="text-[11px] text-gray-400">Hệ thống tu tiên RPG v2.2 Skyblock</p>
+                                    <p class="text-[11px] text-gray-400">Hệ thống tu tiên RPG v2.2 Skyblock (Bản Quyền)</p>
                                 </div>
                             </div>
                         </a>
@@ -696,8 +700,8 @@
             <div class="flex items-center space-x-6 text-sm text-gray-400">
                 <a href="index.html" class="hover:text-cyan-400 transition-colors">Trang Chủ</a>
                 <a href="plugins.html" class="hover:text-cyan-400 transition-colors">Plugin Server</a>
-                <a href="https://github.com/Jaojao00/TNHoppers" target="_blank" class="hover:text-cyan-400 transition-colors">GitHub TNHoppers</a>
-                <a href="https://discord.gg/kwqU3N4nkH" target="_blank" class="hover:text-cyan-400 transition-colors">Discord Hỗ Trợ</a>
+                <a href="https://github.com/Jaojao00/TNHoppers" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors">GitHub TNHoppers</a>
+                <a href="https://discord.gg/kwqU3N4nkH" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors">Discord Hỗ Trợ</a>
             </div>
         </div>
     </footer>
@@ -745,9 +749,11 @@
             });
         }
 
-        // Query param handler for ?id=tutien or ?id=kholuutru
+        // Query param handler with Cloudflare Security Audit Validation
         const urlParams = new URLSearchParams(window.location.search);
-        const pluginId = urlParams.get('id');
+        const VALID_PLUGINS = ['tnhoppers', 'tutien', 'kholuutru'];
+        const rawId = (urlParams.get('id') || 'tnhoppers').toLowerCase().trim();
+        const pluginId = VALID_PLUGINS.includes(rawId) ? rawId : 'tnhoppers';
 
         if (pluginId === 'kholuutru') {
             document.getElementById('page-title').innerText = "TN-KhoLuuTru 1.0 — Kho Khoáng Sản Nâng Cao Cho Skyblock | Team Jao MC";
@@ -859,7 +865,7 @@
                         <span>III. Video Hướng Dẫn Chi Tiết Từ Tác Giả</span>
                     </h2>
                     <div class="mt-4 p-4 rounded-xl bg-black/50 border border-white/10">
-                        <a href="https://youtu.be/yqa4h8YieXo?si=gkySdvsoM9UtMXXE" target="_blank" class="block relative group overflow-hidden rounded-xl border border-red-500/30">
+                        <a href="https://youtu.be/yqa4h8YieXo?si=gkySdvsoM9UtMXXE" target="_blank" rel="noopener noreferrer" class="block relative group overflow-hidden rounded-xl border border-red-500/30">
                             <img src="https://img.youtube.com/vi/yqa4h8YieXo/maxresdefault.jpg" alt="Video Hướng Dẫn" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-all">
                                 <div class="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center text-white text-2xl shadow-[0_0_25px_rgba(239,68,68,0.8)] group-hover:scale-110 transition-transform">
@@ -919,20 +925,287 @@
                         <img src="tutienlogo.jpg" alt="Tu Tiên" class="w-12 h-12 rounded-lg object-cover">
                         <div>
                             <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TN-TuTienPlugin</h5>
-                            <p class="text-[11px] text-gray-400">Hệ thống tu tiên RPG v2.2 Skyblock</p>
+                            <p class="text-[11px] text-gray-400">Hệ thống tu tiên RPG v2.2 Skyblock (Bản Quyền)</p>
                         </div>
                     </div>
                 </a>
             `;
         } else if (pluginId === 'tutien') {
-            document.getElementById('page-title').innerText = "TN-TuTienPlugin — Hệ Thống Tu Tiên Minecraft (Skyblock Edition)";
+            document.getElementById('page-title').innerText = "TN-TuTienPlugin — Hệ Thống Tu Tiên Minecraft (v2.2 Skyblock Edition) | Team Jao MC";
             document.getElementById('breadcrumb-plugin').innerText = "TN-TuTienPlugin v2.2 Skyblock";
-            document.getElementById('plugin-title').innerHTML = `TN-TuTienPlugin — Hệ Thống Tu Tiên Chuyên Sâu <span class="text-amber-400 text-xl font-mono">v2.2</span>`;
-            document.getElementById('plugin-tagline').innerText = "Plugin RPG mô phỏng thế giới tu tiên toàn diện: 17 cảnh giới, 7 đại đạo, 50+ đan dược phân trang, thiên kiếp an toàn cho đảo Skyblock, rèn đồ 8 phẩm cấp và Gacha linh thú.";
+            document.getElementById('plugin-title').innerHTML = `TN-TuTienPlugin — Hệ Thống Tu Tiên Chuyên Sâu <span class="text-amber-400 text-xl font-mono">v2.2 Skyblock Edition</span>`;
+            document.getElementById('plugin-tagline').innerText = "Hệ thống RPG tu tiên chuyên sâu tối ưu cho Skyblock & Survival: 17 Cảnh Giới 10 Trọng, 6 Bậc Linh Căn, 7 Đại Đạo, 50+ Đan Dược & Đan Lò Bát Quái, Cửu Đạo Thiên Kiếp an toàn không cháy đảo, rèn trang bị 8 phẩm cấp.";
             document.getElementById('plugin-banner').src = "tutienlogo.jpg";
-            document.getElementById('meta-author').innerText = "JaoMC & Tài Nguyễn";
-            document.getElementById('btn-download').href = "https://github.com/Jaojao00/TuTienPlugin";
-            document.getElementById('btn-download').innerHTML = `<i class="fa-brands fa-github text-base"></i><span>Xem GitHub TuTienPlugin</span>`;
+            document.getElementById('meta-author').innerText = "Tài Dev Nguyễn";
+            
+            // Purchase / License Box update (Bản quyền riêng, không phải mã nguồn mở)
+            const licenseHeader = document.querySelector('.panel-glass .text-base.font-extrabold.text-cyan-400');
+            if (licenseHeader) {
+                licenseHeader.className = "text-sm font-extrabold text-amber-400 flex items-center space-x-1";
+                licenseHeader.innerHTML = `<i class="fa-solid fa-crown text-xs"></i><span>Bản Quyền Riêng</span>`;
+            }
+            
+            const eulaDesc = document.querySelector('.panel-glass .text-\\[11px\\].text-gray-400');
+            if (eulaDesc) {
+                eulaDesc.innerHTML = `Thỏa thuận cấp phép bản quyền độc quyền (Commercial Private License). Phát triển bởi <strong>Tài Dev Nguyễn</strong>. <strong>Không phải mã nguồn mở</strong>. Mọi hành vi sao chép, phát tán hoặc dịch ngược lại khi chưa có sự đồng ý đều bị nghiêm cấm theo quy định bản quyền.`;
+            }
+
+            const downloadBtn = document.getElementById('btn-download');
+            if (downloadBtn) {
+                downloadBtn.href = "https://discord.gg/kwqU3N4nkH";
+                downloadBtn.className = "w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-black font-extrabold text-sm shadow-[0_0_25px_rgba(251,191,36,0.4)] flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5";
+                downloadBtn.innerHTML = `<i class="fa-brands fa-discord text-base"></i><span>Liên Hệ Mua Bản Quyền (Discord)</span>`;
+            }
+
+            // Overview Content for TuTienPlugin (Chính xác từ README repo)
+            document.getElementById('tab-content-overview').innerHTML = `
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-yin-yang text-amber-400"></i>
+                        <span>I. Tổng Quan & Điểm Mới Bản v2.2 Skyblock Edition</span>
+                    </h2>
+                    <div class="mt-4 text-sm text-gray-300 space-y-3">
+                        <p>
+                            <strong>TN-TuTienPlugin</strong> biến máy chủ Minecraft thành một thế giới tu tiên hoàn chỉnh, tối ưu hóa an toàn tuyệt đối cho người chơi trên đảo Skyblock:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div class="p-3 rounded-xl bg-black/40 border border-amber-500/20">
+                                <div class="font-bold text-amber-400 text-sm mb-1 flex items-center space-x-2">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <span>An Toàn Đảo Skyblock Tuyệt Đối</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Sét Độ Kiếp dùng strikeLightningEffect: không cháy gỗ, không biến dân làng thành phù thủy, không phá ItemFrame.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-amber-500/20">
+                                <div class="font-bold text-amber-400 text-sm mb-1 flex items-center space-x-2">
+                                    <i class="fa-solid fa-wind"></i>
+                                    <span>Ngự Kiếm Hộ Phong Chống Void</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Tự động ban hiệu ứng Rơi Chậm (Slow Falling 10s) khi hết linh lực giữa không trung, bảo vệ người chơi không rơi void.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-amber-500/20">
+                                <div class="font-bold text-amber-400 text-sm mb-1 flex items-center space-x-2">
+                                    <i class="fa-solid fa-cubes"></i>
+                                    <span>Tông Môn & Máy Đào Đá Skyblock</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Đào quặng tại Cobblestone Generator nhận trực tiếp Khoáng Thạch, Tu Vi & Đạo Niệm. Lập tông môn trực tiếp trên đảo.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-amber-500/20">
+                                <div class="font-bold text-amber-400 text-sm mb-1 flex items-center space-x-2">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <span>Bảo Mật PDC NBT & Chống Dup</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Chống đe đổi tên item thành đan đột phá, trao vật phẩm an toàn giveItemSafe không bao giờ mất đồ.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-mountain text-amber-400"></i>
+                        <span>II. Hệ Thống 17 Đại Cảnh Giới & Cửu Đạo Thiên Kiếp</span>
+                    </h2>
+                    <div class="mt-4 text-xs md:text-sm text-gray-300 space-y-3">
+                        <p class="leading-relaxed">
+                            Mỗi Đại Cảnh Giới được phân định thành <strong>10 Tiểu Cảnh Giới</strong> (từ Nhất Trọng → Thập Trọng → Viên Mãn):
+                        </p>
+                        <div class="p-3.5 rounded-xl bg-black/50 border border-amber-500/30 text-xs font-mono text-amber-300 leading-relaxed">
+                            Phàm Nhân → Luyện Khí → Trúc Cơ → Kim Đan → Nguyên Anh → Hóa Thần → Luyện Hư → Hợp Thể → Đại Thừa → Độ Kiếp → Chân Tiên → Địa Tiên → Thiên Tiên → Huyền Tiên → Tiên Quân → Tiên Vương → Tiên Đế
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10 text-xs text-gray-300 space-y-1">
+                            <strong class="text-white">Điều kiện Độ Kiếp (/tutien dokiep):</strong>
+                            <ul class="list-disc list-inside space-y-1 text-gray-400 pl-2">
+                                <li>Đạt đủ mốc Tu Vi yêu cầu theo cảnh giới.</li>
+                                <li>Sở hữu viên <strong>Đan Đột Phá</strong> tương ứng (luyện tại Bát Quái Đan Lò).</li>
+                                <li>Đạt ngưỡng <strong>Sinh Lực (HP) tối thiểu</strong> (bằng cách phục dụng đan dược và trang bị pháp bảo).</li>
+                                <li>Vượt qua <strong>9 đạo Thiên Lôi</strong> giáng xuống liên tiếp.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-seedling text-amber-400"></i>
+                        <span>III. 6 Bậc Linh Căn & 7 Đại Đạo Tu Tiên</span>
+                    </h2>
+                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                            <div class="font-bold text-white mb-1">🌿 6 Bậc Linh Căn:</div>
+                            <p class="text-gray-400">Từ Phế Linh Căn (x1.0) đến Hỗn Độn Linh Căn (x20.0 tốc độ tu luyện).</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                            <div class="font-bold text-white mb-1">🗡️ Kiếm Tu:</div>
+                            <p class="text-gray-400">+20% sát thương khi cầm Kiếm, giảm 50% linh lực tiêu hao khi Ngự Kiếm.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                            <div class="font-bold text-white mb-1">🛡️ Thể Tu:</div>
+                            <p class="text-gray-400">+40% Sinh lực tối đa, giảm 10% sát thương nhận vào.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                            <div class="font-bold text-white mb-1">🔮 Pháp Tu & 👹 Ma Tu:</div>
+                            <p class="text-gray-400">Tăng mạnh giới hạn linh lực và tỷ lệ bộc phát sát thương thần thông.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                            <div class="font-bold text-white mb-1">🧪 Đan Tu:</div>
+                            <p class="text-gray-400">Tăng tỷ lệ luyện đan và +25% chỉ số vĩnh viễn khi phục dụng đan dược.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10">
+                            <div class="font-bold text-white mb-1">💑 Song Tu:</div>
+                            <p class="text-gray-400">+5% HP/DMG cơ bản, +15% tốc độ tu vi khi tọa thiền gần đạo lữ.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-scroll text-amber-400"></i>
+                        <span>IV. Danh Sách Lệnh & Thần Thông Tiên Đế</span>
+                    </h2>
+                    <div class="mt-4 overflow-x-auto">
+                        <table class="w-full text-left text-xs border border-white/10 rounded-xl overflow-hidden">
+                            <thead class="bg-black/60 text-amber-300 border-b border-white/10">
+                                <tr>
+                                    <th class="p-3">Lệnh</th>
+                                    <th class="p-3">Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 bg-black/20 text-gray-300">
+                                <tr>
+                                    <td class="p-3 font-mono text-amber-400">/tutien menu</td>
+                                    <td class="p-3">Mở giao diện tu tiên trung tâm 54 ô</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-amber-400">/tutien tuluyen</td>
+                                    <td class="p-3">Bật/tắt tọa thiền hấp thu linh khí tại chỗ (AFK)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-amber-400">/tutien dokiep</td>
+                                    <td class="p-3">Mở giao diện Đột Phá & Độ Kiếp Cửu Lôi</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-amber-400">/tutien luyendan</td>
+                                    <td class="p-3">Mở Bát Quái Đan Lò (50+ loại đan dược phân trang)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-amber-400">/tutien chetac</td>
+                                    <td class="p-3">Mở Lò Rèn Linh Khí 8 phẩm cấp</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-amber-400">/tutien ngukiem</td>
+                                    <td class="p-3">Bật/tắt Ngự Kiếm Phi Hành lướt gió</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-amber-400">/tiende &lt;thiendiet/hophong/dialiet&gt;</td>
+                                    <td class="p-3">Thi triển Thần Thông Tiên Đế tối thượng</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // Dependencies for TuTienPlugin
+            document.getElementById('tab-content-dependencies').innerHTML = `
+                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                    <i class="fa-solid fa-puzzle-piece text-amber-400"></i>
+                    <span>Yêu Cầu Môi Trường TN-TuTienPlugin v2.2</span>
+                </h2>
+                <div class="space-y-4 text-sm text-gray-300">
+                    <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-green-500/30">
+                        <i class="fa-solid fa-circle-check text-green-400 text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-white">Nền tảng Minecraft Server</h4>
+                            <p class="text-xs text-gray-400 mt-1">Spigot, Paper hoặc Purpur 1.20.6 trở lên.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-green-500/30">
+                        <i class="fa-solid fa-circle-check text-green-400 text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-white">Môi trường Java Runtime</h4>
+                            <p class="text-xs text-gray-400 mt-1">Java 21 trở lên.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-blue-500/30">
+                        <i class="fa-solid fa-circle-info text-blue-400 text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-white">Vault & PlaceholderAPI (Khuyến nghị)</h4>
+                            <p class="text-xs text-gray-400 mt-1">Hỗ trợ giao dịch cửa hàng Vạn Giới Các và hiển thị placeholder cảnh giới trên Scoreboard/Tablist.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Updates for TuTienPlugin
+            document.getElementById('tab-content-updates').innerHTML = `
+                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                    <i class="fa-solid fa-code-compare text-amber-400"></i>
+                    <span>Nhật Ký Bản Phát Hành v2.2 Skyblock Edition</span>
+                </h2>
+                <div class="p-5 rounded-xl bg-black/40 border border-amber-500/30 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-amber-400 text-base">Bản nâng cấp v2.2 Skyblock Edition</span>
+                        <span class="text-xs text-gray-400">Tháng 10, 2026</span>
+                    </div>
+                    <ul class="list-disc list-inside text-xs text-gray-300 space-y-1.5">
+                        <li>Sấm sét Thiên Kiếp chuyển sang strikeLightningEffect: an toàn cho đảo gỗ, không biến dân làng, không phá block.</li>
+                        <li>Ngự Kiếm Hộ Phong tự động ban hiệu ứng Rơi Chậm (Slow Falling 10s) chống rơi xuống vực Void.</li>
+                        <li>Thuấn Di (Blink) an toàn: giới hạn góc nhìn pitch &lt; -15°, không lao xuống vực khi sneak bắc cầu.</li>
+                        <li>Phân trang Bát Quái Đan Lò: hỗ trợ 50+ loại đan dược và tự động luyện đan.</li>
+                        <li>Tích hợp đào đá tại Cobblestone Generator nhận trực tiếp khoáng thạch, tu vi và đạo niệm.</li>
+                    </ul>
+                </div>
+            `;
+
+            // Reviews for TuTienPlugin
+            document.getElementById('tab-content-reviews').innerHTML = `
+                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                    <i class="fa-solid fa-star text-amber-400"></i>
+                    <span>Đánh Giá Từ Cộng Đồng (5.0 / 5.0)</span>
+                </h2>
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-300 font-bold flex items-center justify-center text-xs">
+                                    TN
+                                </div>
+                                <span class="font-bold text-white text-xs">Tài Dev Nguyễn</span>
+                                <span class="text-[10px] text-gray-500">• Tác giả</span>
+                            </div>
+                            <div class="flex text-amber-400 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Bản v2.2 Skyblock Edition được nghiên cứu và thiết kế chuyên sâu nhằm đảm bảo an toàn tuyệt đối cho người chơi trên đảo, trải nghiệm tu tiên mượt mà và đỉnh cao nhất!
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            // Related plugins for TuTienPlugin
+            document.getElementById('related-plugins').innerHTML = `
+                <a href="plugin-detail.html?id=tnhoppers" class="block p-3 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-400/40 transition-all group">
+                    <div class="flex items-center space-x-3">
+                        <img src="tnhoppers.jpg" alt="TNHoppers" class="w-12 h-12 rounded-lg object-cover">
+                        <div>
+                            <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TNHoppers</h5>
+                            <p class="text-[11px] text-gray-400">Phễu không dây & hút đồ Zero-Lag v1.0</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="plugin-detail.html?id=kholuutru" class="block p-3 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-400/40 transition-all group">
+                    <div class="flex items-center space-x-3">
+                        <img src="kholuutru.jpg" alt="Kho Lưu Trữ" class="w-12 h-12 rounded-lg object-cover">
+                        <div>
+                            <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TN-KhoLuuTru</h5>
+                            <p class="text-[11px] text-gray-400">Kho ảo khoáng sản & Auto-pickup v1.0</p>
+                        </div>
+                    </div>
+                </a>
+            `;
         }
     </script>
 </body>
