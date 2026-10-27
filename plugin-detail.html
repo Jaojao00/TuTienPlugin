@@ -658,15 +658,26 @@
                         <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded">Khuyên Dùng</span>
                     </div>
 
-                    <a href="plugin-detail.html?id=tutien" class="block p-3 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-400/40 transition-all group">
-                        <div class="flex items-center space-x-3">
-                            <img src="tutienlogo.jpg" alt="Tu Tiên" class="w-12 h-12 rounded-lg object-cover">
-                            <div>
-                                <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TN-TuTienPlugin</h5>
-                                <p class="text-[11px] text-gray-400">Hệ thống tu tiên RPG v2.2 Skyblock</p>
+                    <div id="related-plugins" class="space-y-2.5">
+                        <a href="plugin-detail.html?id=kholuutru" class="block p-3 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-400/40 transition-all group">
+                            <div class="flex items-center space-x-3">
+                                <img src="kholuutru.jpg" alt="Kho Lưu Trữ" class="w-12 h-12 rounded-lg object-cover">
+                                <div>
+                                    <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TN-KhoLuuTru</h5>
+                                    <p class="text-[11px] text-gray-400">Kho ảo khoáng sản & Auto-pickup v1.0</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                        <a href="plugin-detail.html?id=tutien" class="block p-3 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-400/40 transition-all group">
+                            <div class="flex items-center space-x-3">
+                                <img src="tutienlogo.jpg" alt="Tu Tiên" class="w-12 h-12 rounded-lg object-cover">
+                                <div>
+                                    <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TN-TuTienPlugin</h5>
+                                    <p class="text-[11px] text-gray-400">Hệ thống tu tiên RPG v2.2 Skyblock</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
             </div>
@@ -734,11 +745,186 @@
             });
         }
 
-        // Query param handler for ?id=tutien
+        // Query param handler for ?id=tutien or ?id=kholuutru
         const urlParams = new URLSearchParams(window.location.search);
         const pluginId = urlParams.get('id');
 
-        if (pluginId === 'tutien') {
+        if (pluginId === 'kholuutru') {
+            document.getElementById('page-title').innerText = "TN-KhoLuuTru 1.0 — Kho Khoáng Sản Nâng Cao Cho Skyblock | Team Jao MC";
+            document.getElementById('breadcrumb-plugin').innerText = "TN-KhoLuuTru v1.0.0";
+            document.getElementById('plugin-title').innerHTML = `TN-KhoLuuTru — Kho Khoáng Sản Ảo Nâng Cao <span class="text-emerald-400 text-xl font-mono">v1.0</span>`;
+            document.getElementById('plugin-tagline').innerText = "Plugin kho ảo thông minh cho máy chủ Paper & Folia 1.21+: Tự động hút quặng & EXP, nén khối nhanh 9:1, bảo mật đối tác chống trộm đồ và bán quặng trực tiếp.";
+            document.getElementById('plugin-banner').src = "kholuutru.jpg";
+            document.getElementById('meta-author').innerText = "Tài Dev Nguyễn";
+            document.getElementById('btn-download').href = "https://github.com/Jaojao00/kholuutru";
+            document.getElementById('btn-download').innerHTML = `<i class="fa-brands fa-github text-base"></i><span>Tải Về Từ GitHub KhoLuuTru</span>`;
+            
+            // Overview Content
+            document.getElementById('tab-content-overview').innerHTML = `
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-gem text-emerald-400"></i>
+                        <span>I. Giới Thiệu Tổng Quan TN-KhoLuuTru 1.0</span>
+                    </h2>
+                    <div class="mt-4 text-sm text-gray-300 space-y-3">
+                        <p>
+                            <strong>KhoLuuTru</strong> là plugin Minecraft đột phá dành cho máy chủ Paper/Purpur/Folia (phiên bản 1.21+). Plugin mang đến hệ thống "Kho Ảo" thông minh, giúp người chơi tự động lưu trữ tài nguyên khoáng sản thu thập được mà không bao giờ lo đầy túi đồ.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div class="p-3 rounded-xl bg-black/40 border border-emerald-500/20">
+                                <div class="font-bold text-emerald-400 text-sm mb-1 flex items-center space-x-2">
+                                    <i class="fa-solid fa-magnet"></i>
+                                    <span>Tự Động Thu Thập (Auto-Pickup)</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Quặng và khoáng sản đào được tự động bay thẳng vào Kho Ảo thay vì rớt ra đất.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-emerald-500/20">
+                                <div class="font-bold text-emerald-400 text-sm mb-1 flex items-center space-x-2">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    <span>Hút luôn Kinh Nghiệm (EXP)</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Điểm kinh nghiệm đào được nạp thẳng vào thanh EXP của người chơi.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-emerald-500/20">
+                                <div class="font-bold text-emerald-400 text-sm mb-1 flex items-center space-x-2">
+                                    <i class="fa-solid fa-cubes-stacked"></i>
+                                    <span>Nén Khối Nhanh (Quick Craft 9:1)</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Chế tạo block nhanh trực tiếp trong kho không cần bàn chế tạo, phân quyền theo Rank.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-emerald-500/20">
+                                <div class="font-bold text-emerald-400 text-sm mb-1 flex items-center space-x-2">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                    <span>Đối Tác An Toàn (Partner System)</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Mời đối tác có xác nhận, chặn rút trộm đồ, chặn bán đồ của đối tác.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-solid fa-terminal text-cyan-400"></i>
+                        <span>II. Danh Sách Lệnh & Phân Quyền (Permissions)</span>
+                    </h2>
+                    <div class="mt-4 overflow-x-auto">
+                        <table class="w-full text-left text-xs border border-white/10 rounded-xl overflow-hidden">
+                            <thead class="bg-black/60 text-cyan-300 border-b border-white/10">
+                                <tr>
+                                    <th class="p-3">Lệnh</th>
+                                    <th class="p-3">Quyền hạn (Permission)</th>
+                                    <th class="p-3">Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 bg-black/20 text-gray-300">
+                                <tr>
+                                    <td class="p-3 font-mono text-cyan-400">/kho</td>
+                                    <td class="p-3 font-mono text-gray-400">kho.use</td>
+                                    <td class="p-3">Mở giao diện Kho Lưu Trữ chính</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-cyan-400">/kho auto</td>
+                                    <td class="p-3 font-mono text-gray-400">kho.use</td>
+                                    <td class="p-3">Bật/tắt chế độ tự động nhặt cá nhân</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-cyan-400">/kho sell</td>
+                                    <td class="p-3 font-mono text-gray-400">kho.use</td>
+                                    <td class="p-3">Mở giao diện bán vật phẩm lấy tiền Vault</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-cyan-400">/kho partner</td>
+                                    <td class="p-3 font-mono text-gray-400">kho.use</td>
+                                    <td class="p-3">Mở giao diện quản lý đối tác chia sẻ kho</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-cyan-400">/kho filter</td>
+                                    <td class="p-3 font-mono text-gray-400">kho.use</td>
+                                    <td class="p-3">Mở giao diện cấu hình lọc danh sách đồ nhặt (Kholist)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-mono text-cyan-400">/kho admin reload</td>
+                                    <td class="p-3 font-mono text-gray-400">kho.admin</td>
+                                    <td class="p-3">Tải lại tệp cấu hình config.yml</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                        <i class="fa-brands fa-youtube text-red-500"></i>
+                        <span>III. Video Hướng Dẫn Chi Tiết Từ Tác Giả</span>
+                    </h2>
+                    <div class="mt-4 p-4 rounded-xl bg-black/50 border border-white/10">
+                        <a href="https://youtu.be/yqa4h8YieXo?si=gkySdvsoM9UtMXXE" target="_blank" class="block relative group overflow-hidden rounded-xl border border-red-500/30">
+                            <img src="https://img.youtube.com/vi/yqa4h8YieXo/maxresdefault.jpg" alt="Video Hướng Dẫn" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-all">
+                                <div class="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center text-white text-2xl shadow-[0_0_25px_rgba(239,68,68,0.8)] group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-play ml-1"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <p class="text-xs text-center text-gray-400 mt-3">Nhấp vào video trên để xem hướng dẫn chi tiết cách dùng plugin từ tác giả <strong>Tài Dev Nguyễn</strong></p>
+                    </div>
+                </div>
+            `;
+
+            // Dependencies Content
+            document.getElementById('tab-content-dependencies').innerHTML = `
+                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center space-x-3 pb-3 border-b border-white/10">
+                    <i class="fa-solid fa-puzzle-piece text-cyan-400"></i>
+                    <span>Yêu Cầu Môi Trường TN-KhoLuuTru</span>
+                </h2>
+                <div class="space-y-4 text-sm text-gray-300">
+                    <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-green-500/30">
+                        <i class="fa-solid fa-circle-check text-green-400 text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-white">Nền tảng Minecraft Server</h4>
+                            <p class="text-xs text-gray-400 mt-1">Paper, Purpur hoặc Folia 1.21 trở lên (Hỗ trợ hoàn hảo kiến trúc đa luồng Regionized của Folia).</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-green-500/30">
+                        <i class="fa-solid fa-circle-check text-green-400 text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-white">Java Runtime</h4>
+                            <p class="text-xs text-gray-400 mt-1">JDK 21 trở lên.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-4 rounded-xl bg-black/40 border border-blue-500/30">
+                        <i class="fa-solid fa-circle-info text-blue-400 text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-white">Vault (Tùy chọn)</h4>
+                            <p class="text-xs text-gray-400 mt-1">Yêu cầu nếu sử dụng chức năng bán khoáng sản lấy tiền (/kho sell).</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Related plugins update
+            document.getElementById('related-plugins').innerHTML = `
+                <a href="plugin-detail.html?id=tnhoppers" class="block p-3 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-400/40 transition-all group">
+                    <div class="flex items-center space-x-3">
+                        <img src="tnhoppers.jpg" alt="TNHoppers" class="w-12 h-12 rounded-lg object-cover">
+                        <div>
+                            <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TNHoppers</h5>
+                            <p class="text-[11px] text-gray-400">Phễu không dây & hút đồ Zero-Lag v1.0</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="plugin-detail.html?id=tutien" class="block p-3 rounded-xl bg-black/40 border border-white/10 hover:border-cyan-400/40 transition-all group">
+                    <div class="flex items-center space-x-3">
+                        <img src="tutienlogo.jpg" alt="Tu Tiên" class="w-12 h-12 rounded-lg object-cover">
+                        <div>
+                            <h5 class="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">TN-TuTienPlugin</h5>
+                            <p class="text-[11px] text-gray-400">Hệ thống tu tiên RPG v2.2 Skyblock</p>
+                        </div>
+                    </div>
+                </a>
+            `;
+        } else if (pluginId === 'tutien') {
             document.getElementById('page-title').innerText = "TN-TuTienPlugin — Hệ Thống Tu Tiên Minecraft (Skyblock Edition)";
             document.getElementById('breadcrumb-plugin').innerText = "TN-TuTienPlugin v2.2 Skyblock";
             document.getElementById('plugin-title').innerHTML = `TN-TuTienPlugin — Hệ Thống Tu Tiên Chuyên Sâu <span class="text-amber-400 text-xl font-mono">v2.2</span>`;
