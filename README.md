@@ -6,13 +6,13 @@
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.20.6%20--%201.21+-2ea44f?style=for-the-badge&logo=minecraft&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-21-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Platform](https://img.shields.io/badge/API-Paper%20%7C%20Purpur%20%7C%20Spigot-F1B31C?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-v2.3--Skyblock-007ACC?style=for-the-badge)
-![Tests](https://img.shields.io/badge/Tests-100%2F100%20PASS-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)
-![Security](https://img.shields.io/badge/Escrow-Zero--Loss%20ACID-success?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-v2.3--Commercial-007ACC?style=for-the-badge)
+![License](https://img.shields.io/badge/Bản%20Quyền-Riêng%20Tư%20(Proprietary)-red?style=for-the-badge)
+![TAB-Optimized](https://img.shields.io/badge/PlaceholderAPI-TAB%20Anti--Overflow-brightgreen?style=for-the-badge)
 
 <p align="center">
   <b>Plugin Minecraft RPG mô phỏng thế giới tu tiên chuyên sâu, cân bằng hoàn hảo cho máy chủ Skyblock và Survival.</b><br>
-  <i>17 Đại Cảnh Giới • 7 Đại Đạo • 50+ Đan Dược • Lò Rèn 8 Phẩm Cấp • Tọa Thiền Tụ Linh Trận • Ngự Không Đạp Mây • Gacha Linh Thú Trợ Chiến • Phụ Bản Skyblock Generator • Bảng Xếp Hạng & PlaceholderAPI.</i>
+  <i>17 Đại Cảnh Giới Tiên Nghịch • 7 Đại Đạo • 50+ Đan Dược • Lò Rèn 8 Phẩm Cấp • Tọa Thiền Tụ Linh Trận • Ngự Không Đạp Mây • Gacha Linh Thú Trợ Chiến • Phụ Bản Skyblock Generator • Động Phủ Linh Địa • Cửu Trọng Thiên Kiếp • Bảng Xếp Hạng & PlaceholderAPI Chuẩn TAB.</i>
 </p>
 
 ---
@@ -22,8 +22,8 @@
 ## 📑 Mục Lục
 
 - [🌟 Tổng Quan](#-tổng-quan)
-- [⚡ Điểm Nâng Cấp Bản v2.3](#-điểm-nâng-cấp-bản-v23-mới-nhất)
-- [🏔️ Hệ Thống 17 Cảnh Giới & Đột Phá](#-hệ-thống-17-cảnh-giới--đột-phá)
+- [⚡ Điểm Nâng Cấp Nổi Bật Bản v2.3](#-điểm-nâng-cấp-nổi-bật-bản-v23)
+- [🏔️ Hệ Thống 17 Cảnh Giới Tiên Nghịch](#-hệ-thống-17-cảnh-giới-tiên-nghịch)
 - [🛡️ Chỉ Số Thần Thông Theo Cảnh Giới](#-chỉ-số-thần-thông-theo-cảnh-giới)
 - [🧘 Tọa Thiền Tu Luyện (Tụ Linh Trận)](#-tọa-thiền-tu-luyện-tụ-linh-trận)
 - [☁️ Ngự Không Phi Hành (Đạp Mây Hư Không)](#-ngự-không-phi-hành-đạp-mây-hư-không)
@@ -31,91 +31,91 @@
 - [🧪 Luyện Đan & ⚒️ Chế Tác Trang Bị](#-luyện-đan--chế-tác-trang-bị)
 - [🐾 Linh Thú Viên & Triệu Hồi (Gacha)](#-linh-thú-viên--triệu-hồi-gacha)
 - [⛏️ Tích Hợp Máy Tạo Đá Skyblock](#-tích-hợp-máy-tạo-đá-skyblock-generator)
-- [🏆 Bảng Xếp Hạng & PlaceholderAPI](#-bảng-xếp-hạng--placeholderapi)
+- [🏆 Bảng Xếp Hạng & PlaceholderAPI (Tối Ưu TAB)](#-bảng-xếp-hạng--placeholderapi-tối-ưu-tab)
 - [📜 Danh Sách Lệnh (Commands)](#-danh-sách-lệnh-commands)
 - [⚙️ Yêu Cầu & Cài Đặt](#-yêu-cầu--cài-đặt)
-- [👨‍💻 Tác Giả](#-tác-giả)
+- [👨‍💻 Tác Giả & Bản Quyền](#-tác-giả--bản-quyền)
 
 ---
 
 ## 🌟 Tổng Quan
 
-**TN-TuTienPlugin** mang lại trải nghiệm tu tiên chân thực chuẩn tiên hiệp Á Đông trong thế giới Minecraft. Người chơi bắt đầu hành trình từ **Phàm Nhân**, khai mở linh căn, tọa thiền nhập định hấp thu thiên địa linh khí, thu hoạch linh thảo luyện thành tiên đan, đào linh khoáng từ máy tạo đá rèn tạo thần binh, vượt qua Cửu Đạo Thiên Kiếp để phi thăng cảnh giới tối cao **Tiên Đế**.
+**TN-TuTienPlugin** mang lại trải nghiệm tu tiên chân thực chuẩn tiên hiệp Á Đông trong thế giới Minecraft. Người chơi bắt đầu hành trình từ **Phàm Nhân**, khai mở linh căn, tọa thiền nhập định hấp thu thiên địa linh khí, thu hoạch linh thảo luyện thành tiên đan, đào linh khoáng từ máy tạo đá rèn tạo thần binh, vượt qua Cửu Đạo Thiên Kiếp để phi thăng cảnh giới chí cao vô thượng **Đạp Thiên**.
 
 > [!NOTE]
 > Plugin được thiết kế bảo vệ tuyệt đối cho các máy chủ **Skyblock**: không gây cháy nổ phá hủy công trình, không biến đổi Dân Làng (Villager), không rớt đồ hư không và hoàn toàn tương thích với hệ thống bảo hộ đảo.
 
 ---
 
-## ⚡ Điểm Nâng Cấp Bản v2.3 Mới Nhất
+## ⚡ Điểm Nâng Cấp Nổi Bật Bản v2.3
 
 | Tính Năng | Mô Tả Chi Tiết |
 | :--- | :--- |
-| **📈 Cân Bằng Tu Vi Đột Phá (+20%)** | Toàn bộ 16 mốc cảnh giới tăng chuẩn 20% yêu cầu Tu Vi, giúp tiến trình tu luyện liền mạch, có chiều sâu và bền vững. |
-| **🍚 Cơ Chế Tịch Cốc (Ổn Định Đói)** | Tu vi càng cao tiêu hao đói càng ít. **Kim Đan** giảm 85% tiêu hao; **Nguyên Anh trở lên đạt Tịch Cốc Đạo Thể** miễn nhiễm 100% tụt đói, thanh thức ăn luôn khóa ở 20/20 bão hòa! |
-| **⚡ Phân Hóa Chỉ Số Cảnh Giới** | Mỗi cảnh giới đem lại sự khác biệt vượt trội về: **Tốc độ chạy** (0.200 ➔ 0.400), **Giáp bảo vệ bẩm sinh** (+2 ➔ +70 Giáp), **Độ dẻo dai** (+1 ➔ +30 Toughness), **Kháng đẩy lùi** (0.05 ➔ 1.0) và **Giảm sát thương** (2% ➔ 50%). |
-| **✨ Tọa Thiền Tụ Linh Trận Mới** | Khi `/tt tuluyen`, xuất hiện **Tụ Linh Trận Bát Quái xoay tròn dưới gót chân**, luồng **Linh Khí xoắn ốc (Helix)** cuộn từ đất lên đỉnh đầu, hào quang **Tử Khí Đông Lai** và tiếng chuông tiên ngân nga du dương. |
-| **☁️ Ngự Không Phi Hành (Đạp Mây)** | Đổi mới toàn diện tính năng bay: xuất hiện **Tường Vân (đám mây tiên bồng bềnh dưới chân)**, luồng khí lưu phong độn xoay quanh gót chân, hỗ trợ cả 2 lệnh `/tt ngukhong` và `/tt ngukiem`. |
-| **⏳ Cân Bằng Triệu Hồi Linh Thú** | **Boss Cổ Thần:** Giới hạn tối đa **5 lần/ngày**, delay hồi chiêu **60s**. **Gacha Linh Thú:** Delay **3s** chống spam click kèm hiệu ứng ngưng tụ linh khí trận pháp. |
+| **📈 Chuẩn Hóa 17 Cảnh Giới Tiên Nghịch** | Cấu trúc chuẩn theo lộ trình Tiên Nghịch từ Phàm Nhân đến Đạp Thiên cảnh với chỉ số chiến đấu và thần thông khác biệt rõ rệt. |
+| **🍚 Cơ Chế Tịch Cốc (Khóa Đói Thông Minh)** | Tu vi càng cao tiêu hao đói càng ít. **Kim Đan** giảm 85% tiêu hao (không dưới 18/20); **Nguyên Anh trở lên đạt Tịch Cốc Đạo Thể** khóa thanh đói 20/20 vĩnh viễn! |
+| **⚡ Phân Hóa Chỉ Số Cảnh Giới Vượt Trội** | Tăng trưởng toàn diện: **Tốc độ chạy** (0.200 ➔ 0.400), **Giáp bảo vệ bẩm sinh** (+0 ➔ +70 Giáp), **Độ dẻo dai** (+0 ➔ +30 Toughness), **Kháng đẩy lùi** (0% ➔ 100%) và **Giảm sát thương nhận vào** (0% ➔ 50%). |
+| **✨ Tọa Thiền Tụ Linh Trận Đẳng Cấp** | Khi `/tt tuluyen`, xuất hiện **Tụ Linh Trận Bát Quái xoay tròn dưới chân**, luồng **Linh Khí xoắn ốc (Helix)** cuộn từ đất lên đỉnh đầu, hào quang **Tử Khí Đông Lai** và tiếng chuông tiên ngân nga. |
+| **☁️ Ngự Không Phi Hành (Đạp Mây An Toàn)** | Đổi mới toàn diện tính năng bay: xuất hiện **Tường Vân (đám mây tiên bồng bềnh dưới chân)**, luồng khí lưu phong độn xoay quanh gót chân. Tự động nhận **Slow Falling 10s** khi hết linh lực chống rơi Void. |
+| **🎯 Tối Ưu PlaceholderAPI Chống Tràn TAB** | Tách riêng các biến định dạng rút gọn `%tutien_linhcan%` (~15 ký tự) giúp hiển thị trên bảng TAB và Scoreboard luôn gọn gàng, tuyệt đối không bị tràn viền màn hình. |
 
 ---
 
-## 🏔️ Hệ Thống 17 Cảnh Giới & Đột Phá
+## 🏔️ Hệ Thống 17 Cảnh Giới Tiên Nghịch
 
-Hệ thống gồm **17 Đại Cảnh Giới**, mỗi cảnh giới chia thành 10 tiểu cảnh giới (*Nhất Trọng* ➔ *Thập Trọng* ➔ *Viên Mãn*).
+Hệ thống gồm **17 Đại Cảnh Giới** chuẩn nguyên tác Tiên Nghịch:
 
 ```
-Phàm Nhân ➔ Luyện Khí ➔ Trúc Cơ ➔ Kim Đan ➔ Nguyên Anh ➔ Hóa Thần ➔ Luyện Hư ➔ Hợp Thể
-    ➔ Đại Thừa ➔ Độ Kiếp ➔ Chân Tiên ➔ Địa Tiên ➔ Thiên Tiên ➔ Huyền Tiên ➔ Tiên Quân ➔ Tiên Vương ➔ Tiên Đế
+Phàm Nhân ➔ Luyện Khí ➔ Trúc Cơ ➔ Kim Đan ➔ Nguyên Anh ➔ Hóa Thần ➔ Anh Biến ➔ Vấn Đỉnh
+    ➔ Âm Hư ➔ Dương Thực ➔ Khuy Niết ➔ Tịnh Niết ➔ Toái Niết ➔ Không Niết ➔ Không Linh ➔ Không Huyền ➔ Đạp Thiên
 ```
 
-### Bảng Cân Bằng Tu Vi Đột Phá (v2.3)
+### Bảng Chỉ Số Thuộc Tính 17 Cảnh Giới
 
-| Cảnh Giới | Tu Vi Cũ | Tu Vi Mới (v2.3) | Sinh Lực (HP) | Sát Thương Gốc | Đan Dược Đột Phá |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **Phàm Nhân** | 0 | **0** | 20.0 | 1.0 | *(Khởi đầu)* |
-| **Luyện Khí** | 100 | **120** | 24.0 | 2.0 | Luyện Khí Đan |
-| **Trúc Cơ** | 500 | **600** | 30.0 | 4.0 | Trúc Cơ Đan |
-| **Kim Đan** | 2.000 | **2.400** | 40.0 | 7.0 | Kim Đan Đan |
-| **Nguyên Anh** | 5.000 | **6.000** | 60.0 | 12.0 | Nguyên Anh Đan |
-| **Hóa Thần** | 12.000 | **14.400** | 100.0 | 20.0 | Hóa Thần Đan |
-| **Luyện Hư** | 30.000 | **36.000** | 150.0 | 35.0 | Luyện Hư Đan |
-| **Hợp Thể** | 70.000 | **84.000** | 250.0 | 60.0 | Hợp Thể Đan |
-| **Đại Thừa** | 150.000 | **180.000** | 400.0 | 100.0 | Đại Thừa Đan |
-| **Độ Kiếp** | 300.000 | **360.000** | 600.0 | 150.0 | Độ Kiếp Đan |
-| **Chân Tiên** | 600.000 | **720.000** | 1.000.0 | 250.0 | Chân Tiên Đan |
-| **Địa Tiên** | 1.200.000 | **1.440.000** | 1.500.0 | 400.0 | Địa Tiên Đan |
-| **Thiên Tiên** | 2.500.000 | **3.000.000** | 2.500.0 | 700.0 | Thiên Tiên Đan |
-| **Huyền Tiên** | 5.000.000 | **6.000.000** | 4.000.0 | 1.200.0 | Huyền Tiên Đan |
-| **Tiên Quân** | 10.000.000 | **12.000.000** | 7.000.0 | 2.000.0 | Tiên Quân Đan |
-| **Tiên Vương** | 25.000.000 | **30.000.000** | 12.000.0 | 4.000.0 | Tiên Vương Đan |
-| **Tiên Đế** | 50.000.000 | **60.000.000** | 20.000.0 | 8.000.0 | Tiên Đế Đan *(Đỉnh Phong)* |
+| Cảnh Giới | Tu Vi / Tầng | Máu (HP) | Linh Lực | Sát Thương | Tốc Độ | Giáp / Bền | Kháng Lùi | Kháng Đòn |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Phàm Nhân** | 100 | 20.0 | 0 | 1.0 | 0.200 | 0 / 0 | 0% | 0% |
+| **Luyện Khí** | 150 | 24.0 | 150 | 2.0 | 0.205 | +2 / 0 | 5% | 2% |
+| **Trúc Cơ** | 1.500 | 30.0 | 500 | 4.0 | 0.210 | +4 / +1 | 10% | 4% |
+| **Kim Đan** | 6.000 | 40.0 | 1.000 | 7.0 | 0.220 | +7 / +2 | 20% | 8% |
+| **Nguyên Anh** | 15.000 | 60.0 | 2.500 | 12.0 | 0.230 | +10 / +4 | 30% | 12% |
+| **Hóa Thần** | 36.000 | 100.0 | 6.000 | 20.0 | 0.245 | +14 / +6 | 45% | 16% |
+| **Anh Biến** | 90.000 | 150.0 | 15.000 | 35.0 | 0.260 | +18 / +8 | 60% | 20% |
+| **Vấn Đỉnh** | 200.000 | 250.0 | 35.000 | 60.0 | 0.275 | +22 / +10 | 75% | 24% |
+| **Âm Hư** | 450.000 | 400.0 | 80.000 | 100.0 | 0.290 | +26 / +12 | 85% | 28% |
+| **Dương Thực** | 900.000 | 600.0 | 150.000 | 150.0 | 0.305 | +30 / +14 | 100% | 32% |
+| **Khuy Niết** | 1.800.000 | 1.000.0 | 300.000 | 250.0 | 0.320 | +35 / +16 | 100% | 35% |
+| **Tịnh Niết** | 3.600.000 | 1.500.0 | 600.000 | 400.0 | 0.335 | +40 / +18 | 100% | 38% |
+| **Toái Niết** | 7.500.000 | 2.500.0 | 1.200.000 | 700.0 | 0.350 | +45 / +20 | 100% | 40% |
+| **Không Niết** | 15.000.000 | 4.000.0 | 2.500.000 | 1.200.0 | 0.365 | +50 / +22 | 100% | 42% |
+| **Không Linh** | 30.000.000 | 7.000.0 | 6.000.000 | 2.000.0 | 0.380 | +55 / +25 | 100% | 45% |
+| **Không Huyền** | 60.000.000 | 12.000.0 | 15.000.000 | 4.000.0 | 0.390 | +60 / +28 | 100% | 48% |
+| **Đạp Thiên** | 150.000.000 | 20.000.0 | 50.000.000 | 8.000.0 | 0.400 | +70 / +30 | 100% | 50% |
 
 ---
 
 ## 🛡️ Chỉ Số Thần Thông Theo Cảnh Giới
 
-Tu tiên giả không ngừng lột xác hoán cốt, tạo ra sự chênh lệch sức mạnh vượt bậc giữa các tầng thứ:
+Tu tiên giả không ngừng hoán cốt tẩy tủy, mở rộng thần thông và thiết lập uy áp cảnh giới vượt trội:
 
-```
-[Phàm Nhân] ─────────────► [Kim Đan] ─────────────► [Nguyên Anh+] ─────────────► [Tiên Đế]
-  Đói thường               Tịch Cốc 85%              Tịch Cốc Đạo Thể              Vô Địch Hộ Thể
-  Tốc độ: 0.20             Tốc độ: 0.22              Tốc độ: 0.23 - 0.35           Tốc độ: 0.40
-  Giáp: 0.0                Giáp: +7.0                Giáp: +10 - +55               Giáp: +70.0
-  Kháng lùi: 0.0           Kháng lùi: 0.20           Kháng lùi: 0.30 - 1.0         Kháng lùi: 1.0 (Tuyệt đối)
-  Kháng đòn: 0%            Kháng đòn: 8%             Kháng đòn: 12% - 45%          Kháng đòn: 50%
-```
+| Cột Mốc Cảnh Giới | Trạng Thái Đói & Tịch Cốc | Tốc Độ Di Chuyển | Giáp & Độ Bền | Kháng Đẩy Lùi | Giảm Sát Thương Nhận |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Phàm Nhân** | Tiêu hao độ đói tiêu chuẩn | `0.200` | `+0` / `+0` | `0%` | `0%` |
+| **Luyện Khí ➔ Trúc Cơ** | Giảm 30% ➔ 60% tốc độ tụt đói | `0.205 ➔ 0.210` | `+2 ➔ +4` | `5% ➔ 10%` | `2% ➔ 4%` |
+| **Kim Đan** | Giảm 85% đói *(Khóa mức ≥ 18/20)* | `0.220` | `+7 / +2` | `20%` | `8%` |
+| **Nguyên Anh ➔ Vấn Đỉnh** | **Tịch Cốc Đạo Thể** *(Khóa đầy 20/20)* | `0.230 ➔ 0.275` | `+10 ➔ +22` | `30% ➔ 75%` | `12% ➔ 24%` |
+| **Âm Hư ➔ Không Niết** | Tịch Cốc vĩnh viễn • Kháng lùi cực đại | `0.290 ➔ 0.365` | `+26 ➔ +50` | `85% ➔ 100%` | `28% ➔ 42%` |
+| **Không Linh ➔ Đạp Thiên** | **Bất Diệt Chân Thân** *(Vô địch hộ thể)* | `0.380 ➔ 0.400` | `+55 ➔ +70` | `100% (Tuyệt đối)` | `45% ➔ 50%` |
 
 ### Cơ Chế Tịch Cốc (Ổn Định Thanh Đói)
-- **Cấp 0 (Phàm Nhân):** Tiêu hao độ đói tiêu chuẩn.
+- **Cấp 0 (Phàm Nhân):** Tiêu hao độ đói tiêu chuẩn của Minecraft.
 - **Cấp 1 (Luyện Khí):** Giảm 30% tốc độ tụt thanh đói.
 - **Cấp 2 (Trúc Cơ):** Giảm 60% tốc độ tụt thanh đói.
 - **Cấp 3 (Kim Đan):** Giảm 85% tiêu hao đói; mức thức ăn không bao giờ giảm xuống dưới 18/20.
-- **Cấp 4 (Nguyên Anh ➔ Tiên Đế):** **Tịch Cốc Đạo Thể** — Miễn nhiễm 100% việc mất độ đói. Tự động phục hồi đầy thanh 20/20 và duy trì trạng thái no đủ vĩnh viễn!
+- **Cấp 4 (Nguyên Anh trở lên):** **Tịch Cốc Đạo Thể** — Miễn nhiễm 100% việc mất độ đói. Tự động giữ đầy thanh 20/20 và duy trì trạng thái no đủ vĩnh viễn!
 
 ### Đề Kháng Tà Khí & Thanh Tẩy Độc Tố
-- **Kim Đan ➔ Độ Kiếp:** Tỷ lệ tự động hóa giải debuff xấu (Độc, Làm chậm, Hư nhược, Mù mắt) từ 30% đến 95%.
-- **Chân Tiên trở lên:** Đạt cảnh giới **Bách Độc Bất Xâm** — Miễn nhiễm 100% mọi hiệu ứng tiêu cực!
+- **Kim Đan ➔ Vấn Đỉnh:** Tỷ lệ tự động hóa giải debuff xấu (Độc, Làm chậm, Hư nhược, Mù mắt) từ 30% đến 75%.
+- **Âm Hư ➔ Đạp Thiên:** Đạt cảnh giới **Bách Độc Bất Xâm** — Miễn nhiễm 100% mọi hiệu ứng tiêu cực!
 
 ---
 
@@ -125,7 +125,7 @@ Gõ `/tutien tuluyen` (hoặc `/tt tuluyen`) để bắt đầu quá trình nh�
 
 - **Hiệu Ứng Bát Quái Tụ Linh Trận:** Vòng tròn hạt sáng cổ ngữ bán kính 1.3 block xoay tròn dưới chân (`SOUL_FIRE_FLAME` / `END_ROD` / `TOTEM_OF_UNDYING`).
 - **Linh Khí Quy Lưu (Helix):** Hai dải hạt xoắn ốc đối xứng cuộn từ mặt đất bay xoay quanh người lên quá đỉnh đầu (`ENCHANT`).
-- **Dị Tượng Cảnh Giới:** Hóa Thần trở lên tỏa hào quang Tử Khí Đông Lai (`DRAGON_BREATH`), Tiên Đế phát quang thiên kiếp, chuông trời ngân nga (`BLOCK_AMETHYST_BLOCK_CHIME`) mỗi 12 giây.
+- **Dị Tượng Cảnh Giới:** Hóa Thần trở lên tỏa hào quang Tử Khí Đông Lai (`DRAGON_BREATH`), Đạp Thiên phát quang thiên kiếp, chuông trời ngân nga (`BLOCK_AMETHYST_BLOCK_CHIME`) mỗi 12 giây.
 - **Phần Thưởng Tọa Thiền:** Tăng Tu Vi, hồi phục Linh Lực, nhận **Điểm Bế Quan** (1 điểm / phút) và tự động kích hoạt **Luyện Đan Tự Động** mỗi 5 giây.
 
 ---
@@ -141,8 +141,8 @@ Kích hoạt bằng lệnh `/tutien ngukhong` (hoặc alias `/tt ngukiem`):
   - **Phong Độn Trận:** Vòng xoáy 4 cực khí lưu xoay tản ra phía sau theo bước bay.
   - **Cấp Độ Tiên Vân:**
     - *Kim Đan & Nguyên Anh:* Mây trắng tinh khôi + Tiên quang (`END_ROD`).
-    - *Hóa Thần ➔ Độ Kiếp:* Tử Điện Tường Vân (`ELECTRIC_SPARK` + `END_ROD`).
-    - *Chân Tiên ➔ Tiên Đế:* Cửu Sắc Tường Vân (`TOTEM_OF_UNDYING` + `SOUL_FIRE_FLAME`).
+    - *Hóa Thần ➔ Vấn Đỉnh:* Tử Điện Tường Vân (`ELECTRIC_SPARK` + `END_ROD`).
+    - *Âm Hư ➔ Đạp Thiên:* Cửu Sắc Tường Vân (`TOTEM_OF_UNDYING` + `SOUL_FIRE_FLAME`).
 - **Hộ Phong Rơi Chậm (Skyblock Safe):** Khi cạn Linh Lực hoặc chủ động tắt bay, tự động nhận hiệu ứng **Rơi Chậm (Slow Falling) 10s**, loại bỏ hoàn toàn nguy cơ rơi xuống vực Void!
 
 ---
@@ -174,12 +174,12 @@ Khi lần đầu tham gia máy chủ, đạo hữu sẽ được Thiên Đạo t
 ## 🧪 Luyện Đan & ⚒️ Chế Tác Trang Bị
 
 ### ⚗️ Bát Quái Đan Lò (`/tutien luyendan`)
-- Giao diện nhiều trang hiển thị toàn bộ **50+ công thức đan dược** chuẩn file cấu hình `danduoc.yml`.
+- Giao diện trực quan hiển thị toàn bộ **50+ công thức đan dược** cấu hình qua `danduoc.yml`.
 - **4 Bậc Đan Dược:**
   - *Nhất ➔ Tam Phẩm (23 loại):* Bổ Huyết Đan, Tụ Khí Đan, Tịch Cốc Đan, Tráng Cốt Đan...
   - *Tứ ➔ Lục Phẩm (10 loại):* Tẩy Tủy Đan, Cố Thần Đan, Bát Bảo Kim Đan...
   - *Thất Phẩm+ (5 loại):* Cửu Chuyển Hoàn Hồn Đan, Bất Tử Kim Đan, Hỗn Nguyên Đạo Đan...
-  - *Đan Đột Phá (16 loại):* Luyện Khí Đan ➔ Tiên Đế Đan.
+  - *Đan Đột Phá (16 loại):* Luyện Khí Đan ➔ Đạp Thiên Đan.
 - **Tự Động Luyện Đan:** Chọn đan dược mục tiêu, khi tọa thiền hệ thống sẽ tự động luyện chế mỗi 5 giây.
 - **Ăn Đan Dược Trực Tiếp:** Chuột phải để hấp thu, tăng vĩnh viễn Máu tối đa, Sát thương hoặc nhận Tu Vi tức thì.
 
@@ -223,29 +223,38 @@ Plugin tự động bắt sự kiện khai thác các khối tại máy tạo đ
 
 ---
 
-## 🏆 Bảng Xếp Hạng & PlaceholderAPI
+## 🏆 Bảng Xếp Hạng & PlaceholderAPI (Tối Ưu TAB)
 
 Mở menu xếp hạng bằng lệnh `/tutien xephang` để xem Top 10 cao thủ thiên hạ.
 
-### Danh Sách PlaceholderAPI Hỗ Trợ:
+> [!TIP]
+> **Khuyến Nghị Thiết Kế Bảng TAB & Scoreboard:**
+> - Hãy dùng biến **`%tutien_linhcan%`** hoặc **`%tutien_linhcan_compact%`** cho TAB list và Scoreboard. Biến đã được tối ưu độ dài (~15 ký tự: ví dụ `§6Thiên Linh Căn §7(§cHỏa§7)`), hoàn toàn không làm tràn hay lệch bảng TAB!
+> - Biến **`%tutien_linhcan_full%`** chứa chi tiết mọi nguyên tố kèm chỉ số số học, chỉ nên dùng trong chat hoặc menu profile cá nhân.
 
-| Placeholder | Mô Tả |
-| :--- | :--- |
-| `%tutien_canhgioi%` | Tên Cảnh giới và Tiểu cảnh giới hiện tại |
-| `%tutien_tuvi%` / `%tutien_tuvi_max%` | Tu vi hiện tại / Tu vi mốc đột phá kế tiếp |
-| `%tutien_linhcan%` / `%tutien_he%` | Tên Linh căn / Hệ đại đạo đang tu luyện |
-| `%tutien_linhluc%` / `%tutien_linhluc_max%` | Linh lực hiện tại / Linh lực tối đa |
-| `%tutien_khoangthach%` | Số lượng Khoáng Thạch sở hữu |
-| `%tutien_daoniem%` | Số lượng Đạo Niệm sở hữu |
-| `%tutien_bequan_diem%` | Số Điểm Bế Quan tích lũy |
-| `%tutien_canhgioi_#%` | Thứ hạng Cảnh Giới của người chơi (`#1` đến `#10` hoặc `-`) |
-| `%tutien_tuvi_#%` | Thứ hạng Tu Vi cá nhân |
-| `%tutien_khoangthach_#%` | Thứ hạng Khoáng Thạch cá nhân |
-| `%tutien_daoniem_#%` | Thứ hạng Đạo Niệm cá nhân |
-| `%tutien_canhgioi_1%` $\rightarrow$ `%tutien_canhgioi_10%` | Tên & Cảnh giới của Top 1 đến Top 10 toàn server |
-| `%tutien_tuvi_top_1%` $\rightarrow$ `%tutien_tuvi_top_10%` | Top 1 đến Top 10 Tu Vi |
-| `%tutien_khoangthach_top_1%` $\rightarrow$ `%tutien_khoangthach_top_10%` | Top 1 đến Top 10 Khoáng Thạch |
-| `%tutien_daoniem_top_1%` $\rightarrow$ `%tutien_daoniem_top_10%` | Top 1 đến Top 10 Đạo Niệm |
+### Danh Sách PlaceholderAPI Đầy Đủ:
+
+| Placeholder | Mô Tả Hiển Thị | Độ Dài / Phù Hợp |
+| :--- | :--- | :---: |
+| **`%tutien_linhcan%`** | **Linh căn rút gọn kèm hệ chính** *(vd: Thiên Linh Căn (Hỏa))* | **Chuẩn TAB & Scoreboard** |
+| `%tutien_linhcan_compact%` | Alias rút gọn chuẩn TAB | **Chuẩn TAB & Scoreboard** |
+| `%tutien_linhcan_short%` | Tên loại linh căn ngắn *(vd: Thiên Linh Căn)* | **Siêu gọn** |
+| `%tutien_linhcan_full%` | Tên đầy đủ kèm phẩm chất mọi hệ `[Hỏa 90, Mộc 70...]` | Dùng cho GUI / Chat |
+| `%tutien_linhcan_type%` | Tên phân loại Linh Căn | Ngắn |
+| `%tutien_linhcan_primary%` | Thẻ màu nguyên tố chủ đạo *(vd: §cHỏa)* | Ngắn |
+| `%tutien_linhcan_purity%` | Độ thuần khiết linh căn *(vd: 95.0%)* | Ngắn |
+| `%tutien_canhgioi%` | Tên Cảnh giới hiện tại *(vd: Hóa Thần)* | Chuẩn |
+| `%tutien_canhgioi_full%` | Cảnh giới kèm tiểu cảnh giới *(vd: Hóa Thần Sơ Kỳ)* | Chuẩn |
+| `%tutien_tuvi%` / `%tutien_tuvi_max%` | Tu vi hiện tại / Tu vi mốc đột phá | Chuẩn |
+| `%tutien_he%` | Hệ đại đạo đang tu luyện *(vd: Kiếm Tu)* | Chuẩn |
+| `%tutien_linhluc%` / `%tutien_linhluc_max%` | Linh lực hiện tại / Linh lực tối đa | Chuẩn |
+| `%tutien_khoangthach%` | Số lượng Khoáng Thạch sở hữu | Chuẩn |
+| `%tutien_daoniem%` | Số lượng Đạo Niệm sở hữu | Chuẩn |
+| `%tutien_bequan_diem%` | Số Điểm Bế Quan tích lũy | Chuẩn |
+| `%tutien_canhgioi_#%` | Thứ hạng Cảnh Giới của người chơi (`#1` đến `#10` hoặc `Ngoài Top 10`) | Chuẩn |
+| `%tutien_tuvi_#%` | Thứ hạng Tu Vi cá nhân | Chuẩn |
+| `%tutien_canhgioi_1%` ➔ `%tutien_canhgioi_10%` | Tên & Cảnh giới của Top 1 đến Top 10 toàn server | Chuẩn |
+| `%tutien_tuvi_top_1%` ➔ `%tutien_tuvi_top_10%` | Top 1 đến Top 10 Tu Vi | Chuẩn |
 
 ---
 
@@ -284,24 +293,18 @@ Mở menu xếp hạng bằng lệnh `/tutien xephang` để xem Top 10 cao th�
   - `Vault` + Plugin Kinh tế (EssentialsX, CMI, v.v.).
 
 ### 2. Hướng Dẫn Cài Đặt
-1. Tải bản dựng mới nhất `TN-TuTienPlugin-v2.3.jar` từ mục [Releases](https://github.com/Jaojao00/TuTienPlugin/releases).
+1. Nhận bản phát hành `TN-TuTienPlugin-v2.3.jar` hoặc `TuTienPlugin-1.0.jar`.
 2. Đặt file `.jar` vào thư mục `plugins/` của máy chủ Minecraft.
-3. Khởi động máy chủ để plugin tự động tạo các file cấu hình:
-   - `plugins/TuTienPlugin/config.yml`
-   - `plugins/TuTienPlugin/canhgioi.yml`
-   - `plugins/TuTienPlugin/danduoc.yml`
-   - `plugins/TuTienPlugin/VanGioiCacGUI.yml`
+3. Khởi động máy chủ để plugin tự động tạo các file cấu hình mẫu.
 4. Tùy chỉnh thông số theo ý muốn và sử dụng `/tutien menu` để bắt đầu trải nghiệm!
 
 ---
 
 <div align="center">
 
-## 👨‍💻 Tác Giả & Phát Hành
+## 👨‍💻 Tác Giả & Bản Quyền
 
-**Tài Dev Nguyễn** — *Phát triển và tối ưu hóa hệ thống Tu Tiên Minecraft*  
-*Bản quyền phát hành độc quyền cho máy chủ Skyblock & Survival.*
-
-> ⚔️ *"Vạn pháp quy nhất, nhất kiếm phá vạn pháp — Đạp mây độ kiếp, vấn đỉnh Tiên Đế."* ☁️
+**Dự án TuTienPlugin — Bản quyền thương mại riêng biệt.**<br>
+Mọi thắc mắc và yêu cầu hợp tác xin vui lòng liên hệ qua trang quản trị máy chủ.
 
 </div>
