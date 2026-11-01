@@ -1,0 +1,56 @@
+# ═══════════════════════════════════════════════════════════════
+# TuTienPlugin — Build, Test & Attest
+# ═══════════════════════════════════════════════════════════════
+# Tự động build Maven, tạo artifact JAR, và xác nhận nguồn gốc
+# Trigger: push/PR vào main, hoặc chạy thủ công
+
+name: Tài Dev Nguyễn — Build & Attest
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  attestations: write
+
+jobs:
+  build:
+    name: 🔨 Build TuTienPlugin
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout mã nguồn
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Cài đặt Java 21 (Minecraft 1.20.6)
+      - name: ☕ Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # 3. Build bằng Maven
+      - name: 🏗️ Build with Maven
+        run: mvn clean package -B -DskipTests
+
+      # 4. Upload artifact JAR
+      - name: 📦 Upload Plugin JAR
+        uses: actions/upload-artifact@v4
+        id: upload
+        with:
+          name: TuTienPlugin
+          path: target/TuTienPlugin-*.jar
+          if-no-files-found: error
+
+      # 5. Xác nhận nguồn gốc sản phẩm (Build Provenance Attestation)
+      - name: 🔐 Attest Build Provenance
+        uses: actions/attest-build-provenance@v4.1.0
+        with:
+          subject-path: target/TuTienPlugin-*.jar

@@ -1,0 +1,290 @@
+# ==============================================================================
+# DANH MỤC CÔNG PHÁP TU TIÊN (CONGPHAP.YML)
+# Có thể tùy chỉnh chỉ số, thêm mới hoặc sửa đổi công pháp không cần sửa code Java!
+#
+# Phẩm cấp (tier): HOANG, HUYEN, DIA, THIEN, TIEN
+# Phẩm chất (quality): HA, TRUNG, THUONG
+# Thuộc tính: KIM, MOC, THUY, HOA, THO, LOI, BANG, PHONG, AM, QUANG, HUYET, MONG
+# ==============================================================================
+
+congphap:
+  # ----------------------------------------------------------------------------
+  # 1. Thanh Mộc Trường Xuân Quyết (Kinh điển tu tiên hệ Mộc)
+  # ----------------------------------------------------------------------------
+  THANH_MOC_TRUONG_XUAN:
+    id: THANH_MOC_TRUONG_XUAN
+    display-name: "&aThanh Mộc Trường Xuân Quyết"
+
+    grade:
+      tier: HUYEN
+      quality: THUONG
+
+    elements:
+      - MOC
+
+    transmission:
+      max-realm: TRUC_CO
+      max-stage: DAI_VIEN_MAN
+      total-chapters: 9
+
+      chapters:
+        1:
+          required-realm: LUYEN_KHI
+        2:
+          required-realm: LUYEN_KHI
+        3:
+          required-realm: LUYEN_KHI
+        4:
+          required-realm: LUYEN_KHI
+        5:
+          required-realm: TRUC_CO
+        6:
+          required-realm: TRUC_CO
+        7:
+          required-realm: TRUC_CO
+        8:
+          required-realm: TRUC_CO
+        9:
+          required-realm: TRUC_CO
+
+    cultivation:
+      absorption-rate: 1.25
+      refinement-efficiency: 0.82
+      stability-multiplier: 1.30
+
+    requirements:
+      min-realm: LUYEN_KHI
+      min-ngo-tinh: 15.0
+      required-elements:
+        - MOC
+
+    abilities:
+      - id: MOC_GIAP_THUAT
+        unlock-chapter: 1
+      - id: DAY_LEO_QUANH
+        unlock-chapter: 4
+      - id: TRUONG_XUAN_HOI_XUAN
+        unlock-chapter: 7
+
+    transition:
+      can-transition: true
+      requires-hu-mai-dan: false
+      penalty-ratio: 0.20
+
+  # ----------------------------------------------------------------------------
+  # 2. Hoàng Phong Quyết (Công pháp cơ sở Hoàng Phong Cốc)
+  # ----------------------------------------------------------------------------
+  HOANG_PHONG_QUYET:
+    id: HOANG_PHONG_QUYET
+    display-name: "&eHoàng Phong Quyết"
+
+    grade:
+      tier: HOANG
+      quality: THUONG
+
+    elements:
+      - PHONG
+      - KIM
+
+    transmission:
+      max-realm: LUYEN_KHI
+      max-stage: DAI_VIEN_MAN
+      total-chapters: 13
+
+      chapters:
+        1:
+          required-realm: LUYEN_KHI
+        2:
+          required-realm: LUYEN_KHI
+        3:
+          required-realm: LUYEN_KHI
+        4:
+          required-realm: LUYEN_KHI
+        5:
+          required-realm: LUYEN_KHI
+        6:
+          required-realm: LUYEN_KHI
+        7:
+          required-realm: LUYEN_KHI
+        8:
+          required-realm: LUYEN_KHI
+        9:
+          required-realm: LUYEN_KHI
+        10:
+          required-realm: LUYEN_KHI
+        11:
+          required-realm: LUYEN_KHI
+        12:
+          required-realm: LUYEN_KHI
+        13:
+          required-realm: LUYEN_KHI
+
+    cultivation:
+      absorption-rate: 1.10
+      refinement-efficiency: 0.90
+      stability-multiplier: 1.15
+
+    requirements:
+      min-realm: LUYEN_KHI
+      min-ngo-tinh: 10.0
+      required-elements:
+        - KIM
+
+    abilities:
+      - id: PHONG_HANH_THUAT
+        unlock-chapter: 2
+      - id: PHONG_DAO_THUAT
+        unlock-chapter: 5
+
+    transition:
+      can-transition: true
+      requires-hu-mai-dan: false
+      penalty-ratio: 0.15
+
+  # ----------------------------------------------------------------------------
+  # 3. Minh Vương Quyết (Tuyệt kỹ Thể Tu thượng thừa)
+  # ----------------------------------------------------------------------------
+  MINH_VUONG_QUYET:
+    id: MINH_VUONG_QUYET
+    display-name: "&6Minh Vương Quyết"
+
+    grade:
+      tier: HUYEN
+      quality: TRUNG
+
+    elements:
+      - THO
+      - KIM
+
+    transmission:
+      max-realm: TRUC_CO
+      max-stage: DAI_VIEN_MAN
+      total-chapters: 3
+
+      chapters:
+        1:
+          required-realm: LUYEN_KHI
+        2:
+          required-realm: LUYEN_KHI
+        3:
+          required-realm: TRUC_CO
+
+    cultivation:
+      absorption-rate: 1.15
+      refinement-efficiency: 0.75
+      stability-multiplier: 1.45
+
+    requirements:
+      min-realm: LUYEN_KHI
+      min-ngo-tinh: 12.0
+      required-elements:
+        - THO
+
+    abilities:
+      - id: KIM_CANG_BAT_HOAI
+        unlock-chapter: 1
+      - id: MINH_VUONG_HO_THE
+        unlock-chapter: 3
+
+    transition:
+      can-transition: true
+      requires-hu-mai-dan: true
+      penalty-ratio: 0.35
+
+  # ----------------------------------------------------------------------------
+  # 4. Đại Diễn Quyết (Bí pháp tu luyện Thần Thức vô thượng)
+  # ----------------------------------------------------------------------------
+  DAI_DIEN_QUYET:
+    id: DAI_DIEN_QUYET
+    display-name: "&dĐại Diễn Quyết"
+
+    grade:
+      tier: DIA
+      quality: HA
+
+    elements:
+      - MONG
+      - AM
+
+    transmission:
+      max-realm: NGUYEN_ANH
+      max-stage: DAI_VIEN_MAN
+      total-chapters: 4
+
+      chapters:
+        1:
+          required-realm: LUYEN_KHI
+        2:
+          required-realm: TRUC_CO
+        3:
+          required-realm: KIM_DAN
+        4:
+          required-realm: NGUYEN_ANH
+
+    cultivation:
+      absorption-rate: 1.35
+      refinement-efficiency: 0.70
+      stability-multiplier: 1.20
+
+    requirements:
+      min-realm: LUYEN_KHI
+      min-ngo-tinh: 25.0
+      required-elements: []
+
+    abilities:
+      - id: PHAN_THAN_THUAT
+        unlock-chapter: 1
+      - id: THUONG_HON_CONG
+        unlock-chapter: 2
+      - id: DAI_DIEN_KIEM_TRAN
+        unlock-chapter: 4
+
+    transition:
+      can-transition: true
+      requires-hu-mai-dan: false
+      penalty-ratio: 0.25
+
+  # ----------------------------------------------------------------------------
+  # 5. Cự Khí Quyết (Tâm pháp nhập môn phổ biến giới tu chân)
+  # ----------------------------------------------------------------------------
+  CU_KHI_QUYET:
+    id: CU_KHI_QUYET
+    display-name: "&fCự Khí Quyết"
+
+    grade:
+      tier: HOANG
+      quality: HA
+
+    elements: []
+
+    transmission:
+      max-realm: LUYEN_KHI
+      max-stage: DAI_VIEN_MAN
+      total-chapters: 3
+
+      chapters:
+        1:
+          required-realm: LUYEN_KHI
+        2:
+          required-realm: LUYEN_KHI
+        3:
+          required-realm: LUYEN_KHI
+
+    cultivation:
+      absorption-rate: 1.00
+      refinement-efficiency: 1.00
+      stability-multiplier: 1.00
+
+    requirements:
+      min-realm: LUYEN_KHI
+      min-ngo-tinh: 0.0
+      required-elements: []
+
+    abilities:
+      - id: DAN_KHI_THUAT
+        unlock-chapter: 1
+
+    transition:
+      can-transition: true
+      requires-hu-mai-dan: false
+      penalty-ratio: 0.10

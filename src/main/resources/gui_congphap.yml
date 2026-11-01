@@ -1,0 +1,95 @@
+# ═══════════════════════════════════════════════════════════════
+# CẤU HÌNH GIAO DIỆN CÔNG PHÁP (CongPhapGUI) - PHASE 2.4
+# ═══════════════════════════════════════════════════════════════
+# Toàn bộ vị trí slot, tiêu đề, tên vật phẩm và lore đều có thể tùy biến.
+# Kích thước size phải là bội số của 9 (18, 27, 36, 45, 54).
+
+gui:
+  title: "§8✦ Tàng Kinh Các - Công Pháp ✦"
+  size: 54
+
+  slots:
+    # Slot hiển thị Công Pháp Chủ Tu
+    primary: 4
+
+    # Danh sách các slot phụ tu (tối đa 3 slot hiển thị trên hàng 2)
+    auxiliary:
+      - 11
+      - 13
+      - 15
+
+    # Vùng hiển thị danh mục Công Pháp (Tàn Quyển) hỗ trợ phân trang
+    technique-list:
+      start: 19
+      end: 34
+
+    # Nút điều hướng trang
+    previous-page: 47
+    next-page: 51
+
+    # Nút mở giao diện Tham Ngộ
+    open-comprehension: 49
+
+    # Nút quay về MainMenu
+    back-main-menu: 45
+
+  items:
+    primary:
+      material: ENCHANTED_BOOK
+      empty-material: BOOK
+      name: "§6§l✦ CÔNG PHÁP CHỦ TU ✦"
+      empty-name: "§7§lChưa Chọn Công Pháp Chủ Tu"
+      empty-lore:
+        - "§7Ngươi chưa kích hoạt công pháp chủ tu nào."
+        - "§7Hãy chọn một bộ công pháp từ danh mục bên dưới"
+        - "§7và nhấp để tiến hành Nhập Môn / Chuyển Tu."
+        - ""
+        - "§e► Nhấp vào công pháp bên dưới để kích hoạt!"
+
+    auxiliary:
+      occupied-material: BOOK
+      empty-material: GRAY_DYE
+      locked-material: BARRIER
+      occupied-name: "§b§l✦ Phụ Tu: §f{name}"
+      empty-name: "§7§l✦ Ô Phụ Tu Trống"
+      locked-name: "§c§l✦ Ô Phụ Tu [Khóa]"
+      empty-lore:
+        - "§7Ô phụ tu đang bỏ trống."
+        - "§7Ngươi có thể chọn một công pháp phụ tu"
+        - "§7để thừa hưởng thêm hệ số hấp thu linh khí."
+      locked-lore:
+        - "§cÔ phụ tu này chưa được khai mở."
+        - "§7Yêu cầu cảnh giới cao hơn để mở khóa thêm slot."
+
+    technique-card:
+      learned-format: "§a§l{name} §7({grade}§7)"
+      unlearned-format: "§e§l{name} §7({grade}§7)"
+      not-owned-format: "§7§l{name} §8(Chưa có tàn quyển)"
+
+    previous-page:
+      material: ARROW
+      name: "§e◄ Trang Trước"
+      lore:
+        - "§7Nhấp để chuyển về trang trước."
+
+    next-page:
+      material: ARROW
+      name: "§eTrang Tiếp Theo ►"
+      lore:
+        - "§7Nhấp để chuyển sang trang sau."
+
+    open-comprehension:
+      material: KNOWLEDGE_BOOK
+      name: "§b§l☯ Vào Giao Diện Tham Ngộ"
+      lore:
+        - "§7Mở bảng điều khiển Tọa Thiền Tham Ngộ,"
+        - "§7xem khẩu quyết, thanh tiến độ và"
+        - "§7sử dụng Điểm Đạo Ngộ để gia tốc lĩnh hội."
+        - ""
+        - "§e► Nhấp để mở!"
+
+    back-main-menu:
+      material: COMPASS
+      name: "§c◄ Quay Lại Menu Chính"
+      lore:
+        - "§7Nhấp để quay lại giao diện Tu Tiên trung tâm."

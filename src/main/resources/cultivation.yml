@@ -1,0 +1,42 @@
+# ═══════════════════════════════════════════════════════════════
+# CẤU HÌNH HỆ THỐNG TU LUYỆN & CÔNG PHÁP (cultivation.yml)
+# ═══════════════════════════════════════════════════════════════
+
+meditation:
+  # Cấu hình chế độ Tọa Thiền Tham Ngộ (THAM_NGO)
+  comprehension:
+    # Cho phép hồi một phần linh lực khi tham ngộ
+    allow-mana-regen: true
+    mana-regen-ratio: 0.35
+
+    # Chống nhận đôi thưởng: không cộng điểm bế quan và nhiệm vụ tu luyện khi tham ngộ
+    allow-bequan-points: false
+    allow-nhiemvu-progress: false
+
+    # Giới hạn an toàn đồng hồ server: tối đa số phút tích dồn cho mỗi tick khi bị lag/AFK
+    afk-max-minutes: 2.0
+
+    # Chu kỳ tích lũy MasteryExp khi tham ngộ (giây)
+    meditation-mastery-interval-seconds: 10
+
+    # Chu kỳ kiểm tra cơ duyên Đốn Ngộ tại Linh Địa (giây)
+    sacred-site-check-interval-seconds: 60
+
+  # Cấu hình Chuyển Tu (Transition)
+  transition:
+    # Tỷ lệ tổn thất mặc định nếu chuyển tu cùng phẩm cấp
+    base-penalty-ratio: 0.15
+
+    # Bắt buộc chỉ trừ trên tiến độ tiểu cảnh giới hiện tại (currentTuVi % tuViMoiTang)
+    # Tuyệt đối không bao giờ hạ đại cảnh giới
+    sub-stage-loss-only: true
+
+# Số lượng slot phụ tu tối đa mở khóa theo từng Đại Cảnh Giới
+auxiliary-slots-by-realm:
+  PHAM_NHAN: 0
+  LUYEN_KHI: 1
+  TRUC_CO: 2
+  KIM_DAN: 3
+  NGUYEN_ANH: 3
+  HOA_THAN: 4
+  DEFAULT: 3

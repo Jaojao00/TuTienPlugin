@@ -7,6 +7,8 @@
 ![Java](https://img.shields.io/badge/Java-21-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Platform](https://img.shields.io/badge/API-Paper%20%7C%20Purpur%20%7C%20Spigot-F1B31C?style=for-the-badge)
 ![Version](https://img.shields.io/badge/Version-v2.3--Skyblock-007ACC?style=for-the-badge)
+![Tests](https://img.shields.io/badge/Tests-100%2F100%20PASS-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)
+![Security](https://img.shields.io/badge/Escrow-Zero--Loss%20ACID-success?style=for-the-badge)
 
 <p align="center">
   <b>Plugin Minecraft RPG mô phỏng thế giới tu tiên chuyên sâu, cân bằng hoàn hảo cho máy chủ Skyblock và Survival.</b><br>

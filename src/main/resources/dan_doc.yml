@@ -1,0 +1,40 @@
+# ═══════════════════════════════════════════════════════════════
+# CẤU HÌNH ĐAN ĐỘC (DAN DOC CONFIGURATION - PHASE 3.1)
+# ═══════════════════════════════════════════════════════════════
+
+dan-doc:
+  max-toxicity: 1000.0
+  warning-on-threshold-cross: true
+
+  # 5 Bậc Trạng Thái Đan Độc (0 - 1000)
+  thresholds:
+    THANH_KHIET:
+      min: 0.0
+      max: 199.99
+      name: "&aThanh Khiết"
+      efficiency: 1.00
+      message: "&a[Đan Đạo] Kinh mạch thanh khiết, độc tính dưới mức nguy hại."
+    DOC_NHE:
+      min: 200.0
+      max: 399.99
+      name: "&eĐộc Nhẹ"
+      efficiency: 0.95
+      message: "&e[Đan Đạo] Kinh mạch bắt đầu tích tụ độc tính, hiệu suất tu luyện giảm 5%."
+    DOC_TRUNG:
+      min: 400.0
+      max: 599.99
+      name: "&6Độc Trung"
+      efficiency: 0.85
+      message: "&6[Đan Đạo] Đan độc ngưng trệ kinh mạch! Tốc độ hấp thu linh khí giảm 15%."
+    DOC_NANG:
+      min: 600.0
+      max: 799.99
+      name: "&cĐộc Nặng"
+      efficiency: 0.70
+      message: "&c[Đan Đạo] Cảnh báo! Đan độc trầm trọng, giảm 30% hiệu suất, nguy cơ tẩu hỏa nhập ma!"
+    DOC_PHAT:
+      min: 800.0
+      max: 1000.0
+      name: "&4&lĐộc Phát"
+      efficiency: 0.50
+      message: "&4&l[Đan Đạo] NGUY CƠ TẨU HỎA NHẬP MA! Đan độc bộc phát làm tổn thương căn cơ!"

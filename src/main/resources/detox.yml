@@ -1,0 +1,27 @@
+# ═══════════════════════════════════════════════════════════════
+# CẤU HÌNH THANH LỌC & HÓA ĐỘC (DETOX CONFIGURATION - PHASE 3.2)
+# ═══════════════════════════════════════════════════════════════
+
+detox:
+  # 1. Thanh Đan Giải Độc (Instant Pill Detox)
+  thanh-dan:
+    enabled: true
+    default-cleansed: 50.0
+
+  # 2. Linh Tuyền Tẩy Trần (WorldGuard Region Detox)
+  linh-tuyen:
+    enabled: true
+    region-name: "linh-tuyen-tay-tran"
+    detox-per-minute: 25.0
+    cooldown-minutes: 5
+
+  # 3. Bế Quan Hóa Độc (Meditation Detox Session)
+  be-quan-hoa-doc:
+    enabled: true
+    rate-per-minute: 6.0
+    max-lag-buffer-minutes: 2.0
+    cancel-on-move: true
+    cancel-on-damage: true
+    cancel-on-death: true
+    cancel-on-teleport: true
+    cancel-on-quit: true
