@@ -108,6 +108,19 @@ public enum CanhGioi {
     }
 
     /**
+     * Tính toán chính xác tầng / tiểu cảnh giới tương ứng với số tu vi hiện tại.
+     * Cảnh Giới và Tu Vi luôn đi đôi với nhau, không thể lệch lạc.
+     */
+    public static int calculateTang(CanhGioi cg, int tuVi) {
+        if (cg == null) return 1;
+        int maxTang = cg.getMaxSubStages();
+        if (maxTang <= 1) return 1;
+        int tuViMoiTang = Math.max(1, cg.getTuViMoiTang());
+        int calculated = (Math.max(0, tuVi) / tuViMoiTang) + 1;
+        return Math.max(1, Math.min(maxTang, calculated));
+    }
+
+    /**
      * Tên tiểu cảnh giới hiển thị
      */
     public String getTieuCanhGioi(int subStage) {

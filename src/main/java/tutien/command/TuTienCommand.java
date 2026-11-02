@@ -64,6 +64,7 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("§f/tutien tongmon §7- Quản lý Tông Môn");
             sender.sendMessage("§f/tutien tuido §7- Túi Đồ Hư Không");
             sender.sendMessage("§f/tutien homthu §7- Hòm Thư nhận đan dược / nguyên liệu hoàn trả");
+            sender.sendMessage("§f/tutien book §7- Nhận Cẩm Nang Tu Tiên Giới (Sách hướng dẫn)");
             sender.sendMessage("§f/tutien xem [tên] §7- Xem thông tin đạo hữu");
 
             if (sender.hasPermission("tutien.admin")) {
@@ -75,6 +76,15 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
         }
 
         String subCmd = args[0].toLowerCase();
+
+        if (subCmd.equals("book") || subCmd.equals("guide") || subCmd.equals("camnang")) {
+            if (!(sender instanceof Player p)) {
+                sender.sendMessage("§cChỉ có người chơi mới có thể nhận Cẩm Nang Tu Tiên!");
+                return true;
+            }
+            giveGuideBook(p);
+            return true;
+        }
 
         if (subCmd.equals("tuluyen")) {
             if (!(sender instanceof Player p)) return true;
@@ -105,7 +115,42 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
 
         if (subCmd.equals("congphap")) {
             if (!(sender instanceof Player p)) return true;
+            if (args.length > 1 && (args[1].equalsIgnoreCase("huongdan") || args[1].equalsIgnoreCase("guide"))) {
+                tutien.cultivation.gui.CongPhapGuideGUI.open(p);
+                return true;
+            }
             tutien.cultivation.gui.CongPhapGUI.open(p, plugin, 0);
+            return true;
+        }
+
+        if (subCmd.equals("givebitich")) {
+            if (!sender.hasPermission("tutien.admin")) {
+                sender.sendMessage("�c�?o h?u kh�ng c� quy?n h?n d�ng l?nh n�y!");
+                return true;
+            }
+            if (args.length < 3) {
+                sender.sendMessage("�cS? d?ng: /tutien givebitich <player> <congphap_id> [chapter]");
+                return true;
+            }
+            Player target = Bukkit.getPlayer(args[1]);
+            if (target == null) {
+                sender.sendMessage("�cKh�ng t�m th?y ngu?i choi: " + args[1]);
+                return true;
+            }
+            String cpId = args[2].toUpperCase();
+            tutien.cultivation.model.CongPhap cp = plugin.getCongPhapManager().getCongPhap(cpId);
+            if (cp == null) {
+                sender.sendMessage("�cKh�ng t�m th?y c�ng ph�p: " + cpId);
+                return true;
+            }
+            int chapter = 1;
+            if (args.length >= 4) {
+                try { chapter = Integer.parseInt(args[3]); } catch (Exception ignored) {}
+            }
+            org.bukkit.inventory.ItemStack bitich = tutien.cultivation.item.BiTichItem.createBiTich(cp, chapter);
+            target.getInventory().addItem(bitich);
+            sender.sendMessage("�a[Tu Ti�n Admin] �f�� trao B� T?ch: �e" + cp.getDisplayName() + " �7[T?ng " + chapter + "] �fcho �b" + target.getName());
+            target.sendMessage("�6�l? CO DUY�N THI�N �?O ? �fNguoi nh?n du?c B� T?ch: �e" + cp.getDisplayName() + " �7[T?ng " + chapter + "]");
             return true;
         }
 
@@ -260,9 +305,9 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
 
             int tuVi = dataManager.getTuVi(target);
             CanhGioi canhGioi = dataManager.getCanhGioi(target);
-            CanhGioi tiepTheo = canhGioi.getCanhGioiTiepTheo();
             sender.sendMessage("§eCảnh giới của §b" + target.getName() + "§e: §b" + canhGioi.getTenHienThi()
-                    + " §e| Tu vi: §a" + tuVi + (tiepTheo != null ? "/" + tiepTheo.getTuViYeuCau() : "")
+                    + " " + canhGioi.getTieuCanhGioi(dataManager.getTang(target))
+                    + " §e| Tu vi: §a" + tuVi + "/" + canhGioi.getTuViYeuCau()
                     + " §e| Khoáng thạch: §6" + dataManager.getKhoangThach(target)
                     + " §e| Đạo niệm: §b" + dataManager.getDaoNiem(target));
             return true;
@@ -271,6 +316,30 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
         if (subCmd.equals("menu")) {
             if (sender instanceof Player p) MainMenu.open(p, dataManager);
             else sender.sendMessage("§cLệnh này chỉ dùng trong game.");
+            return true;
+        }
+
+        if (subCmd.equals("danphong") || subCmd.equals("luyenduoc")) {
+            if (!(sender instanceof Player p)) {
+                sender.sendMessage("§cLệnh này chỉ dùng trong game.");
+                return true;
+            }
+            TuTienPlugin pl = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            if (args.length > 2 && args[1].equalsIgnoreCase("start")) {
+                String formulaId = args[2].toUpperCase();
+                tutien.alchemy.btth.service.BTTHProcessController.ProcessResult res =
+                        pl.getBtthProcessController().startSession(p, formulaId);
+                p.sendMessage(res.isSuccess() ? "§a" + res.getMessage() : "§c" + res.getMessage());
+                if (res.isSuccess()) {
+                    tutien.alchemy.btth.gui.BTTHAlchemyGUI.open(p, pl.getBtthProcessController(),
+                            pl.getBtthSoulService(), pl.getBtthRankService(),
+                            pl.getBtthFlameService(), pl.getBtthCauldronService());
+                }
+                return true;
+            }
+            tutien.alchemy.btth.gui.BTTHAlchemyGUI.open(p, pl.getBtthProcessController(),
+                    pl.getBtthSoulService(), pl.getBtthRankService(),
+                    pl.getBtthFlameService(), pl.getBtthCauldronService());
             return true;
         }
 
@@ -910,6 +979,7 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 1) {
             completions.add("menu"); completions.add("tuluyen"); completions.add("xem");
+            completions.add("book"); completions.add("guide");
             completions.add("congphap"); completions.add("thamngo"); completions.add("skill");
             completions.add("dokiep"); completions.add("ngukhong"); completions.add("ngukiem"); completions.add("luyendan");
             completions.add("laptong"); completions.add("tongmon"); completions.add("tuido");
@@ -922,6 +992,7 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
             completions.add("boss");
             if (sender.hasPermission("tutien.admin")) {
                 completions.add("admin");
+                completions.add("givebitich");
                 completions.add("reload-gui");
                 completions.add("givepill");
                 completions.add("givegem");
@@ -980,5 +1051,86 @@ public class TuTienCommand implements CommandExecutor, TabCompleter {
         }
 
         return completions;
+    }
+
+    private void giveGuideBook(Player p) {
+        org.bukkit.inventory.ItemStack book = new org.bukkit.inventory.ItemStack(org.bukkit.Material.WRITTEN_BOOK);
+        org.bukkit.inventory.meta.BookMeta meta = (org.bukkit.inventory.meta.BookMeta) book.getItemMeta();
+        if (meta != null) {
+            meta.setTitle("§6§lCẩm Nang Tu Tiên");
+            meta.setAuthor("§c§lThiên Đạo Chân Nhân");
+
+            // Trang 1: Nhập Môn & Tọa Thiền
+            meta.addPage(
+                "§4§l╔═══════════════╗\n" +
+                "§4§l  CẨM NANG TU TIÊN\n" +
+                "§4§l╚═══════════════╝\n\n" +
+                "§0Chào mừng đạo hữu đến với thế giới §1Tu Tiên Giới§0!\n\n" +
+                "§8▶ §1§l1. TỌA THIỀN (AFK):\n" +
+                "§0Dùng §2/tutien tuluyen§0 để nhập định tại chỗ. Nhận Tu Vi, Linh Lực và Điểm Bế Quan mỗi phút!\n\n" +
+                "§8▶ §1§l2. MENU CHÍNH:\n" +
+                "§0Gõ §2/tutien menu§0 hoặc §2/menu§0 để mở toàn bộ giao diện tu tiên."
+            );
+
+            // Trang 2: Cảnh Giới & Đột Phá
+            meta.addPage(
+                "§4§l╔═══════════════╗\n" +
+                "§4§l ĐỘT PHÁ CẢNH GIỚI\n" +
+                "§4§l╚═══════════════╝\n\n" +
+                "§8▶ §1§l17 ĐẠI CẢNH GIỚI:\n" +
+                "§0Từ §8Phàm Nhân§0 ➔ §aLuyện Khí§0 ➔ §bTrúc Cơ§0 ➔ §dKim Đan§0 ➔ §5Nguyên Anh§0 ... đến đỉnh cao §4§lĐạp Thiên§0!\n\n" +
+                "§8▶ §1§lCÁCH ĐỘT PHÁ:\n" +
+                "§0Gõ §2/tutien dokiep§0 khi đầy thanh Tu Vi. Chuẩn bị đan dược và đề phòng Cửu Đạo Lôi Kiếp giáng xuống!"
+            );
+
+            // Trang 3: Luyện Đan & Kháng Thuốc
+            meta.addPage(
+                "§4§l╔═══════════════╗\n" +
+                "§4§l  BÁT QUÁI LUYỆN ĐAN\n" +
+                "§4§l╚═══════════════╝\n\n" +
+                "§8▶ §1§lLÒ LUYỆN ĐAN:\n" +
+                "§0Gõ §2/tutien luyendan§0. Chứa hơn 50+ công thức đan từ Nhất Phẩm đến Cửu Phẩm.\n\n" +
+                "§8▶ §1§lĐAN ĐỘC & KHÁNG THUỐC:\n" +
+                "§0Uống đan tăng đan độc (§2/tutien dandoc§0). Tẩy độc tại linh tuyền hoặc dùng §2/tutien hoadoc§0 để bài trừ tạp chất."
+            );
+
+            // Trang 4: Rèn Trang Bị & Máy Tạo Đá
+            meta.addPage(
+                "§4§l╔═══════════════╗\n" +
+                "§4§l LÒ RÈN & KHOÁNG THẠCH\n" +
+                "§4§l╚═══════════════╝\n\n" +
+                "§8▶ §1§lLÒ RÈN PHÁP BẢO:\n" +
+                "§0Gõ §2/tutien chetac§0 để rèn vũ khí, giáp với 8 phẩm cấp (Phàm ➔ Cực Phẩm Thần Khí).\n\n" +
+                "§8▶ §1§lMÁY TẠO ĐÁ SKYBLOCK:\n" +
+                "§0Máy tạo đá trên đảo có tỷ lệ rơi Linh Khoáng đặc thù theo cảnh giới của bạn! Gõ §2/tutien doikhoang§0 để đổi lấy Khoáng Thạch."
+            );
+
+            // Trang 5: Ngự Không & Thần Thông
+            meta.addPage(
+                "§4§l╔═══════════════╗\n" +
+                "§4§l NGỰ KHÔNG & KỸ NĂNG\n" +
+                "§4§l╚═══════════════╝\n\n" +
+                "§8▶ §1§lNGỰ KHÔNG PHI HÀNH:\n" +
+                "§0Đạt §dKim Đan§0 trở lên, gõ §2/tutien ngukhong§0 để đạp mây bay lượn trên không trung!\n\n" +
+                "§8▶ §1§lCÔNG PHÁP & KỸ NĂNG:\n" +
+                "§0Dùng §2/tutien congphap§0 để học bí tịch, thức tỉnh thần thông tiêu diệt yêu ma trong Bí Cảnh (§2/tutien linhthuvien§0)!"
+            );
+
+            // Trang 6: Lời Khuyên & Hỗ Trợ
+            meta.addPage(
+                "§4§l╔═══════════════╗\n" +
+                "§4§l  LỜI KHUYÊN ĐẠO ĐỒ\n" +
+                "§4§l╚═══════════════╝\n\n" +
+                "§8• §0Luôn điểm danh hàng ngày qua §2/reward§0 để nhận bổng lộc.\n" +
+                "§8• §0Đổi bảo vật tại §2/kytrancac§0 bằng Đạo Niệm & Khoáng Thạch.\n" +
+                "§8• §0Gia nhập hoặc lập Tông Môn qua §2/tutien laptong§0.\n\n" +
+                "§c§oChúc đạo hữu sớm đắc đạo phi thăng, vấn đỉnh Tiên Giới!"
+            );
+
+            book.setItemMeta(meta);
+        }
+        p.getInventory().addItem(book);
+        p.sendMessage("§a§l[Tu Tiên] §fThiên Đạo ban tặng cho ngươi một cuốn §6§lCẩm Nang Tu Tiên Giới§f! Hãy mở ra đọc kỹ.");
+        p.playSound(p.getLocation(), org.bukkit.Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
     }
 }

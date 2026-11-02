@@ -1,0 +1,65 @@
+# ==========================================
+# CẤU HÌNH HỎA DIỄM ĐẤU PHÁ THƯƠNG KHUNG
+# ==========================================
+
+flames:
+  DAU_KHI_CHI_HOA:
+    name: "Đấu Khí Chi Hỏa"
+    display: "§eĐấu Khí Chi Hỏa"
+    type: "DAU_KHI"
+    heat_power: 60.0 # Công suất nhiệt độ tối đa (~60-150 độ C)
+    heat_control: 0.95 # Khả năng điều khiển nhiệt độ (95% độ chuẩn)
+    heat_precision: 0.90 # Độ chính xác khi tăng giảm nhiệt
+    flame_stability: 0.95 # Độ ổn định ngọn lửa
+    soul_consumption: 3.0 # Linh hồn lực tiêu hao mỗi giây
+    quality_bonus: 0.00
+    description: "Hỏa diễm do người tu luyện tự thân ngưng tụ từ bản mệnh hỏa nguyên."
+
+  THU_HOA_XICH_DIEM:
+    name: "Xích Diễm Thú Hỏa"
+    display: "§c§lXích Diễm Thú Hỏa"
+    type: "THU_HOA"
+    heat_power: 140.0
+    heat_control: 0.85
+    heat_precision: 0.80
+    flame_stability: 0.85
+    soul_consumption: 6.0
+    quality_bonus: 0.05
+    description: "Hỏa diễm đoạt được từ ma thú nhị giai Xích Diễm Hầu, nhiệt lượng dồi dào."
+
+  THU_HOA_TU_TINH:
+    name: "Tử Tinh Thú Hỏa"
+    display: "§5§lTử Tinh Thú Hỏa"
+    type: "THU_HOA"
+    heat_power: 240.0
+    heat_control: 0.78
+    heat_precision: 0.75
+    flame_stability: 0.80
+    soul_consumption: 12.0
+    quality_bonus: 0.12
+    description: "Tử hỏa cuồng bạo sinh ra từ tử tinh của Tử Tinh Dực Sư Vương ngũ giai ma thú."
+
+  THU_HOA_THANH_LOAN:
+    name: "Thanh Loan Thú Hỏa"
+    display: "§b§lThanh Loan Thú Hỏa"
+    type: "THU_HOA"
+    heat_power: 320.0
+    heat_control: 0.82
+    heat_precision: 0.80
+    flame_stability: 0.85
+    soul_consumption: 16.0
+    quality_bonus: 0.18
+    description: "Dị chủng thú hỏa của Thanh Loan thần điểu, mang theo sinh cơ mộc hỏa tương trợ."
+
+  DI_HOA_THANH_LIEN:
+    name: "Thanh Liên Địa Tâm Hỏa"
+    display: "§a§l[Dị Hỏa] Thanh Liên Địa Tâm Hỏa"
+    type: "DI_HOA"
+    heat_power: 650.0
+    heat_control: 0.70
+    heat_precision: 0.72
+    flame_stability: 0.75
+    soul_consumption: 30.0
+    quality_bonus: 0.35
+    special_effect: "PURIFY_IMPURITIES" # Tự động thanh tẩy 30% tạp chất dược liệu
+    description: "Dị hỏa xếp hạng 19 trên Dị Hỏa Bảng, sinh ra nơi địa tâm dung nham sâu ngàn trượng."

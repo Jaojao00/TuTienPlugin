@@ -3,6 +3,7 @@ package tutien.integration.mythicmobs;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -16,8 +17,10 @@ import org.bukkit.util.Vector;
 import java.util.Collection;
 
 /**
- * Cơ chế thi triển kỹ năng dự phòng thuần Bukkit (Fallback) khi MythicMobs vắng mặt (Phase 2.4).
+ * Cơ chế thi triển kỹ năng dự phòng thuần Bukkit (Fallback) khi MythicMobs vắng mặt (Phase 2.4):
  * Không tạo hiệu ứng chung chung mà tôn trọng cấu hình chi tiết của từng kỹ năng trong skills.yml.
+ * Hỗ trợ các dạng: BUFF_DEFENSE, AREA_KNOCKBACK, INVULNERABILITY, PROJECTILE_DAMAGE,
+ * LIGHTNING_STRIKE, EXPLOSION_AOE, HEAL_AND_CLEANSE, TELEPORT_DASH, TRUE_DAMAGE_AOE, SWORD_SLASH_AOE.
  */
 public class BukkitSkillFallback {
 
@@ -88,7 +91,6 @@ public class BukkitSkillFallback {
                         e -> !e.getUniqueId().equals(caster.getUniqueId()) && e instanceof Damageable
                 );
 
-                // Vẽ tia hạt
                 Vector dir = caster.getLocation().getDirection().normalize().multiply(0.5);
                 Location step = caster.getEyeLocation().clone();
                 for (int i = 0; i < 30; i++) {
@@ -101,6 +103,94 @@ public class BukkitSkillFallback {
                     target.getWorld().spawnParticle(Particle.EXPLOSION, target.getLocation().add(0, 1, 0), 5, 0.2, 0.2, 0.2, 0.05);
                 }
                 caster.playSound(loc, sound, 1.0f, 1.5f);
+                return true;
+            }
+
+            case "LIGHTNING_STRIKE" -> {
+                double range = fallbackSec.getDouble("range-blocks", 10.0);
+                double damage = fallbackSec.getDouble("damage", 30.0);
+                Collection<Entity> nearby = caster.getWorld().getNearbyEntities(loc, range, range, range);
+                for (Entity e : nearby) {
+                    if (e instanceof Damageable target && !e.getUniqueId().equals(caster.getUniqueId())) {
+                        caster.getWorld().strikeLightningEffect(target.getLocation());
+                        target.damage(damage, caster);
+                    }
+                }
+                caster.playSound(loc, sound, 1.0f, 1.0f);
+                return true;
+            }
+
+            case "EXPLOSION_AOE" -> {
+                double range = fallbackSec.getDouble("range-blocks", 6.0);
+                double damage = fallbackSec.getDouble("damage", 40.0);
+                caster.getWorld().spawnParticle(Particle.EXPLOSION_EMITTER, loc, 1);
+                caster.getWorld().spawnParticle(Particle.FLAME, loc.clone().add(0, 1, 0), 50, range / 2, 0.5, range / 2, 0.1);
+                Collection<Entity> nearby = caster.getWorld().getNearbyEntities(loc, range, range, range);
+                for (Entity e : nearby) {
+                    if (e instanceof Damageable target && !e.getUniqueId().equals(caster.getUniqueId())) {
+                        target.damage(damage, caster);
+                        target.setFireTicks(100);
+                    }
+                }
+                caster.playSound(loc, sound, 1.2f, 0.8f);
+                return true;
+            }
+
+            case "HEAL_AND_CLEANSE" -> {
+                double healAmount = fallbackSec.getDouble("heal-amount", 10.0);
+                double maxHealth = 20.0;
+                if (caster.getAttribute(Attribute.GENERIC_MAX_HEALTH) != null) {
+                    maxHealth = caster.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+                }
+                caster.setHealth(Math.min(maxHealth, caster.getHealth() + healAmount));
+                caster.removePotionEffect(PotionEffectType.POISON);
+                caster.removePotionEffect(PotionEffectType.WITHER);
+                caster.removePotionEffect(PotionEffectType.SLOWNESS);
+                caster.getWorld().spawnParticle(particle, loc.clone().add(0, 1, 0), 30, 0.5, 0.8, 0.5, 0.05);
+                caster.playSound(loc, sound, 1.0f, 1.2f);
+                return true;
+            }
+
+            case "TELEPORT_DASH" -> {
+                double distance = fallbackSec.getDouble("distance-blocks", 8.0);
+                Vector dir = caster.getLocation().getDirection().normalize().multiply(distance);
+                Location dest = caster.getLocation().add(dir);
+                if (dest.getBlock().isPassable()) {
+                    caster.teleport(dest);
+                }
+                caster.getWorld().strikeLightningEffect(caster.getLocation());
+                caster.getWorld().spawnParticle(Particle.FLASH, caster.getLocation(), 1);
+                caster.playSound(loc, sound, 1.0f, 1.5f);
+                return true;
+            }
+
+            case "TRUE_DAMAGE_AOE" -> {
+                double range = fallbackSec.getDouble("range-blocks", 8.0);
+                double damage = fallbackSec.getDouble("damage", 50.0);
+                caster.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc.clone().add(0, 0.5, 0), 80, range / 2, 0.4, range / 2, 0.05);
+                Collection<Entity> nearby = caster.getWorld().getNearbyEntities(loc, range, range, range);
+                for (Entity e : nearby) {
+                    if (e instanceof Damageable target && !e.getUniqueId().equals(caster.getUniqueId())) {
+                        target.damage(damage, caster);
+                        target.getWorld().spawnParticle(Particle.SOUL, target.getLocation().add(0, 1, 0), 10, 0.2, 0.2, 0.2, 0.05);
+                    }
+                }
+                caster.playSound(loc, sound, 1.0f, 0.9f);
+                return true;
+            }
+
+            case "SWORD_SLASH_AOE" -> {
+                double range = fallbackSec.getDouble("range-blocks", 6.0);
+                double damage = fallbackSec.getDouble("damage", 35.0);
+                caster.getWorld().spawnParticle(Particle.SWEEP_ATTACK, loc.clone().add(0, 1.0, 0), 15, range / 3, 0.2, range / 3, 0.1);
+                Collection<Entity> nearby = caster.getWorld().getNearbyEntities(loc, range, range, range);
+                for (Entity e : nearby) {
+                    if (e instanceof Damageable target && !e.getUniqueId().equals(caster.getUniqueId())) {
+                        target.damage(damage, caster);
+                        target.getWorld().spawnParticle(Particle.CRIT, target.getLocation().add(0, 1, 0), 15, 0.3, 0.3, 0.3, 0.05);
+                    }
+                }
+                caster.playSound(loc, sound, 1.0f, 1.2f);
                 return true;
             }
 

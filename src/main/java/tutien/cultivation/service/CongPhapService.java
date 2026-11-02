@@ -74,7 +74,7 @@ public class CongPhapService {
         CongPhapProgress prog = data.getOrCreateProgress(congPhapId);
         CanhGioi realm = dataManager.getCanhGioi(player);
 
-        CongPhapValidationService.ValidationResult result = validationService.validateLearnChapter(cp, prog, chapter, realm);
+        CongPhapValidationService.ValidationResult result = validationService.validateLearnChapter(cp, prog, chapter, realm, data);
         if (!result.isSuccess()) {
             player.sendMessage(result.getMessage());
             return false;

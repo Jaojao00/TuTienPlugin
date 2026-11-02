@@ -1,0 +1,59 @@
+# ==========================================
+# CẤU HÌNH DƯỢC ĐỈNH ĐẤU PHÁ THƯƠNG KHUNG
+# ==========================================
+
+cauldrons:
+  PHAM_DINH:
+    name: "Phàm Đỉnh"
+    display: "§7Phàm Đỉnh Rèn Thô"
+    tier: 0
+    max_heat: 180.0
+    stability: 0.70
+    max_slots: 2
+    max_durability: 50
+    tribulation_resist: 0.00
+    description: "Lò thuốc thông thường người phàm rèn bằng sắt vụn, không chịu được nhiệt độ cao."
+
+  HAC_THIET_DINH:
+    name: "Hắc Thiết Đỉnh"
+    display: "§a§lHắc Thiết Lư Hương Đỉnh"
+    tier: 1
+    max_heat: 300.0
+    stability: 0.85
+    max_slots: 3
+    max_durability: 150
+    tribulation_resist: 0.05
+    description: "Dược đỉnh đúc từ hắc thiết hàn sơn, thích hợp cho Nhất Phẩm Luyện Dược Sư."
+
+  XICH_DONG_DINH:
+    name: "Xích Đồng Đỉnh"
+    display: "§b§lXích Đồng Luyện Dược Đỉnh"
+    tier: 2
+    max_heat: 500.0
+    stability: 0.90
+    max_slots: 4
+    max_durability: 300
+    tribulation_resist: 0.10
+    description: "Dược đỉnh đúc từ xích đồng thiên nhiên, truyền nhiệt đều và ổn định."
+
+  HUYEN_NHAM_DINH:
+    name: "Huyền Nham Đỉnh"
+    display: "§e§lHuyền Nham Thú Khôi Đỉnh"
+    tier: 3
+    max_heat: 800.0
+    stability: 0.94
+    max_slots: 5
+    max_durability: 600
+    tribulation_resist: 0.20
+    description: "Đỉnh lô chế tác từ đá núi lửa ngàn năm, chịu được ngọn lửa của Thú Hỏa tam giai."
+
+  VAN_THU_DINH:
+    name: "Vạn Thú Đỉnh"
+    display: "§6§lVạn Thú Hóa Linh Đỉnh"
+    tier: 4
+    max_heat: 1200.0
+    stability: 0.96
+    max_slots: 6
+    max_durability: 1200
+    tribulation_resist: 0.35
+    description: "Được khắc họa vạn thú linh văn, hỗ trợ ngưng tụ đan hương và giảm tiêu hao hồn lực."

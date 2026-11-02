@@ -35,9 +35,10 @@ public class MainMenu {
 
         int tang = dataManager.getTang(player);
         String subStageStr = cg.getTieuCanhGioi(tang);
-        String tuViString = (tiepTheo != null)
-                ? (dataManager.getTuVi(player) + " / " + tiepTheo.getTuViYeuCau())
-                : (dataManager.getTuVi(player) + " (Đỉnh phong)");
+        String tuViString = dataManager.getTuVi(player) + " / " + cg.getTuViYeuCau();
+        if (tiepTheo == null && dataManager.getTuVi(player) >= cg.getTuViYeuCau()) {
+            tuViString += " (Đỉnh phong)";
+        }
         double maxHp = player.getAttribute(Attribute.GENERIC_MAX_HEALTH) != null
                 ? player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() : 20.0;
 

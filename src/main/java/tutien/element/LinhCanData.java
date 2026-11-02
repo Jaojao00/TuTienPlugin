@@ -135,6 +135,20 @@ public class LinhCanData {
     /**
      * Tên hiển thị đầy đủ (dùng cho Chat và Placeholder)
      */
+    /**
+     * Tên hiển thị rút gọn tối ưu cho TAB list, Scoreboard và Chat (chống tràn màn hình).
+     * Ví dụ: "§6Thiên Linh Căn §7(§cHỏa§7)" hoặc "§eChân Linh Căn"
+     */
+    public String getCompactDisplayName() {
+        if (primaryElement != null && !primaryElement.isEmpty()) {
+            return currentType.getTenHienThi() + " §7(" + getElementDisplayTag(primaryElement) + "§7)";
+        }
+        return currentType.getTenHienThi();
+    }
+
+    /**
+     * Tên hiển thị đầy đủ (dùng cho Chat và Placeholder)
+     */
     public String getFormattedDisplayName() {
         StringBuilder sb = new StringBuilder();
         sb.append(currentType.getTenHienThi());

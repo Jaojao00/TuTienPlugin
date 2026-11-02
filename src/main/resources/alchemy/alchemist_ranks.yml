@@ -1,0 +1,95 @@
+# ==========================================
+# CẤP BẬC PHẨM CẤP LUYỆN DƯỢC SƯ (10 CẤP BẬC)
+# ==========================================
+
+ranks:
+  HOC_DO:
+    name: "Luyện Dược Học Đồ"
+    prefix: "§7[Học Đồ]"
+    max_tier: 1
+    exp_required: 0
+    soul_power_required: 50.0
+    required_high_grade_crafts: 0
+
+  NHAT_PHAM:
+    name: "Nhất Phẩm Luyện Dược Sư"
+    prefix: "§a[Nhất Phẩm Dược Sư]"
+    max_tier: 1
+    exp_required: 500
+    soul_power_required: 100.0
+    required_high_grade_crafts: 1
+
+  NHI_PHAM:
+    name: "Nhị Phẩm Luyện Dược Sư"
+    prefix: "§b[Nhị Phẩm Dược Sư]"
+    max_tier: 2
+    exp_required: 2000
+    soul_power_required: 250.0
+    required_high_grade_crafts: 3
+
+  TAM_PHAM:
+    name: "Tam Phẩm Luyện Dược Sư"
+    prefix: "§e[Tam Phẩm Dược Sư]"
+    max_tier: 3
+    exp_required: 6000
+    soul_power_required: 500.0
+    required_high_grade_crafts: 5
+
+  TU_PHAM:
+    name: "Tứ Phẩm Luyện Dược Sư"
+    prefix: "§6[Tứ Phẩm Dược Sư]"
+    max_tier: 4
+    exp_required: 15000
+    soul_power_required: 1000.0
+    required_high_grade_crafts: 8
+
+  NGU_PHAM:
+    name: "Ngũ Phẩm Luyện Dược Sư"
+    prefix: "§d[Ngũ Phẩm Dược Sư]"
+    max_tier: 5
+    exp_required: 40000
+    soul_power_required: 2500.0
+    required_high_grade_crafts: 12
+
+  LUC_PHAM:
+    name: "Lục Phẩm Luyện Dược Sư"
+    prefix: "§c[Lục Phẩm Dược Sư]"
+    max_tier: 6
+    exp_required: 100000
+    soul_power_required: 6000.0
+    required_high_grade_crafts: 15
+
+  THAT_PHAM:
+    name: "Thất Phẩm Luyện Dược Sư"
+    prefix: "§4§l[Thất Phẩm Tông Sư]"
+    max_tier: 7
+    exp_required: 250000
+    soul_power_required: 15000.0
+    required_high_grade_crafts: 20
+
+  BAT_PHAM:
+    name: "Bát Phẩm Luyện Dược Sư"
+    prefix: "§5§l[Bát Phẩm Đại Tông Sư]"
+    max_tier: 8
+    exp_required: 600000
+    soul_power_required: 40000.0
+    required_soul_realm: "LINH_CANH"
+    required_high_grade_crafts: 25
+
+  CUU_PHAM:
+    name: "Cửu Phẩm Luyện Dược Sư"
+    prefix: "§6§l[Cửu Phẩm Đan Thánh]"
+    max_tier: 9
+    exp_required: 1500000
+    soul_power_required: 100000.0
+    required_soul_realm: "THIEN_CANH"
+    required_high_grade_crafts: 30
+
+  DE_PHAM:
+    name: "Đế Phẩm Luyện Dược Sư"
+    prefix: "§e§l✦ ĐẾ PHẨM ĐAN ĐẾ ✦"
+    max_tier: 10
+    exp_required: 5000000
+    soul_power_required: 500000.0
+    required_soul_realm: "DE_CANH"
+    required_high_grade_crafts: 50

@@ -1,0 +1,12 @@
+# ==========================================
+# CẤU HÌNH TỔNG QUAN LUYỆN ĐAN ĐẤU PHÁ THƯƠNG KHUNG
+# ==========================================
+
+alchemy:
+  enabled: true
+  tick_interval: 2 # 2 ticks per update
+  base_soul_recovery_per_sec: 2.0
+  wood_element_extract_bonus: 0.20 # Mộc linh căn tăng 20% chiết xuất tinh hoa
+  fire_element_required: true # Bắt buộc có Hỏa linh căn mới điều khiển được hỏa diễm
+  flame_burn_threshold_over_heat: 50.0 # Quá nhiệt 50 độ bắt đầu cháy dược liệu
+  cauldron_explosion_chance_over_heat: 0.05 # Tỷ lệ nổ dược đỉnh khi quá nhiệt nghiêm trọng

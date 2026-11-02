@@ -12,6 +12,7 @@ import java.util.*;
  * - activeAuxiliary: Danh sách công pháp phụ tu (Thể tu, Thần thức tu, v.v., tối đa 2-3 bộ).
  * - adaptation: Dữ liệu thích nghi khi chuyển tu.
  * - learnedTechniques: Bản đồ tiến trình riêng biệt cho từng công pháp đã sưu tầm/lĩnh hội.
+ * - defeatedBosses: Danh sách Boss MythicMobs / Thần Thú đã từng tiêu diệt (điều kiện mở khóa công pháp cao cấp).
  */
 public class PlayerCultivationData {
 
@@ -21,6 +22,7 @@ public class PlayerCultivationData {
     private final List<String> activeAuxiliary = new ArrayList<>();
     private AdaptationData adaptation = new AdaptationData();
     private final Map<String, CongPhapProgress> learnedTechniques = new LinkedHashMap<>();
+    private final Set<String> defeatedBosses = new HashSet<>();
 
     public PlayerCultivationData() {
         this.activePrimary = null;
@@ -83,7 +85,7 @@ public class PlayerCultivationData {
     }
 
     public CongPhapProgress getOrCreateProgress(String congPhapId) {
-        if (congPhapId == null || congPhapId.trim().isEmpty()) return null;
+        if (congPhapId == null) return null;
         String clean = congPhapId.trim().toUpperCase();
         return learnedTechniques.computeIfAbsent(clean, CongPhapProgress::new);
     }
@@ -96,6 +98,25 @@ public class PlayerCultivationData {
     public boolean isLearnedChapter(String congPhapId, int chapter) {
         CongPhapProgress cp = getCongPhapProgress(congPhapId);
         return cp != null && cp.hasLearned(chapter);
+    }
+
+    // ==========================================
+    // QUẢN LÝ BOSS MYTHICMOBS ĐÃ HẠ GỤC
+    // ==========================================
+
+    public boolean hasDefeatedBoss(String bossName) {
+        if (bossName == null || bossName.trim().isEmpty()) return true;
+        return defeatedBosses.contains(bossName.trim().toUpperCase());
+    }
+
+    public void addDefeatedBoss(String bossName) {
+        if (bossName != null && !bossName.trim().isEmpty()) {
+            defeatedBosses.add(bossName.trim().toUpperCase());
+        }
+    }
+
+    public Set<String> getDefeatedBosses() {
+        return Collections.unmodifiableSet(defeatedBosses);
     }
 
     // ==========================================
@@ -113,6 +134,7 @@ public class PlayerCultivationData {
             techMap.put(entry.getKey(), entry.getValue().toMap());
         }
         map.put("learned-techniques", techMap);
+        map.put("defeated-bosses", new ArrayList<>(defeatedBosses));
         return map;
     }
 
@@ -185,6 +207,15 @@ public class PlayerCultivationData {
                         CongPhapProgress prog = CongPhapProgress.fromMap(techId.toUpperCase(), sub.getValues(false));
                         data.learnedTechniques.put(techId.toUpperCase(), prog);
                     }
+                }
+            }
+        }
+
+        if (map.containsKey("defeated-bosses") && map.get("defeated-bosses") instanceof List) {
+            List<?> bList = (List<?>) map.get("defeated-bosses");
+            for (Object b : bList) {
+                if (b != null) {
+                    data.addDefeatedBoss(String.valueOf(b));
                 }
             }
         }

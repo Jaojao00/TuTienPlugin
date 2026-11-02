@@ -173,11 +173,48 @@ public class TuTienExpansion extends PlaceholderExpansion {
         }
 
         if (identifier.equalsIgnoreCase("tuvi_max")) {
+            CanhGioi cg = dataManager.getCanhGioi(player);
+            return cg != null ? String.valueOf(cg.getTuViYeuCau()) : "0";
+        }
+
+        if (identifier.equalsIgnoreCase("tuvi_next_realm_max")) {
             CanhGioi tiepTheo = dataManager.getCanhGioi(player).getCanhGioiTiepTheo();
             return tiepTheo != null ? String.valueOf(tiepTheo.getTuViYeuCau()) : "Đỉnh Phong";
         }
 
-        if (identifier.equalsIgnoreCase("linhcan")) {
+        if (identifier.equalsIgnoreCase("tuvi_tang")) {
+            CanhGioi cg = dataManager.getCanhGioi(player);
+            int cur = dataManager.getTuVi(player);
+            int per = Math.max(1, cg.getTuViMoiTang());
+            int tang = dataManager.getTang(player);
+            int inTang = (tang >= cg.getMaxSubStages() && cur >= cg.getTuViYeuCau()) ? per : (cur % per);
+            return String.valueOf(inTang);
+        }
+
+        if (identifier.equalsIgnoreCase("tuvi_tang_max")) {
+            CanhGioi cg = dataManager.getCanhGioi(player);
+            return String.valueOf(cg.getTuViMoiTang());
+        }
+
+        if (identifier.equalsIgnoreCase("tuvi_percent")) {
+            CanhGioi cg = dataManager.getCanhGioi(player);
+            int cur = dataManager.getTuVi(player);
+            int max = Math.max(1, cg.getTuViYeuCau());
+            return String.format("%.1f%%", Math.min(100.0, ((double) cur / max) * 100.0));
+        }
+
+        // %tutien_linhcan% & %tutien_linhcan_compact%: Định dạng rút gọn chống tràn TAB/Scoreboard
+        if (identifier.equalsIgnoreCase("linhcan") || identifier.equalsIgnoreCase("linhcan_compact")) {
+            return dataManager.getLinhCanData(player).getCompactDisplayName();
+        }
+
+        // %tutien_linhcan_short%: Chỉ lấy tên loại linh căn (e.g. "Thiên Linh Căn")
+        if (identifier.equalsIgnoreCase("linhcan_short")) {
+            return dataManager.getLinhCanData(player).getCurrentType().getTenHienThi();
+        }
+
+        // %tutien_linhcan_full% & %tutien_linhcan_detail%: Định dạng chi tiết đầy đủ phẩm cấp từng nguyên tố
+        if (identifier.equalsIgnoreCase("linhcan_full") || identifier.equalsIgnoreCase("linhcan_detail")) {
             return dataManager.getLinhCanData(player).getFormattedDisplayName();
         }
 
@@ -228,6 +265,62 @@ public class TuTienExpansion extends PlaceholderExpansion {
 
         if (identifier.equalsIgnoreCase("chetac_cap")) {
             return String.valueOf(dataManager.getCapChe(player));
+        }
+
+        if (identifier.equalsIgnoreCase("alchemist_rank")) {
+            TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            if (plugin != null && plugin.getBtthRankService() != null) {
+                return plugin.getBtthRankService().getRank(player).getPrefix();
+            }
+            return "§7[Học Đồ]";
+        }
+
+        if (identifier.equalsIgnoreCase("soul_realm")) {
+            TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            if (plugin != null && plugin.getBtthSoulService() != null) {
+                return plugin.getBtthSoulService().getSoulData(player).getRealm().getFormattedTag();
+            }
+            return "§7[Phàm Cảnh]";
+        }
+
+        if (identifier.equalsIgnoreCase("soul_power")) {
+            TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            if (plugin != null && plugin.getBtthSoulService() != null) {
+                return String.valueOf(Math.round(plugin.getBtthSoulService().getSoulData(player).getSoulPower()));
+            }
+            return "50";
+        }
+
+        if (identifier.equalsIgnoreCase("soul_cur")) {
+            TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            if (plugin != null && plugin.getBtthSoulService() != null) {
+                return String.valueOf(Math.round(plugin.getBtthSoulService().getSoulData(player).getCurrentSoul()));
+            }
+            return "100";
+        }
+
+        if (identifier.equalsIgnoreCase("soul_max")) {
+            TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            if (plugin != null && plugin.getBtthSoulService() != null) {
+                return String.valueOf(Math.round(plugin.getBtthSoulService().getSoulData(player).getSoulCapacity()));
+            }
+            return "100";
+        }
+
+        if (identifier.equalsIgnoreCase("flame_name")) {
+            TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            if (plugin != null && plugin.getBtthFlameService() != null) {
+                return plugin.getBtthFlameService().getActiveFlame(player).getDisplayName();
+            }
+            return "§eĐấu Khí Chi Hỏa";
+        }
+
+        if (identifier.equalsIgnoreCase("cauldron_name")) {
+            TuTienPlugin plugin = TuTienPlugin.getPlugin(TuTienPlugin.class);
+            if (plugin != null && plugin.getBtthCauldronService() != null) {
+                return plugin.getBtthCauldronService().getActiveCauldron(player).getDisplayName();
+            }
+            return "§7Phàm Đỉnh";
         }
 
         if (identifier.equalsIgnoreCase("balance")) {

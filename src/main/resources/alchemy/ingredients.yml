@@ -1,0 +1,116 @@
+# ==========================================
+# CẤU HÌNH DƯỢC LIỆU & MA HẠCH ĐẤU PHÁ THƯƠNG KHUNG
+# ==========================================
+
+ingredients:
+  HUYET_CHI_THAO:
+    name: "Huyết Chi Thảo"
+    display: "§c§lHuyết Chi Thảo"
+    type: "HERB"
+    optimal_heat_min: 50.0
+    optimal_heat_max: 75.0
+    extract_time_ticks: 60
+    base_impurity: 0.25
+    material: "RED_TULIP"
+    description: "Thảo dược sinh trưởng trên vùng đất đỏ máu, dược tính bổ huyết sinh cơ."
+
+  SINH_CO_THAO:
+    name: "Sinh Cơ Thảo"
+    display: "§a§lSinh Cơ Thảo"
+    type: "HERB"
+    optimal_heat_min: 45.0
+    optimal_heat_max: 70.0
+    extract_time_ticks: 50
+    base_impurity: 0.20
+    material: "DANDELION"
+    description: "Chứa đựng sinh mệnh dạt dào, là nguyên liệu căn bản của Ngưng Huyết Đan."
+
+  TU_LINH_THAO:
+    name: "Tụ Linh Thảo"
+    display: "§b§lTụ Linh Thảo"
+    type: "HERB"
+    optimal_heat_min: 55.0
+    optimal_heat_max: 85.0
+    extract_time_ticks: 70
+    base_impurity: 0.22
+    material: "FERN"
+    description: "Lá cỏ ngưng tụ linh khí đất trời, dùng luyện chế Hồi Khí Đan và Tụ Khí Tán."
+
+  HOI_KHI_QUA:
+    name: "Hồi Khí Quả"
+    display: "§6§lHồi Khí Quả"
+    type: "HERB"
+    optimal_heat_min: 60.0
+    optimal_heat_max: 90.0
+    extract_time_ticks: 65
+    base_impurity: 0.18
+    material: "SWEET_BERRIES"
+    description: "Quả mọng tích tụ nguyên khí, giúp nhanh chóng khôi phục đấu khí cạn kiệt."
+
+  TU_DIEP_LAN_THAO:
+    name: "Tử Diệp Lan Thảo"
+    display: "§5§lTử Diệp Lan Thảo"
+    type: "HERB"
+    optimal_heat_min: 70.0
+    optimal_heat_max: 105.0
+    extract_time_ticks: 90
+    base_impurity: 0.30
+    material: "ALLIUM"
+    description: "Lan thảo ba lá sắc tím, nguyên liệu chủ chốt của Trúc Cơ Linh Dịch."
+
+  TAY_COT_HOA:
+    name: "Tẩy Cốt Hoa"
+    display: "§f§lTẩy Cốt Hoa"
+    type: "HERB"
+    optimal_heat_min: 65.0
+    optimal_heat_max: 100.0
+    extract_time_ticks: 80
+    base_impurity: 0.28
+    material: "WHITE_TULIP"
+    description: "Dược lực thẩm thấu kinh mạch xương cốt, gột rửa phàm thai cốt cách."
+
+  MOC_HE_MA_HACH_1:
+    name: "Mộc Hệ Ma Hạch (Nhất Giai)"
+    display: "§a§lMộc Hệ Ma Hạch [Nhất Giai]"
+    type: "BEAST_CORE"
+    element: "MOC"
+    optimal_heat_min: 90.0
+    optimal_heat_max: 130.0
+    extract_time_ticks: 120
+    base_impurity: 0.35
+    material: "EMERALD"
+    description: "Kết tinh từ ma thú hệ mộc nhất giai, ẩn chứa năng lượng sinh sôi tinh thuần."
+
+  MAC_DIEP_LIEN:
+    name: "Mặc Diệp Liên"
+    display: "§8§lMặc Diệp Liên"
+    type: "HERB"
+    optimal_heat_min: 80.0
+    optimal_heat_max: 125.0
+    extract_time_ticks: 100
+    base_impurity: 0.25
+    material: "WITHER_ROSE"
+    description: "Hoa sen đen cực kỳ quý hiếm, chứa đựng dược lực ngưng tụ đấu khí xoáy."
+
+  XA_TIEN_QUA:
+    name: "Xà Tiên Quả"
+    display: "§e§lXà Tiên Quả"
+    type: "HERB"
+    optimal_heat_min: 85.0
+    optimal_heat_max: 130.0
+    extract_time_ticks: 95
+    base_impurity: 0.26
+    material: "GLOW_BERRIES"
+    description: "Quả hình đuôi rắn, hỗ trợ đả thông kinh lạc khi ngưng tụ đấu khí."
+
+  THUY_HE_MA_HACH_2:
+    name: "Thủy Hệ Ma Hạch (Nhị Giai)"
+    display: "§9§lThủy Hệ Ma Hạch [Nhị Giai]"
+    type: "BEAST_CORE"
+    element: "THUY"
+    optimal_heat_min: 110.0
+    optimal_heat_max: 160.0
+    extract_time_ticks: 150
+    base_impurity: 0.40
+    material: "LAPIS_LAZULI"
+    description: "Ma hạch lấy từ nhị giai thủy thuộc tính ma thú, năng lượng ôn hòa giúp làm dịu dược dịch."

@@ -60,6 +60,14 @@ public class TuTienPlugin extends JavaPlugin {
     private tutien.alchemy.escrow.AlchemyEscrowManager alchemyEscrowManager;
     private tutien.alchemy.service.AlchemyService alchemyService;
 
+    // === BTTH Alchemy (Đấu Phá Thương Khung) ===
+    private tutien.alchemy.btth.service.SoulControlService btthSoulService;
+    private tutien.alchemy.btth.service.AlchemistRankService btthRankService;
+    private tutien.alchemy.btth.service.AlchemyFlameService btthFlameService;
+    private tutien.alchemy.btth.service.AlchemyCauldronService btthCauldronService;
+    private tutien.alchemy.btth.service.BTTHFormulaManager btthFormulaManager;
+    private tutien.alchemy.btth.service.BTTHProcessController btthProcessController;
+
     // === Sprint 3 Managers ===
     private CheManager cheManager;
     private NhiemVuManager nhiemVuManager;
@@ -111,6 +119,14 @@ public class TuTienPlugin extends JavaPlugin {
         this.alchemyManager    = new tutien.alchemy.manager.AlchemyManager(this);
         this.alchemyEscrowManager = new tutien.alchemy.escrow.AlchemyEscrowManager(this);
         this.alchemyService    = new tutien.alchemy.service.AlchemyService(this, this.playerDataManager, this.alchemyManager, this.danDuocManager, this.alchemyEscrowManager);
+        this.btthSoulService   = new tutien.alchemy.btth.service.SoulControlService(this.playerDataManager);
+        this.btthRankService   = new tutien.alchemy.btth.service.AlchemistRankService(this.btthSoulService);
+        this.btthFlameService  = new tutien.alchemy.btth.service.AlchemyFlameService();
+        this.btthCauldronService = new tutien.alchemy.btth.service.AlchemyCauldronService();
+        this.btthFormulaManager = new tutien.alchemy.btth.service.BTTHFormulaManager();
+        this.btthProcessController = new tutien.alchemy.btth.service.BTTHProcessController(
+                this, this.btthSoulService, this.btthRankService, this.btthFlameService,
+                this.btthCauldronService, this.btthFormulaManager, this.alchemyEscrowManager);
         this.tongMonManager    = new TongMonManager(this);
         this.tuiDoManager      = new TuiDoManager(this);
         this.economyManager    = new EconomyManager(this);
@@ -163,6 +179,9 @@ public class TuTienPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(khoangThachGUI, this);
         getServer().getPluginManager().registerEvents(new XepHangGUI(), this);
         getServer().getPluginManager().registerEvents(new tutien.alchemy.gui.AlchemyMiniGameGUI(this.alchemyService), this);
+        getServer().getPluginManager().registerEvents(new tutien.alchemy.btth.gui.BTTHAlchemyGUIListener(this), this);
+        getServer().getPluginManager().registerEvents(new tutien.cultivation.listener.BiTichListener(this), this);
+        getServer().getPluginManager().registerEvents(new tutien.integration.mythicmobs.MythicMobDropListener(this), this);
 
         // =============================================
         // 3. ĐĂNG KÝ LỆNH
@@ -290,4 +309,10 @@ public class TuTienPlugin extends JavaPlugin {
     public tutien.social.DaoLuService getDaoLuService() { return daoLuService; }
     public tutien.tongmon.TangKinhCacService getTangKinhCacService() { return tangKinhCacService; }
     public tutien.tongmon.TongMonWarManager getTongMonWarManager() { return tongMonWarManager; }
+    public tutien.alchemy.btth.service.SoulControlService getBtthSoulService() { return btthSoulService; }
+    public tutien.alchemy.btth.service.AlchemistRankService getBtthRankService() { return btthRankService; }
+    public tutien.alchemy.btth.service.AlchemyFlameService getBtthFlameService() { return btthFlameService; }
+    public tutien.alchemy.btth.service.AlchemyCauldronService getBtthCauldronService() { return btthCauldronService; }
+    public tutien.alchemy.btth.service.BTTHFormulaManager getBtthFormulaManager() { return btthFormulaManager; }
+    public tutien.alchemy.btth.service.BTTHProcessController getBtthProcessController() { return btthProcessController; }
 }

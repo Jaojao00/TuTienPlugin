@@ -139,13 +139,27 @@ public class PlayerDataManager {
                 config = YamlConfiguration.loadConfiguration(file);
             }
 
-            tuViMap.put(uuid, config.getInt("TuVi", 0));
-            tangMap.put(uuid, config.getInt("Tang", 1));
+            int loadedTuVi = config.getInt("TuVi", 0);
+            int loadedTang = config.getInt("Tang", 1);
+
+            CanhGioi cg = CanhGioi.PHAM_NHAN;
+            try { cg = CanhGioi.valueOf(config.getString("CanhGioi", CanhGioi.PHAM_NHAN.name())); }
+            catch (IllegalArgumentException e) { cg = CanhGioi.PHAM_NHAN; }
+            canhGioiMap.put(uuid, cg);
+
+            // Cân bằng chặt chẽ: Tu Vi không được vượt quá bình cảnh cảnh giới
+            int maxTuVi = cg.getTuViYeuCau();
+            if (loadedTuVi > maxTuVi) {
+                loadedTuVi = maxTuVi;
+            }
+            tuViMap.put(uuid, loadedTuVi);
+
+            // Tầng tiểu cảnh giới luôn đi đôi và được đồng bộ chuẩn xác với Tu Vi
+            int syncedTang = CanhGioi.calculateTang(cg, loadedTuVi);
+            tangMap.put(uuid, syncedTang);
+
             linhLucMap.put(uuid, config.getInt("LinhLuc", 0));
             digestionBuffer.put(uuid, config.getInt("DigestionBuffer", 0));
-
-            try { canhGioiMap.put(uuid, CanhGioi.valueOf(config.getString("CanhGioi", CanhGioi.PHAM_NHAN.name()))); }
-            catch (IllegalArgumentException e) { canhGioiMap.put(uuid, CanhGioi.PHAM_NHAN); }
 
             // Tải Linh Căn Data (v2)
             LinhCanData lcData;
@@ -746,38 +760,51 @@ public class PlayerDataManager {
 
     public void addTuVi(Player player, int amount) {
         UUID uuid = player.getUniqueId();
+        CanhGioi hienTai = getCanhGioi(player);
+        int maxTuVi = hienTai.getTuViYeuCau();
         int prevTuVi = getTuVi(player);
-        int currentTuVi = Math.max(0, prevTuVi + amount);
+
+        // Nếu đã ở bình cảnh tối đa và amount > 0, không thể tăng thêm tu vi nữa
+        if (amount > 0 && prevTuVi >= maxTuVi) {
+            player.spigot().sendMessage(net.md_5.bungee.api.ChatMessageType.ACTION_BAR,
+                    new net.md_5.bungee.api.chat.TextComponent("§c§l[Bình Cảnh] §fTu vi đã đạt cực hạn (§e" + maxTuVi + "§f/§e" + maxTuVi + "§f), hãy đột phá cảnh giới!"));
+            return;
+        }
+
+        int currentTuVi = Math.max(0, Math.min(maxTuVi, prevTuVi + amount));
         tuViMap.put(uuid, currentTuVi);
 
         player.spigot().sendMessage(net.md_5.bungee.api.ChatMessageType.ACTION_BAR,
-                new net.md_5.bungee.api.chat.TextComponent("§a" + (amount >= 0 ? "+" : "") + amount + " Tu Vi §8| §eTổng: " + currentTuVi));
+                new net.md_5.bungee.api.chat.TextComponent("§a" + (amount >= 0 ? "+" : "") + amount + " Tu Vi §8| §eTổng: " + currentTuVi + "/" + maxTuVi));
 
         kiemTraSanSangDoKiep(player, prevTuVi, currentTuVi);
     }
 
     private void kiemTraSanSangDoKiep(Player player, int prevTuVi, int currentTuVi) {
         CanhGioi hienTai = getCanhGioi(player);
-        int tangHienTai = getTang(player);
+        int oldTang = getTang(player);
+        int newTang = CanhGioi.calculateTang(hienTai, currentTuVi);
 
-        // Luyện Khí có 13 tầng
-        if (hienTai == CanhGioi.LUYEN_KHI) {
-            int tuViYeuCauTang = hienTai.getTuViMoiTang() * tangHienTai;
-            if (prevTuVi < tuViYeuCauTang && currentTuVi >= tuViYeuCauTang && tangHienTai < 13) {
-                // Tự động phá tầng tiểu cảnh giới trong Luyện Khí
-                setTang(player, tangHienTai + 1);
-                player.sendMessage("§a§l[Đột Phá Tiểu Cảnh Giới] §fNgươi đã đả thông kinh lạc, bước lên §e" + hienTai.getTieuCanhGioi(tangHienTai + 1) + "§f!");
-                player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.2f);
-                tutien.combat.StatsManager.applyStats(player, this);
-            } else if (tangHienTai >= 13 && currentTuVi >= hienTai.getTuViYeuCau() && prevTuVi < hienTai.getTuViYeuCau()) {
-                player.sendMessage("§e§l[Thiên Đạo] §fTu vi Luyện Khí Tầng 13 đã đạt §cĐại Viên Mãn§f! Hãy chuẩn bị §bTrúc Cơ Đan §fvà rèn Căn Cơ để Trúc Cơ!");
-            }
-            return;
+        if (newTang > oldTang) {
+            setTang(player, newTang);
+            player.sendMessage("§a§l[Đột Phá Tiểu Cảnh Giới] §fNgươi đã đả thông kinh lạc, bước lên §e" + hienTai.getTieuCanhGioi(newTang) + "§f!");
+            player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.2f);
+            tutien.combat.StatsManager.applyStats(player, this);
+        } else if (newTang < oldTang) {
+            setTang(player, newTang);
+            tutien.combat.StatsManager.applyStats(player, this);
         }
 
-        CanhGioi tiepTheo = hienTai.getCanhGioiTiepTheo();
-        if (tiepTheo != null && prevTuVi < hienTai.getTuViYeuCau() && currentTuVi >= hienTai.getTuViYeuCau()) {
-            player.sendMessage("§e§l[Thiên Đạo] §fTu vi của bạn đã đạt bình cảnh! Hãy chuẩn bị đan dược và dùng §c/tutien dokiep §fđể đột phá!");
+        int maxTuVi = hienTai.getTuViYeuCau();
+        if (currentTuVi >= maxTuVi && prevTuVi < maxTuVi) {
+            if (hienTai == CanhGioi.LUYEN_KHI) {
+                player.sendMessage("§e§l[Thiên Đạo] §fTu vi Luyện Khí Tầng 13 đã đạt §cĐại Viên Mãn (" + maxTuVi + "/" + maxTuVi + ")§f! Hãy chuẩn bị §bTrúc Cơ Đan §fvà rèn Căn Cơ để Trúc Cơ (/tutien dotpha)!");
+            } else if (hienTai == CanhGioi.PHAM_NHAN) {
+                player.sendMessage("§e§l[Thiên Đạo] §fNgươi đã tích lũy đủ căn cơ phàm nhân! Hãy dùng §b/tutien nhapdao §fđể tiến hành Khai Mạch Nhập Đạo!");
+            } else {
+                player.sendMessage("§e§l[Thiên Đạo] §fTu vi cảnh giới §b" + hienTai.getTenHienThi() + " §fđã đạt bình cảnh §c(" + maxTuVi + "/" + maxTuVi + ")§f! Hãy chuẩn bị đan dược và dùng §c/tutien dokiep §fhoặc §c/tutien dotpha §fđể đột phá!");
+            }
+            player.playSound(player.getLocation(), org.bukkit.Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.5f);
         }
     }
 
@@ -847,6 +874,7 @@ public class PlayerDataManager {
     public void setNgoTinh(Player p, double v) { ngoTinhMap.put(p.getUniqueId(), Math.max(0.0, v)); }
 
     public double getThanThuc(Player p) { return thanThucMap.getOrDefault(p.getUniqueId(), 0.0); }
+    public double getThanThuc(UUID uuid) { return thanThucMap.getOrDefault(uuid, 0.0); }
     public void setThanThuc(Player p, double v) { thanThucMap.put(p.getUniqueId(), Math.max(0.0, v)); }
 
     public double getTheChat(Player p) { return theChatMap.getOrDefault(p.getUniqueId(), 20.0); }
@@ -993,11 +1021,26 @@ public class PlayerDataManager {
 
     public void setCanhGioi(Player player, CanhGioi cg) {
         canhGioiMap.put(player.getUniqueId(), cg);
+        int curTuVi = getTuVi(player);
+        int maxTuVi = cg != null ? cg.getTuViYeuCau() : Integer.MAX_VALUE;
+        if (curTuVi > maxTuVi) {
+            curTuVi = maxTuVi;
+            tuViMap.put(player.getUniqueId(), curTuVi);
+        }
+        int expectedTang = CanhGioi.calculateTang(cg, curTuVi);
+        tangMap.put(player.getUniqueId(), expectedTang);
         tutien.combat.StatsManager.applyStats(player, this);
     }
 
     public int getTuVi(Player player) { return tuViMap.getOrDefault(player.getUniqueId(), 0); }
-    public void setTuVi(Player player, int amount) { tuViMap.put(player.getUniqueId(), Math.max(0, amount)); }
+    public void setTuVi(Player player, int amount) {
+        CanhGioi cg = getCanhGioi(player);
+        int maxTuVi = cg != null ? cg.getTuViYeuCau() : Integer.MAX_VALUE;
+        int clamped = Math.max(0, Math.min(maxTuVi, amount));
+        tuViMap.put(player.getUniqueId(), clamped);
+        int expectedTang = CanhGioi.calculateTang(cg, clamped);
+        tangMap.put(player.getUniqueId(), expectedTang);
+    }
 
     public LinhCan getLinhCan(Player player) {
         LinhCanData lcd = linhCanDataMap.get(player.getUniqueId());

@@ -39,6 +39,8 @@ public class CongPhapGUIListener implements Listener {
 
     public static boolean isCustomGUI(org.bukkit.inventory.InventoryView view) {
         if (view == null || view.getTopInventory() == null) return false;
+        String title = view.getTitle();
+        if (title.contains("CẨM NANG CÔNG PHÁP & THẦN THÔNG")) return true;
         org.bukkit.inventory.InventoryHolder holder = view.getTopInventory().getHolder();
         return holder instanceof CongPhapHolder ||
                holder instanceof ThamNgoHolder ||
@@ -83,6 +85,18 @@ public class CongPhapGUIListener implements Listener {
         clickDebounceMap.put(player.getUniqueId(), now);
 
         // ==========================================
+        // 0. XỬ LÝ CẨM NANG CÔNG PHÁP
+        // ==========================================
+        if (event.getView().getTitle().contains("CẨM NANG CÔNG PHÁP & THẦN THÔNG")) {
+            event.setCancelled(true);
+            if (event.getRawSlot() == 49) {
+                CongPhapGUI.open(player, plugin);
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+            }
+            return;
+        }
+
+        // ==========================================
         // 1. XỬ LÝ CONG PHAP GUI
         // ==========================================
         if (event.getInventory().getHolder() instanceof CongPhapHolder holder) {
@@ -96,6 +110,13 @@ public class CongPhapGUIListener implements Listener {
             CongPhapGUIConfig cfg = plugin.getCongPhapGUIConfig();
             PlayerDataManager dataManager = plugin.getPlayerDataManager();
             PlayerCultivationData cultData = dataManager.getPlayerCultivationData(player);
+
+            // Nút mở Cẩm Nang (Slot 8)
+            if (slot == 8) {
+                CongPhapGuideGUI.open(player);
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1.0f, 1.0f);
+                return;
+            }
 
             // Nút mở Tham Ngộ (Slot 49)
             if (slot == cfg.getCongPhapOpenComprehensionSlot()) {

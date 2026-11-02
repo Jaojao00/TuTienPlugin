@@ -9,6 +9,7 @@ import java.util.*;
  * Định nghĩa template công pháp nạp từ congphap.yml:
  * Quản lý phẩm cấp, thuộc tính ngũ hành, giới hạn truyền thừa,
  * tốc độ hấp thu, hiệu suất luyện hóa, điều kiện nhập môn và bí thuật mở khóa.
+ * Tích hợp nguồn gốc tiểu thuyết (Phàm Nhân, Tru Tiên, Tiên Nghịch, Đấu Phá) và điều kiện MythicMobs.
  */
 public class CongPhap {
 
@@ -42,11 +43,32 @@ public class CongPhap {
     private final boolean requiresHuMaiDan;
     private final double transitionPenaltyRatio;
 
+    // Nguồn gốc & Cốt truyện
+    private final String source;
+    private final String description;
+
+    // Môi trường & Điều kiện MythicMobs
+    private final String requiredMythicBoss;
+    private final String dropMythicMob;
+    private final double dropRate;
+
     public CongPhap(String id, String displayName, CongPhapGrade gradeTier, CongPhapQuality gradeQuality,
                     List<String> elements, CanhGioi maxRealm, CongPhapStage maxStage, int totalChapters,
                     Map<Integer, CanhGioi> chapterRequirements, double absorptionRate, double refinementEfficiency,
                     double stabilityMultiplier, CanhGioi minRealm, double minNgoTinh, List<String> requiredElements,
                     List<AbilityUnlock> abilities, boolean canTransition, boolean requiresHuMaiDan, double transitionPenaltyRatio) {
+        this(id, displayName, gradeTier, gradeQuality, elements, maxRealm, maxStage, totalChapters,
+                chapterRequirements, absorptionRate, refinementEfficiency, stabilityMultiplier,
+                minRealm, minNgoTinh, requiredElements, abilities, canTransition, requiresHuMaiDan,
+                transitionPenaltyRatio, "TU_TIEN_GIOI", "", "", "", 0.0);
+    }
+
+    public CongPhap(String id, String displayName, CongPhapGrade gradeTier, CongPhapQuality gradeQuality,
+                    List<String> elements, CanhGioi maxRealm, CongPhapStage maxStage, int totalChapters,
+                    Map<Integer, CanhGioi> chapterRequirements, double absorptionRate, double refinementEfficiency,
+                    double stabilityMultiplier, CanhGioi minRealm, double minNgoTinh, List<String> requiredElements,
+                    List<AbilityUnlock> abilities, boolean canTransition, boolean requiresHuMaiDan, double transitionPenaltyRatio,
+                    String source, String description, String requiredMythicBoss, String dropMythicMob, double dropRate) {
         this.id = id != null ? id.trim().toUpperCase() : "UNKNOWN";
         this.displayName = displayName != null ? displayName : id;
         this.gradeTier = gradeTier != null ? gradeTier : CongPhapGrade.HOANG;
@@ -70,6 +92,12 @@ public class CongPhap {
         this.canTransition = canTransition;
         this.requiresHuMaiDan = requiresHuMaiDan;
         this.transitionPenaltyRatio = Math.max(0.0, Math.min(1.0, transitionPenaltyRatio));
+
+        this.source = source != null && !source.trim().isEmpty() ? source.trim().toUpperCase() : "TU_TIEN_GIOI";
+        this.description = description != null ? description : "";
+        this.requiredMythicBoss = requiredMythicBoss != null ? requiredMythicBoss.trim() : "";
+        this.dropMythicMob = dropMythicMob != null ? dropMythicMob.trim() : "";
+        this.dropRate = Math.max(0.0, Math.min(1.0, dropRate));
     }
 
     public String getId() {
@@ -166,12 +194,64 @@ public class CongPhap {
         return transitionPenaltyRatio;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public String getSourceDisplayName() {
+        return switch (source) {
+            case "PHAM_NHAN", "PHAM_NHAN_TU_TIEN" -> "§aPhàm Nhân Tu Tiên";
+            case "TRU_TIEN" -> "§bTru Tiên";
+            case "TIEN_NGHICH" -> "§cTiên Nghịch";
+            case "DAU_PHA", "DAU_PHA_THUONG_KHUNG" -> "§eĐấu Phá Thương Khung";
+            default -> "§7Tu Tiên Giới";
+        };
+    }
+
+    public String getDescription() {
+        return description.replace('&', '§');
+    }
+
+    public String getRequiredMythicBoss() {
+        return requiredMythicBoss;
+    }
+
+    public String getDropMythicMob() {
+        return dropMythicMob;
+    }
+
+    public double getDropRate() {
+        return dropRate;
+    }
+
     public String getFormattedGrade() {
         return gradeTier.getColor() + gradeTier.getName() + " " + gradeQuality.getDisplayName();
     }
 
     public boolean isRealmExceeded(CanhGioi playerRealm) {
         return playerRealm.ordinal() > maxRealm.ordinal();
+    }
+
+    // ==========================================
+    // PARSER TIỆN ÍCH AN TOÀN CHO CẢNH GIỚI
+    // ==========================================
+
+    public static CanhGioi parseCanhGioi(String str, CanhGioi defaultVal) {
+        if (str == null || str.trim().isEmpty()) return defaultVal;
+        String clean = str.trim().toUpperCase();
+        try {
+            return CanhGioi.valueOf(clean);
+        } catch (IllegalArgumentException e) {
+            // Map các danh xưng tu tiên tương đương với hệ thống Cảnh Giới
+            return switch (clean) {
+                case "LUYEN_HU" -> CanhGioi.ANH_BIEN;
+                case "HOP_THE" -> CanhGioi.VAN_DINH;
+                case "DAI_THUA" -> CanhGioi.DUONG_THUC;
+                case "DO_KIEP" -> CanhGioi.TOAI_NIET;
+                case "TIEN_NHAN", "TIEN_DE" -> CanhGioi.DAP_THIEN;
+                default -> defaultVal;
+            };
+        }
     }
 
     // ==========================================
@@ -192,7 +272,7 @@ public class CongPhap {
         List<String> elements = sec.getStringList("elements");
 
         // Transmission
-        CanhGioi maxRealm = CanhGioi.valueOf(sec.getString("transmission.max-realm", tier.getDefaultMaxRealm().name()));
+        CanhGioi maxRealm = parseCanhGioi(sec.getString("transmission.max-realm"), tier.getDefaultMaxRealm());
         CongPhapStage maxStage = CongPhapStage.fromString(sec.getString("transmission.max-stage", "DAI_VIEN_MAN"));
         int totalChapters = sec.getInt("transmission.total-chapters", 9);
 
@@ -203,7 +283,7 @@ public class CongPhap {
                 try {
                     int chNum = Integer.parseInt(chKey);
                     String rStr = chSec.getString(chKey + ".required-realm", "LUYEN_KHI");
-                    chapterMap.put(chNum, CanhGioi.valueOf(rStr.toUpperCase()));
+                    chapterMap.put(chNum, parseCanhGioi(rStr, CanhGioi.LUYEN_KHI));
                 } catch (Exception ignored) {}
             }
         }
@@ -214,7 +294,7 @@ public class CongPhap {
         double stability = sec.getDouble("cultivation.stability-multiplier", 1.0);
 
         // Requirements
-        CanhGioi minRealm = CanhGioi.valueOf(sec.getString("requirements.min-realm", "LUYEN_KHI"));
+        CanhGioi minRealm = parseCanhGioi(sec.getString("requirements.min-realm"), CanhGioi.LUYEN_KHI);
         double minNgoTinh = sec.getDouble("requirements.min-ngo-tinh", 10.0);
         List<String> reqElements = sec.getStringList("requirements.required-elements");
 
@@ -244,9 +324,18 @@ public class CongPhap {
         boolean reqHuMai = sec.getBoolean("transition.requires-hu-mai-dan", false);
         double penRatio = sec.getDouble("transition.penalty-ratio", 0.30);
 
+        // Nguồn gốc & Cốt truyện
+        String source = sec.getString("source", "TU_TIEN_GIOI");
+        String desc = sec.getString("description", "");
+
+        // Mythic conditions
+        String reqBoss = sec.getString("mythic-conditions.required-boss", "");
+        String dropMob = sec.getString("mythic-conditions.drop-from-mob", "");
+        double dropRate = sec.getDouble("mythic-conditions.drop-rate", 0.0);
+
         return new CongPhap(id, displayName, tier, quality, elements, maxRealm, maxStage, totalChapters,
                 chapterMap, absorption, refinement, stability, minRealm, minNgoTinh, reqElements, abilities,
-                canTrans, reqHuMai, penRatio);
+                canTrans, reqHuMai, penRatio, source, desc, reqBoss, dropMob, dropRate);
     }
 
     /**

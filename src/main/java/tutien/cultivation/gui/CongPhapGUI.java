@@ -24,6 +24,7 @@ import java.util.*;
  * - Sử dụng CongPhapHolder độc quyền để chống gian lận và kéo nhầm vật phẩm.
  * - Hỗ trợ phân trang danh mục tàn quyển không giới hạn số lượng công pháp.
  * - Hiển thị đầy đủ Chủ Tu, Phụ Tu, Tương Thích Phi, Thành Thục Mastery.
+ * - Tích hợp nút Cẩm Nang Công Pháp & Thần Thông (Slot 8).
  */
 public class CongPhapGUI {
 
@@ -60,6 +61,7 @@ public class CongPhapGUI {
             meta.setDisplayName("§6§l✦ CÔNG PHÁP CHỦ TU: §e" + primaryCp.getDisplayName() + " ✦");
             List<String> lore = new ArrayList<>();
             lore.add("§8───────────────────────────────");
+            lore.add("§7Xuất xứ: " + primaryCp.getSourceDisplayName());
             lore.add("§7Phẩm cấp: " + primaryCp.getFormattedGrade());
             lore.add("§7Cảnh giới giới hạn: §e" + primaryCp.getMaxRealm().getTenHienThi());
             lore.add("§7Thuộc tính: §b" + String.join(", ", primaryCp.getElements()));
@@ -152,6 +154,25 @@ public class CongPhapGUI {
         }
 
         // ==========================================
+        // 2.5. NÚT CẨM NANG CÔNG PHÁP & THẦN THÔNG (SLOT 8)
+        // ==========================================
+        ItemStack guideItem = new ItemStack(Material.BOOK);
+        ItemMeta guideMeta = guideItem.getItemMeta();
+        guideMeta.setDisplayName("§6§l📖 CẨM NANG CÔNG PHÁP & THẦN THÔNG");
+        guideMeta.setLore(Arrays.asList(
+                "§8───────────────────────────────",
+                "§7Hướng dẫn toàn tập 4 đại kỳ thư:",
+                "§f• §aPhàm Nhân Tu Tiên  §f• §bTru Tiên",
+                "§f• §cTiên Nghịch         §f• §eĐấu Phá Thương Khung",
+                "§7Cơ chế săn Bí Tịch từ Boss MythicMobs,",
+                "§7lĩnh ngộ khẩu quyết & thi triển thần thông.",
+                "§8───────────────────────────────",
+                "§e► Nhấp để mở cẩm nang hướng dẫn!"
+        ));
+        guideItem.setItemMeta(guideMeta);
+        inv.setItem(8, guideItem);
+
+        // ==========================================
         // 3. DANH MỤC CÔNG PHÁP & TÀN QUYỂN (PHÂN TRANG)
         // ==========================================
         List<CongPhap> allCp = new ArrayList<>(plugin.getCongPhapManager().getAllCongPhap());
@@ -188,6 +209,7 @@ public class CongPhapGUI {
 
             List<String> lore = new ArrayList<>();
             lore.add("§8───────────────────────────────");
+            lore.add("§7Xuất xứ: " + cp.getSourceDisplayName());
             lore.add("§7Thuộc tính: §b" + String.join(", ", cp.getElements()));
             lore.add("§7Cảnh giới tối đa: §e" + cp.getMaxRealm().getTenHienThi());
 

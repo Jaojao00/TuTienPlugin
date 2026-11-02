@@ -1,6 +1,7 @@
 package tutien.cultivation.service;
 
 import tutien.core.CanhGioi;
+import tutien.cultivation.data.PlayerCultivationData;
 import tutien.cultivation.model.CongPhap;
 import tutien.cultivation.model.CongPhapProgress;
 import tutien.element.LinhCanData;
@@ -8,11 +9,9 @@ import tutien.element.LinhCanData;
 import java.util.List;
 
 /**
- * Dịch vụ thẩm định và kiểm tra điều kiện nhập môn, lĩnh hội từng tầng của công pháp:
- * - Kiểm tra Cảnh Giới tối thiểu.
- * - Kiểm tra Ngộ Tính.
- * - Kiểm tra Linh Căn và thuộc tính Ngũ Hành.
- * - Kiểm tra thứ tự tầng truyền thừa (không nhảy cóc).
+ * Service xác thực logic công pháp:
+ * Kiểm tra tính hợp lệ khi nhập môn, lĩnh hội khẩu quyết và chuyển tu.
+ * Tích hợp kiểm tra điều kiện diệt Boss MythicMobs.
  */
 public class CongPhapValidationService {
 
@@ -20,9 +19,17 @@ public class CongPhapValidationService {
         private final boolean success;
         private final String message;
 
-        public ValidationResult(boolean success, String message) {
+        private ValidationResult(boolean success, String message) {
             this.success = success;
             this.message = message;
+        }
+
+        public static ValidationResult ok() {
+            return new ValidationResult(true, "§aHợp lệ!");
+        }
+
+        public static ValidationResult fail(String message) {
+            return new ValidationResult(false, message);
         }
 
         public boolean isSuccess() {
@@ -32,51 +39,36 @@ public class CongPhapValidationService {
         public String getMessage() {
             return message;
         }
-
-        public static ValidationResult ok() {
-            return new ValidationResult(true, "§aĐủ điều kiện.");
-        }
-
-        public static ValidationResult fail(String msg) {
-            return new ValidationResult(false, msg);
-        }
     }
 
     /**
-     * Kiểm tra xem tu sĩ có đủ tư chất nhập môn (học chương 1 / kích hoạt) công pháp này không.
+     * Kiểm tra xem tu sĩ có đủ điều kiện nhập môn công pháp không.
      */
     public ValidationResult validateInitiation(CongPhap cp, CanhGioi realm, double ngoTinh, LinhCanData linhCan) {
         if (cp == null) {
-            return ValidationResult.fail("§cCông pháp không tồn tại trong điển tịch!");
+            return ValidationResult.fail("§cCông pháp không tồn tại!");
         }
 
-        // 1. Kiểm tra Cảnh Giới tối thiểu
-        if (realm == null || !realm.isAtLeast(cp.getMinRealm())) {
+        // 1. Kiểm tra Cảnh giới tối thiểu
+        if (realm != null && !realm.isAtLeast(cp.getMinRealm())) {
             return ValidationResult.fail("§cCảnh giới chưa đủ! Yêu cầu tối thiểu: §e" + cp.getMinRealm().getTenHienThi());
         }
 
-        // 2. Kiểm tra Ngộ Tính
+        // 2. Kiểm tra Ngộ tính
         if (ngoTinh < cp.getMinNgoTinh()) {
-            return ValidationResult.fail("§cNgộ tính chưa đủ để lĩnh ngộ! Yêu cầu: §e" + cp.getMinNgoTinh()
-                    + " §7(Hiện tại: " + String.format("%.1f", ngoTinh) + ")");
+            return ValidationResult.fail("§cNgộ tính chưa đủ để lĩnh ngộ! Cần tối thiểu: §e" + cp.getMinNgoTinh());
         }
 
-        // 3. Kiểm tra Linh Căn ngũ hành bắt buộc
+        // 3. Kiểm tra Ngũ hành linh căn bắt buộc
         List<String> reqElements = cp.getRequiredElements();
         if (reqElements != null && !reqElements.isEmpty()) {
             if (linhCan == null) {
-                return ValidationResult.fail("§cChưa trắc linh, không thể phân định thuộc tính công pháp!");
+                return ValidationResult.fail("§cKhông xác định được linh căn tu sĩ!");
             }
-            boolean match = false;
-            for (String reqElem : reqElements) {
-                if (linhCan.hasElement(reqElem)) {
-                    match = true;
-                    break;
+            for (String elem : reqElements) {
+                if (!linhCan.hasElement(elem)) {
+                    return ValidationResult.fail("§cKinh mạch thiếu linh căn hệ §e" + elem + "§c, không thể nhập môn công pháp này!");
                 }
-            }
-            if (!match) {
-                return ValidationResult.fail("§cLinh căn không có thuộc tính tương thích với yêu cầu của công pháp: §6"
-                        + String.join(", ", reqElements));
             }
         }
 
@@ -84,9 +76,16 @@ public class CongPhapValidationService {
     }
 
     /**
-     * Kiểm tra xem tu sĩ có đủ điều kiện để lĩnh hội một chương cụ thể không.
+     * Kiểm tra xem tu sĩ có đủ điều kiện để lĩnh hội một chương cụ thể không (không kèm dữ liệu boss).
      */
     public ValidationResult validateLearnChapter(CongPhap cp, CongPhapProgress progress, int chapter, CanhGioi realm) {
+        return validateLearnChapter(cp, progress, chapter, realm, null);
+    }
+
+    /**
+     * Kiểm tra xem tu sĩ có đủ điều kiện để lĩnh hội một chương cụ thể không (kèm dữ liệu boss MythicMobs).
+     */
+    public ValidationResult validateLearnChapter(CongPhap cp, CongPhapProgress progress, int chapter, CanhGioi realm, PlayerCultivationData data) {
         if (cp == null) {
             return ValidationResult.fail("§cCông pháp không tồn tại!");
         }
@@ -113,6 +112,13 @@ public class CongPhapValidationService {
         CanhGioi reqRealm = cp.getChapterRequiredRealm(chapter);
         if (realm != null && !realm.isAtLeast(reqRealm)) {
             return ValidationResult.fail("§cChương " + chapter + " yêu cầu cảnh giới tối thiểu: §e" + reqRealm.getTenHienThi());
+        }
+
+        // Kiểm tra điều kiện hạ gục Boss MythicMobs nếu có
+        if (data != null && cp.getRequiredMythicBoss() != null && !cp.getRequiredMythicBoss().isEmpty()) {
+            if (!data.hasDefeatedBoss(cp.getRequiredMythicBoss())) {
+                return ValidationResult.fail("§cNgươi chưa hạ gục Yêu Ma / Boss: §e" + cp.getRequiredMythicBoss() + " §cđể lĩnh ngộ công pháp này!");
+            }
         }
 
         return ValidationResult.ok();

@@ -1,0 +1,154 @@
+# ==========================================
+# ĐAN PHƯƠNG ĐẤU PHÁ THƯƠNG KHUNG
+# ==========================================
+
+formulas:
+  NGUNG_HUYET_DAN:
+    display_name: "Ngưng Huyết Đan"
+    chinese_name: "凝血丹"
+    tier: 1
+    required_rank: "HOC_DO"
+    required_soul_power: 50.0
+    required_soul_realm: "PHAM_CANH"
+    cauldron_tier_min: 0
+    target_heat: 60.0
+    ingredients:
+      - id: "HUYET_CHI_THAO"
+        amount: 2
+        role: "PRIMARY"
+      - id: "SINH_CO_THAO"
+        amount: 1
+        role: "SECONDARY"
+    fusion_order:
+      - "HUYET_CHI_THAO"
+      - "SINH_CO_THAO"
+    flame_switching_required: false
+    max_lines: 0
+    tribulation_enabled: false
+    effects:
+      type: "HEAL"
+      value: 10.0
+      lore: "§aHồi phục 10 máu tức thì và cầm máu kinh mạch."
+
+  HOI_KHI_DAN:
+    display_name: "Hồi Khí Đan"
+    chinese_name: "回气丹"
+    tier: 1
+    required_rank: "NHAT_PHAM"
+    required_soul_power: 80.0
+    required_soul_realm: "PHAM_CANH"
+    cauldron_tier_min: 1
+    target_heat: 75.0
+    ingredients:
+      - id: "TU_LINH_THAO"
+        amount: 2
+        role: "PRIMARY"
+      - id: "HOI_KHI_QUA"
+        amount: 2
+        role: "SECONDARY"
+    fusion_order:
+      - "TU_LINH_THAO"
+      - "HOI_KHI_QUA"
+    flame_switching_required: false
+    max_lines: 0
+    tribulation_enabled: false
+    effects:
+      type: "RESTORE_MANA"
+      value: 150.0
+      lore: "§bKhôi phục 150 điểm Linh Lực/Đấu Khí tức thì."
+
+  TRUC_CO_LINH_DICH:
+    display_name: "Trúc Cơ Linh Dịch"
+    chinese_name: "筑基灵液"
+    tier: 2
+    required_rank: "NHI_PHAM"
+    required_soul_power: 200.0
+    required_soul_realm: "PHAM_CANH"
+    cauldron_tier_min: 2
+    target_heat: 90.0
+    ingredients:
+      - id: "TU_DIEP_LAN_THAO"
+        amount: 3
+        role: "PRIMARY"
+      - id: "TAY_COT_HOA"
+        amount: 2
+        role: "PRIMARY"
+      - id: "MOC_HE_MA_HACH_1"
+        amount: 1
+        role: "CORE"
+    fusion_order:
+      - "TU_DIEP_LAN_THAO"
+      - "TAY_COT_HOA"
+      - "MOC_HE_MA_HACH_1"
+    flame_switching_required: false
+    max_lines: 0
+    tribulation_enabled: false
+    effects:
+      type: "FOUNDATION_BOOST"
+      value: 15.0 # Tăng vĩnh viễn 15 điểm căn cơ và tốc độ tu luyện
+      lore: "§6Gột rửa cốt tủy, tăng 15 điểm Căn Cơ vĩnh viễn và gia tốc tọa thiền."
+
+  TU_KHI_TAN:
+    display_name: "Tụ Khí Tán"
+    chinese_name: "聚气散"
+    tier: 3
+    required_rank: "TAM_PHAM"
+    required_soul_power: 450.0
+    required_soul_realm: "PHAM_CANH"
+    cauldron_tier_min: 3
+    target_heat: 120.0
+    ingredients:
+      - id: "MAC_DIEP_LIEN"
+        amount: 1
+        role: "PRIMARY"
+      - id: "XA_TIEN_QUA"
+        amount: 2
+        role: "PRIMARY"
+      - id: "TU_LINH_THAO"
+        amount: 3
+        role: "SECONDARY"
+      - id: "THUY_HE_MA_HACH_2"
+        amount: 1
+        role: "CORE"
+    fusion_order:
+      - "MAC_DIEP_LIEN"
+      - "XA_TIEN_QUA"
+      - "TU_LINH_THAO"
+      - "THUY_HE_MA_HACH_2"
+    flame_switching_required: false
+    max_lines: 0
+    tribulation_enabled: false
+    effects:
+      type: "BREAKTHROUGH_100"
+      lore: "§e§lThần dược đột phá: §fGiúp người phàm/Đấu Chi Khí ngưng tụ khí xoáy 100% bước vào Luyện Khí."
+
+  TAM_VAN_THANH_LINH_DAN:
+    display_name: "Tam Văn Thanh Linh Đan"
+    chinese_name: "三纹青灵丹"
+    tier: 4
+    required_rank: "TU_PHAM"
+    required_soul_power: 1000.0
+    required_soul_realm: "PHAM_CANH"
+    cauldron_tier_min: 4
+    target_heat: 180.0
+    ingredients:
+      - id: "MAC_DIEP_LIEN"
+        amount: 2
+        role: "PRIMARY"
+      - id: "TU_LINH_THAO"
+        amount: 4
+        role: "SECONDARY"
+      - id: "THUY_HE_MA_HACH_2"
+        amount: 2
+        role: "CORE"
+    fusion_order:
+      - "MAC_DIEP_LIEN"
+      - "TU_LINH_THAO"
+      - "THUY_HE_MA_HACH_2"
+    flame_switching_required: true
+    flame_switch_count: 3
+    max_lines: 3
+    tribulation_enabled: false
+    effects:
+      type: "CULTIVATION_BURST"
+      lore: "§bHỗ trợ tăng nhanh cảnh giới. Mỗi Đan Văn tăng thêm 1 tầng tu vi (kèm nguy cơ phản phệ nếu dùng quá 1 viên)."
